@@ -322,7 +322,7 @@ Announcement 캠페인의 Click URL, Push Notification 캠페인의 URL Schema �
 
 ## CPI Identifier
 
-Incentivized CPI & CPA  캠페인 기능을 사용하여, 사용자가 Media App에서 Advertising App의 광고를 보고 앱을 설치하였을 때 보상으로 Media App의 아이템을 지급할 수 있습니다.
+Incentivized CPI & CPA 캠페인 기능을 사용하여, 사용자가 Media App에서 Advertising App의 광고를 보고 앱을 설치하였을 때 보상으로 Media App의 아이템을 지급할 수 있습니다.
 
 - Medial App: 다른 앱의 광고를 노출하고, 광고 대상의 앱을 설치한 사용자들에게 보상을 지급하는 앱
 - Advertising: Media App에 광고가 노출되는 앱.
@@ -343,6 +343,15 @@ SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media 
 
   위 경우 [Dashboard](https://admin.adfresca.com) 사이트에서 Advertising App의 CPI Identifier 값을 'myapp://' 으로 설정하게 됩니다. 
   iOS 플랫폼의 경우 URL Schema 값이 다른 앱과 중복될 수 있습니다. 정상적인 캠페인 진행을 위해서는 최대한 Unique한 값을 선택해야 합니다.
+
+  그리고, Incentivized CPA 캠페인을 진행할 경우는 아래와 같이 보상 조건으로 지정한 마케팅 이벤트가 발생되어야 합니다.
+    
+  ```objective-c
+  // 튜토리얼 완료 이벤트를 보상 조건으로 지정한 경우
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
+  [fresca loadAd:EVENT_INDEX_TUTORIAL];     
+  [fresca showAd];
+  ```
 
 #### Media App SDK 적용하기:
 
