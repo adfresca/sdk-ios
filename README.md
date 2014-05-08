@@ -9,6 +9,7 @@
 - [In-App-Purchase Count](#in-app-purchase-count) 
 - [Push Notification](#push-notification)
 - [Custom URL](#custom-url)
+- [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta)
 - [CPI Identifier](#cpi-identifier)
 - [Reward Item](#reward-item)
 - [Advanced Features](#advanced-features)
@@ -35,6 +36,8 @@ AD fresca는 게임 운영자나 마케터가 앱 내 사용자 특성을 실시
 아래 링크를 통해 SDK 파일을 다운로드 합니다.
 
 [iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) (v1.3.5)
+
+[iOS SDK with IAP Tracking BETA Download](https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/distribution/sdk-for-iOS-iap-beta.zip) (v1.4.0-beta1)
 
 SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
@@ -318,6 +321,126 @@ Announcement 캠페인의 Click URL, Push Notification 캠페인의 URL Schema �
 ```
   위와  같이 구현한 경우, 캠페인의 Click URL을 'myapp://item' 으로 설정하여 전송하면, ItemViewController 페이지가 실행됩니다.
 
+
+* * *
+
+## In-App Purchase Tracking (Beta)
+
+_**(현재 In-App-Purchase Tracking 기능은 SDK 1.4.0-beta 버전에서만 지원됩니다.)**_
+
+_In-App-Purchase Tracking_  기능을 통하여 현재 앱에서 발생하고 있는 모든 인-앱 결제를 분석하고 캠페인 타겟팅에 이용할 수 있습니다.
+
+AD fresca의 In-App-Purchase Tracking은 2가지 유형이 있습니다.
+
+1. 실제 화폐를 통해 결제되는 Actual Item Purchase Tracking (예: USD $1.99를 결제하여 Gold 100개 아이템을 구입)
+2. 가상 화폐를 통해 결제되는 Virtual Item Purchase Tracking (예: Gold 10개를 이용하여 포션 아이템을 구입)
+
+위 2가지 유형의 데이터를 모두 Tracking 함으로써 앱의 매출뿐만 아니라 인-앱 사용자들의 아이템 구매 추이 분석까지 가능합니다.
+
+아이템 정보 등록을 위한 별도의 작업은 필요하지 않으며, 클라이언트에서 결제된 아이템 정보가 자동으로 대쉬보드에 등록되는 방식입니다. (아이템 리스트 확인은 대쉬보드 'Overview' 메뉴의 Settings - In App Items 페이지를 통해 확인할 수 있습니다.)
+
+아래의 적용 예제를 참고하여 간단히 In-App-Purchase Tracking 기능을 적용합니다.
+
+### Actual Item Tracking
+
+Actual Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다.
+
+적용 예제: 
+```objective-c
+- (void)completeTransaction:(SKPaymentTransaction *)transaction
+{
+  // productInfo is NSMutableDictionary object to store fetched SKProduct object with its productIdentifier as a key.
+  SKProduct *product = [productInfo objectForKey:transaction.payment.productIdentifier];
+
+  NSString *itemId = transaction.payment.productIdentifier;
+  NSString *currencyCode = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
+  NSNumber *price = product.price;
+  NSDate *transactionDate = transaction.transactionDate;
+  NSData *transactionReceiptData = transaction.transactionReceipt;
+
+  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeActualItem
+                                                    itemId:itemId
+                                              currencyCode:currencyCode
+                                                     price:[price doubleValue]
+                                              purchaseDate:transactionDate
+                                    transactionReceiptData:transactionReceiptData];
+
+  [[AdFrescaView shardAdView] logPurchase:purchase];
+  ......
+}
+```
+
+위 예제는 Google Play 결제 라이브러리를 기준으로 작성되었지만 아마존이나 티스토어 등 모든 결제 라이브러리에서도 AFPurchase 객체에 필요한 값을 얻어올 수 있습니다.
+
+Actual Item을 위한 AFPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
+
+Method | Description
+------------ | ------------- | ------------
+itemId(string) | 결제한 아이템의 고유 식별 아이디를 설정합니다. 등록된 앱스토어에 상관 없이 앱내에서 고유한 식별 값을 이용하는 것을 권장합니다. AD fresca 대쉬보드에서 해당 값을 기준으로 아이템 목록이 생성됩니다. 
+currencyCode(string) | ISO 4217 표준 코드를 설정합니다. SKProduct 객체의 값을 이용하거나, 자체 백엔드 서버에서 가격을 내려받아 설정할 수 있습니다. 
+price(double) | 아이템의 가격을 설정합니다. SKProduct 객체의 값을 이용하거나, 자체 백엔드 서버에서 가격을 내려받아 설정할 수 있습니다. 
+purchaseDate(date) | 결제된 시간을 NSDate 객체 형태로 설정합니다. 값이 설정되지 않은 경우 AD fresca 서비스에 기록되는 시간이 결제 시간으로 자동 설정됩니다.
+transactionReceiptData(nsdata| SKPaymentTransaction 객체의 transactionReceipt 값을 지정합니다. 추후 Receipt Verficiation 기능을 위해 필요한 데이터를 설정합니다. 
+
+### Virtual Item Tracking
+
+Virtual Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다.
+
+적용 예제: 
+```objective-c
+- (void)didPurchaseVirtualItem {
+  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeVirtualItem
+                                                    itemId:@"gun_001"
+                                              currencyCode:@"gold"
+                                                     price:100
+                                              purchaseDate:nil
+                                    transactionReceiptData:nil]; 
+
+  [[AdFrescaView shardAdView] logPurchase:purchase];
+}
+```
+
+Virtual Item을 위한 AFPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
+
+Method | Description
+------------ | ------------- | ------------
+itemId(string) | 결제한 아이템의 고유 식별 아이디를 설정합니다. 등록된 앱스토어에 상관 없이 앱내에서 고유한 식별 값을 이용하는 것을 권장합니다. AD fresca 대쉬보드에서 해당 값을 기준으로 아이템 목록이 생성됩니다. 
+currencyCode(string) | 결제에 사용한 가상화폐 고유 코드를 설정합니다. (예: gold)
+price(double) | 가상 화폐로 결제한 가격 정보를 설정합니다. (예: gold 10개의 경우 10 값을 설정)
+purchaseDate(date) | 결제된 시간을 NSDate 객체 형태로 설정합니다. 값이 설정되지 않은 경우 AD fresca 서비스에 기록되는 시간이 결제 시간으로 자동 설정됩니다.
+transactionReceiptData(nsdata| Virtual 아이템의 경우는 값을 지정하지 않습니다.
+
+### IAP Trouble Shooting
+
+logPurchase() 메소드를 통해 기록된 AFPurchase 객체는 AD fresca 서비스에 업데이트되어 실시간으로 대쉬보드에 반영됩니다. 현재까지 등록된 아이템 리스트는 'Overview' 메뉴의 Settings - In App Items 페이지를 통해 확인할 수 있습니다.
+
+만약 아이템 리스트가 새로 갱신되지 않는 경우, AFPurchaseDelegate를 구현하여 혹시 에러가 발생하고 있지 않은지 확인해야 합니다. 
+
+만약 AFPurchase 객체의 값이 제대로 설정되지 않은 경우, didFailToLogWithException 이벤트를 통하여 에러 메시지를 표시하고 있으니 아래와 같이 코드를 적용하여 로그를 확인합니다.
+
+```objective-c
+// AppDelegate.h
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, AFPurchaseDelegate> {
+  ...
+}
+
+// AppDelegate.m
+- (void)didPurchaseVirtualItem {
+  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeVirtualItem
+                                               itemId:@"gun_001"
+                                              currencyCode:@"gold"
+                                                     price:100
+                                              purchaseDate:nil
+                                    transactionReceiptData:nil];
+  [[AdFrescaView shardAdView] logPurchase:purchase, self];
+}
+
+- (void)purchase:(AFPurchase *)purchase didFailToLogWithException:(AdFrescaException *)exception {
+  NSLog(@"AFPurchase didFailToLogWithException :: purchase = %@, exception = %@", [purchase JSONRepresentation], [exception description]);
+}
+```
+
 * * *
 
 ## CPI Identifier
@@ -541,6 +664,8 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 
+- **v1.4.0-beta1 (2014/04/19 Updated) **
+  - 앱 내에서 발생하는 In-App Purchase 데이터를 트랙킹할 수 있는 기능이 추가되었습니다. 자세한 내용은 [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta) 항목을 참고하여 주세요. [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta) 항목을 참고하여 주세요.
 - **v1.3.5 (2014/04/06 Updated)**
   - SDK 설치 과정에서 AdSupport framework 추가가 필수항목에서 제외됩니다. IFA 수집을 하지 않아도 SDK 이용이 가능하도록 수정되었습니다. 보다 자세한 내용은 [Installation](#installation) 항목을 참고하여 주세요.
   - Announcement 캠페인을 통한 Reward Item 지급 기능을 지원합니다. 
