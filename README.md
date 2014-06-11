@@ -12,7 +12,6 @@
   - [Custom Parameter](#custom-parameter)
   - [Marketing Moment](#marketing-moment)
 - [Advanced](#advanced)
-  - [In-App-Purchase Count](#in-app-purchase-count)
   - [AdFrescaViewDelegate](#adfrescaviewdelegate) 
   - [Timeout Interval](#timeout-interval) 
 - [Reference](#reference)
@@ -387,30 +386,6 @@ You will call the method after the moment has happened in the app.
 ```
 
 ## Advanced
-
-### In-App Purchase Count
-
-With In-App Purchase Count feature, you can set user's total number of in-app purchases with actual currency to use dynamic targeting features.  
-
-You will set 'numberOfInAppPurchases' property after your app is launched, and also set the property after user purchased the item. You may get the number value from your server.
-
-```java
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
-{
-  ......
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];  
-  fresca.numberOfInAppPurchases = user.numberOfInAppPurchases; 
-  ......
-}
-
-- (void)userDidPurchase:(int)numberOfInAppPurchases 
-{
-  currentUser.numberOfInAppPurchases = numberOfInAppPurchases;
-
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  fresca.numberOfInAppPurchases = user.numberOfInAppPurchases; 
-}  
-```
 
 ### AdFrescaViewDelegate
 
