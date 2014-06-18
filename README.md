@@ -29,9 +29,7 @@
 
  Download SDK on the following link:
 
-[iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) (v1.3.5)
-
-[iOS SDK with IAP Tracking BETA Download](https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/distribution/sdk-for-iOS-iap-beta.zip) (v1.4.0-beta1)
+[iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) (v1.4.1)
 
 To add SDK into your Xcode project, please follow the instructions below:
 
@@ -163,8 +161,6 @@ After you have your test device ID, you have to register it to [Dashboard](https
 ## IAP & Reward
 
 ### In-App Purchase Tracking (Beta)
-
-_**(In-App-Purchase Tracking feature is only available in v1.4.0-beta)**_
 
 With In-App-Purchase Tracking , you can analyze all the purchases of your users, and use it for targeting specific user segment to display your campaigns. (targeting feature is coming soon)
 
@@ -591,9 +587,13 @@ In other case, if you cannot see any message or get other errors, you can debug 
 
 ## Release Notes
 
-- **1.4.0-beta1 (2014/04/19 Updated)**
+- 1.4.1 (2014/06/18 Updated)
+  - Support 64-bit configuration of Xcode
+  - Include IAP Beta features to 1.4.1
+  - Rename some methods (loadAd -> load, showAd -> show, closeAd -> close)
+- 1.4.0-beta1
   - 'In-App-Purchase Tracking' feature is now added to iOS SDK. Please refer to In-App-Purchase Tracking (Beta) section.
-- 1.3.5 (2014/04/06 Updated)
+- 1.3.5
   - SDK supports 'Reward Item' feature of the announcement campaign.
   - SDK supports 'Incentivized CPA Campaign'. Please refer to 'CPI Identifier' section for detail. 
   - AFRewardItemDelegate is added for easier implementation of reward item. Please refer to 'Reward Item' section for detail 
