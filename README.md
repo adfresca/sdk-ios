@@ -78,13 +78,13 @@ startSession() will start to detect when user starts app and resumes from the ba
 
 ### In-App Messaging
 
-With the in-app messaging feature, you can deliver a message to your in-app users in real time. Simply put 'loadAd' and 'showAd' methods where you want to deliver a message. The type of message can be an interstitial image, text, and iframe webpage. The message is only shown when your user matches the in-app messaging campaign's target logics. We will discuss more details of the in-app messaging's dynamic targeting features in the [Dynamic Targeting](#dynamic-targeting) section.
+With the in-app messaging feature, you can deliver a message to your in-app users in real time. Simply put 'load' and 'show' methods where you want to deliver a message. The type of message can be an interstitial image, text, and iframe webpage. The message is only shown when your user matches the in-app messaging campaign's target logics. We will discuss more details of the in-app messaging's dynamic targeting features in the [Dynamic Targeting](#dynamic-targeting) section.
 
 ```objective-c
 - (void)applicationDidBecomeActive:(UIApplication *)application {
   AdFrescaView *fresca = [AdFrescaView sharedAdView]; 
-  [fresca loadAd]; 
-  [fresca showAd]; 
+  [fresca load]; 
+  [fresca show]; 
 } 
 ```
 
@@ -138,8 +138,8 @@ To register your test device to our dashboard, you need to know your test device
   ```objective-c
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
   NSLog(@"AD fresca Test Device ID = %@", fresca.testDeviceId); 
-  [fresca loadAd];
-  [fresca showAd];
+  [fresca load];
+  [fresca show];
 ```
 
 2. Displaying test device ID on your app screen using printTestDeviceId property
@@ -150,8 +150,8 @@ To register your test device to our dashboard, you need to know your test device
   ```objective-c
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
   fresca.printTestDeviceId = YES;
-  [fresca loadAd];
-  [fresca showAd];
+  [fresca load];
+  [fresca show];
   ```
 
 After you have your test device ID, you have to register it to [Dashboard](https://admin.adfresca.com). You can register your device in the 'Test Device' menu.
@@ -362,22 +362,22 @@ In some cases, you may not able to set some custom parameters in didFinishLaunch
 
 Marketing Moment means the moment you want to engage with your users. For example, you may need to deliver the message when the user completes a quest or enters an item store. You will be able to use it with the [custom parameters](#custom-parameter) so you can deliver the personalized and targeted message in specific moment in real time.
 
-To implement codes, simply call loadAd method with passing marketing moment's index. You can get the marketing moment's index in our [Dashboard](https://admin.adfresca.com): 1) Select a App 2) In 'Overview' menu, click 'Settings - Marketing Moment' button. 
+To implement codes, simply call load method with passing marketing moment's index. You can get the marketing moment's index in our [Dashboard](https://admin.adfresca.com): 1) Select a App 2) In 'Overview' menu, click 'Settings - Marketing Moment' button. 
 
 You will call the method after the moment has happened in the app.
 
 ```objective-c
 - (void)userDidEnterItemStore {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca loadAd:EVENT_INDEX_STORE_PAGE];    
-  [fresca showAd];
+  [fresca load:EVENT_INDEX_STORE_PAGE];    
+  [fresca show];
 } 
 
 - (void)levelDidChange:(int)level {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL]; 
-  [fresca loadAd:EVENT_INDEX_LEVEL_UP]; 
-  [fresca showAd];
+  [fresca load:EVENT_INDEX_LEVEL_UP]; 
+  [fresca show];
 }  
 ```
 
@@ -397,8 +397,8 @@ With implementing AdFrescaViewDelegate in your code, you can check all the event
 - (void)viewDidLoad {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
   fresca.delegate = self;
-  [fresca loadAd];
-  [fresca showAd];
+  [fresca load];
+  [fresca show];
 }
 
 #pragma mark – AdFrescaViewDelegate
@@ -412,7 +412,7 @@ With implementing AdFrescaViewDelegate in your code, you can check all the event
 // This event occurs when content was not received properly with error information.
 - (void)adView:(AdFrescaView *)view didFailToReceiveAdWithException:(AdException *)error {}
 
-// This event occurs when the user closes view. it's also called when content is not loaded with an error after calling showAd(). So this is endpoint of our process
+// This event occurs when the user closes view. it's also called when content is not loaded with an error after calling show(). So this is endpoint of our process
 - (void)adViewClosed:(AdFrescaView *)adView {}
 ```
 
@@ -454,7 +454,7 @@ To fix this issue, follow the steps below:
 - (void)applicationWillEnterForeground:(UIApplication *)application {
   AdFrescaView *fresca = [AdFrescaView shardAdView];
   if (!fresca.hidden && fresca.userClicked) {
-    [fresca closeAd];
+    [fresca close];
   }
 }
 ```
@@ -468,8 +468,8 @@ Default is 5 seconds and you can set from 1 seconds to 5 seconds.
 ```objective-c
 AdFrescaView *fresca = [AdFrescaView sharedAdView];  
 fresca.timeoutInterval = 3 // # secs  
-[fresca loadAd];
-[fresca showAd];
+[fresca load];
+[fresca show];
 ```
 
 * * *
@@ -531,8 +531,8 @@ To integrate SDK with this feature, you should set URL Schema value for the adve
   ```objective-c
   - (void)didTutorialComplete {
     AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-    [fresca loadAd:EVENT_INDEX_TUTORIAL_COMPLETE];  
-    [fresca showAd];
+    [fresca load:EVENT_INDEX_TUTORIAL_COMPLETE];  
+    [fresca show];
   }  
   ```
 
@@ -587,10 +587,10 @@ In other case, if you cannot see any message or get other errors, you can debug 
 
 ## Release Notes
 
-- 1.4.1 (2014/06/18 Updated)
-  - Support 64-bit configuration of Xcode
-  - Include IAP Beta features to 1.4.1
-  - Rename some methods (loadAd -> load, showAd -> show, closeAd -> close)
+- **1.4.1 (2014/06/19 Updated)**
+  - Support 64-bit architecture configuration of Xcode.
+  - Include IAP Beta features to 1.4.1.
+  - Rename some methods (loadAd -> load, showAd -> show, closeAd -> close). Old method will work fine as we guarantee the backward compatibility. 
 - 1.4.0-beta1
   - 'In-App-Purchase Tracking' feature is now added to iOS SDK. Please refer to In-App-Purchase Tracking (Beta) section.
 - 1.3.5
@@ -617,7 +617,7 @@ isInAppPurchasedUser property is deprecated. Please use numberOfInAppPurchases i
 - v.1.2.0
   - Event feature is available. (See 'Event Setting' for detail)
   - AD Slot feature is deprecated and replaced into Event. Default slot will be set to '1' event index and AD Only Slot will be set to '2' event index.
-  - When loadAd() is called again while previous request is not completed, the old request will be canceled and the latest one will show the contents. (In previous versions, you could not call loadAd() while requesting)
+  - When load() is called again while previous request is not completed, the old request will be canceled and the latest one will show the contents. (In previous versions, you could not call load() while requesting)
   - If contents have app store link, SDK will show app store page inside of app. So user wil no longer leave to your app. (Please add StoreKit.framework for this feature)
   - When user clicked image contents, view will be automatically closed as a default.
   - Auto Close Timer feature is available. You can set on Dashboard.
@@ -634,7 +634,7 @@ isInAppPurchasedUser property is deprecated. Please use numberOfInAppPurchases i
   - testDeviceId, printTestDeviceId properties are added to support a test mode (Please, see 'Checking Test Device ID)
 - v0.9.7
   - AD Slot feature added as an announcement feature added (See 'AD Slot Setting')
-  - adViewClosed bug fixed. adViewClosed event must be called after showAd() requested.
+  - adViewClosed bug fixed. adViewClosed event must be called after show() requested.
   - The AD Caching feature is optimized for better performance.
   - Typos in some methods are fixed.
 - v0.9.6 

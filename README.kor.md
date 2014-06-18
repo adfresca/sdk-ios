@@ -35,9 +35,7 @@ AD fresca는 게임 운영자나 마케터가 앱 내 사용자 특성을 실시
 
 아래 링크를 통해 SDK 파일을 다운로드 합니다.
 
-[iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) (v1.3.5)
-
-[iOS SDK with IAP Tracking BETA Download](https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/distribution/sdk-for-iOS-iap-beta.zip) (v1.4.0-beta1)
+[iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) (v1.4.1)
 
 SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
@@ -86,8 +84,8 @@ AD fresca SDK 통해 사용자에게 메시지를 전달하기 위한 주요 코
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
   AdFrescaView *fresca = [AdFrescaView sharedAdView]; 
-  [fresca loadAd]; 
-  [fresca showAd]; 
+  [fresca load]; 
+  [fresca show]; 
 } 
 
 // Push Notification 기능을 사용하기 위해 아래 코드를 삽입합니다. 자세한 내용은 '[Push Notification](#push-notification)' 항목을 참고해 주세요.
@@ -105,9 +103,9 @@ AD fresca SDK 통해 사용자에게 메시지를 전달하기 위한 주요 코
 
 `[AdFrescaView startSession:@"YOUR_API_KEY"];` API Key 를 설정하며 앱의 시작을 알립니다. API Key는 [Dashboard](https://admin.adfresca.com) 사이트에서 앱 추가 후 Overview 메뉴의 Settings - API Keys 버튼을 클릭하여 확인이 가능합니다. 이 메소드는 반드시 didFinishLaunchingWithOptions 이벤트에서 실행합니다.
 
-`[fresca loadAd];` 서버로부터 매칭되는 캠페인의 콘텐츠를 내려받습니다. 
+`[fresca load];` 서버로부터 매칭되는 캠페인의 콘텐츠를 내려받습니다. 
 
-`[fresca showAd];` 내려받은 콘텐츠를 화면에 표시합니다.
+`[fresca show];` 내려받은 콘텐츠를 화면에 표시합니다.
 
 앱이 실행 되면 다음과 같은 화면이 보여집니다. 정상적으로 콘텐츠 뷰가 화면에 표시되고, 터치 시 앱스토어 페이지로 이동하는지 확인합니다.
 
@@ -135,8 +133,8 @@ AD fresca는 테스트 모드 기능을 지원하여 테스트를 원하는 디�
 AdFrescaView *fresca = [AdFrescaView sharedAdView];
 NSLog(@"AD fresca Test Device ID = %@", fresca.testDeviceId);  // 로그로 기기 ID를 출력. 
 fresca.printTestDeviceId = YES; // 콘텐츠 뷰에 테스트 기기 ID가 함께 표시되도록 설정
-[fresca loadAd];
-[fresca showAd];
+[fresca load];
+[fresca show];
 ```
 
 아이디 값을 확인한 후 [Dashboard](https://admin.adfresca.com) 사이트에서 테스트 기기를 등록하고, 테스트 모드 기능을 이용하기 위해서는 [테스트 기기 및 테스트 모드 관리하기](https://adfresca.zendesk.com/entries/21921047) 가이드 내용에 따라 작업을 진행합니다.
@@ -207,22 +205,22 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 
 SDK 적용을 위해서는 Dashboard에서 지정된 각 마케팅 이벤트의 '인덱스' 값이 필요합니다. 인덱스 값은 1,2,3,4 와 같은 Integer 형태의 고유 값이며 소스코드에 Constant 형태로 지정하여 이용하는 것을 권장합니다.
 
-각 이벤트 발생 시, loadAd() 메소드에 원하는 이벤트 인덱스 값을 인자로 넘겨주시면 간단히 적용이 완료됩니다.
+각 이벤트 발생 시, load() 메소드에 원하는 이벤트 인덱스 값을 인자로 넘겨주시면 간단히 적용이 완료됩니다.
 
-(loadAd() 메소드에 인덱스를 설정하지 않은 경우, 인덱스 값은 '1' 값이 자동으로 지정됩니다.)
+(load() 메소드에 인덱스를 설정하지 않은 경우, 인덱스 값은 '1' 값이 자동으로 지정됩니다.)
 
 ```objective-c
 - (void)viewDidLoad {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca loadAd:EVENT_INDEX_MAIN_PAGE]; // 메인 페이지에 설정한 캠페인 노출       
-  [fresca showAd];
+  [fresca load:EVENT_INDEX_MAIN_PAGE]; // 메인 페이지에 설정한 캠페인 노출       
+  [fresca show];
 } 
 
 - (void)levelDidChange:(int)level {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL];  // 사용자 level 정보를 가장 최신으로 업데이트 
-  [fresca loadAd:EVENT_INDEX_LEVEL_UP]; // 레벨업 이벤트에 설정한 캠페인 노출  
-  [fresca showAd];
+  [fresca load:EVENT_INDEX_LEVEL_UP]; // 레벨업 이벤트에 설정한 캠페인 노출  
+  [fresca show];
 }  
 ```
 
@@ -472,8 +470,8 @@ SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media 
   ```objective-c
   // 튜토리얼 완료 이벤트를 보상 조건으로 지정한 경우
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca loadAd:EVENT_INDEX_TUTORIAL];     
-  [fresca showAd];
+  [fresca load:EVENT_INDEX_TUTORIAL];     
+  [fresca show];
   ```
 
 #### Media App SDK 적용하기:
@@ -547,8 +545,8 @@ AdFrescaViewDelegate 를 직접 구현함으로써, 콘텐츠 뷰에서 발생�
 - (void)viewDidLoad {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
   fresca.delegate = self;
-  [fresca loadAd];
-  [fresca showAd];
+  [fresca load];
+  [fresca show];
 }
 
 #pragma mark – AdFrescaViewDelegate
@@ -609,15 +607,15 @@ AdFrescaViewDelegate 를 직접 구현함으로써, 콘텐츠 뷰에서 발생�
 
 ### Timeout Interval
 
-loadAd() 메소드의 최대 로딩 시간을 직접 지정하실 수 있습니다. 지정된 시간 내에 데이터가 로딩되지 못한 경우, 사용자에게 콘텐츠를 노출하지 않습니다.
+load() 메소드의 최대 로딩 시간을 직접 지정하실 수 있습니다. 지정된 시간 내에 데이터가 로딩되지 못한 경우, 사용자에게 콘텐츠를 노출하지 않습니다.
 
 최소 1초 이상 지정이 가능하며, 지정하지 않을 시 기본 값으로 5초가 지정 됩니다.
 
 ```objective-c
 AdFrescaView *fresca = [AdFrescaView sharedAdView];  
 fresca.timeoutInterval = 3 // # secs  
-[fresca loadAd];
-[fresca showAd];
+[fresca load];
+[fresca show];
 ```
 
 ### IFV Only Option
@@ -664,9 +662,13 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 
-- **v1.4.0-beta1 (2014/04/19 Updated)**
+- **1.4.1 (2014/06/19 Updated)**
+  - Xcode의 64-bit 아키텍쳐 설정을 지원합니다.
+  - 1.4.0-beta에서 지원하는 [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta) 기능을 통합하여 제공합니다.
+  - 몇몇 메소드의 이름이 변경되었습니다. (load -> load, show -> show, closeAd -> close) 기존에 제공하던 메소드도 호환성을 위하여 정상적으로 지원합니다.
+- 1.4.0-beta1
   - 앱 내에서 발생하는 In-App Purchase 데이터를 트랙킹할 수 있는 기능이 추가되었습니다. 자세한 내용은 [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta) 항목을 참고하여 주세요. [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta) 항목을 참고하여 주세요.
-- **v1.3.5 (2014/04/06 Updated)**
+- v1.3.5
   - SDK 설치 과정에서 AdSupport framework 추가가 필수항목에서 제외됩니다. IFA 수집을 하지 않아도 SDK 이용이 가능하도록 수정되었습니다. 보다 자세한 내용은 [Installation](#installation) 항목을 참고하여 주세요.
   - Announcement 캠페인을 통한 Reward Item 지급 기능을 지원합니다. 
   - Incentivized CPA 캠페인 기능을 지원합니다. 자세한 내용은 [CPI Identifier](#cpi-identifier) 항목을 참고하여 주세요.
@@ -689,9 +691,9 @@ customParameterWithIndex 호출 시 설정된 값이 없는 경우 nil 값을 �
   - numberOfInAppPurchases 설정 값이 추가 되었습니다. In-App Purchase를 구매한 횟수를 관리 할 수 있습니다. (적용 방법은 5. In-App Purchased Count 관리 항목 참고하여 주세요.)
   - isInAppPurchasedUser property가 Deprecated 되었습니다. 새로 추가된 numberOfInAppPurchases property를 사용하여 주세요.
 - v1.2.0
-  - Event 기능을 지원합니다. loadAd() 메소드에 Event Index 값을 설정할 수 있습니다. 자세한 내용은 '7. Event 지정하기'를 참고해주세요.
+  - Event 기능을 지원합니다. load() 메소드에 Event Index 값을 설정할 수 있습니다. 자세한 내용은 '7. Event 지정하기'를 참고해주세요.
   - AD Slot 기능이 Deprecated 되었습니다. 기존의 Default Slot은 '1'번 이벤트 인덱스,  AD Only Slot은 '2'번 이벤트 인덱스로 적용됩니다.
-  - 콘텐츠 데이터를 요청하는 중에 새로 loadAd()가 호출된 경우, 가장 최근에 요청된 콘텐츠 화면에 표시됩니다. (기존에는 콘텐츠 데이터를 요청 중에 새 요청을 할 수 없었습니다.)
+  - 콘텐츠 데이터를 요청하는 중에 새로 load()가 호출된 경우, 가장 최근에 요청된 콘텐츠 화면에 표시됩니다. (기존에는 콘텐츠 데이터를 요청 중에 새 요청을 할 수 없었습니다.)
   - 앱스토어로 연결되는 콘텐츠 경우, 앱스토어 페이지를 앱 안에서 표시합니다. 더이상 앱 밖으로 나가지 않습니다. (해당 기능을 위해서 반드시 StoreKit. framework를 추가하여 주세요.)
   - 콘텐츠 이미지 클릭 시 콘텐츠 뷰가 닫히도록 변경되었습니다.
   - 콘텐츠를 일정 시간 후 자동으로 닫을수 있는 Auto Close Timer 기능이 추가 되었습니다. Dashboard 에서 설정할 수 있습니다.
@@ -708,7 +710,7 @@ customParameterWithIndex 호출 시 설정된 값이 없는 경우 nil 값을 �
   - 테스트 모드 기능 지원을 위한 테스트 기기 ID 확인 기능을 지원 합니다. (자세한 내용은 '테스트 기기 ID 확인하기'를 참고해 주세요)
 - v0.9.7
   - 공지사항 기능이 추가 되면서 AD Slot 관리 기능이 추가 되었습니다. (자세한 내용은 'AD Slot 관리하기' 를 참고해 주세요)
-  - loadAd() 메서드에서 에러가 발생 시, frescaClosed 이벤트가 강제로 발생하던 문제를 해결 하였습니다. frescaClosed 이벤트는 항상 showAd 메서드가 호출된 이후에 발생 됩니다.
+  - load() 메서드에서 에러가 발생 시, frescaClosed 이벤트가 강제로 발생하던 문제를 해결 하였습니다. frescaClosed 이벤트는 항상 show 메서드가 호출된 이후에 발생 됩니다.
   - 캐시 기능 및 퍼포먼스가 향상 되었습니다.
   - 몇몇 메서드 이름의 오타를 수정하였습니다. (sharedAdView, frescaClosed) SDK의 호환성 유지를 위하여 잘못된 이름의 메서드는 삭제되지 않았으며 추후 Depreciated 설정 될 예정 입니다.
 - v0.9.6 
