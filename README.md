@@ -33,11 +33,11 @@
 
 To add SDK into your Xcode project, please follow the instructions below:
 
-1. Drag & Drop AdFresca folder into the framework folder on your Xcode project.
+1) Drag & Drop AdFresca folder into the framework folder on your Xcode project.
 
   <img src="https://adfresca.zendesk.com/attachments/token/4uzya7c9rw4twus/?name=Screen+Shot+2013-03-27+at+8.22.04+PM.png" width="600" />
 
-2. Add System Configuration.framework and AdSupport.framework, StoreKit.framework into your target if these frameworks are not added yet.
+2) Add System Configuration.framework and AdSupport.framework, StoreKit.framework into your target if these frameworks are not added yet.
   
   <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
   
@@ -46,15 +46,17 @@ To add SDK into your Xcode project, please follow the instructions below:
 
   If you'd like to add AdSupport.framework or remove the framework from existing xcode project with our SDK, please refer to the [IFV Only Option](#ifv-only-option) section to migrate your users.
 
-3. Add -ObjC to Other Linker Flag on your target's build setting.
+3) Add -ObjC to Other Linker Flag on your target's build setting.
 
   <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
 
-4. In Info.plst, set 'aps-environment' value as 'production'. It is necessary to use a push notification feature.
+4) In Info.plst, set 'aps-environment' value as 'production'. It is necessary to use a push notification feature.
 
   <img src="https://adfresca.zendesk.com/attachments/token/bd7oz41zoh5zjs4/?name=Screen+Shot+2013-02-07+at+5.22.50+PM.png" width="600" />
 
-  Also, set your own URL Scheme value. the example below shows how to set URL Scheme with "myapp" value. It will be used in the cross promotion feature.
+  Also, if your orientation of the app is landscape only, set 'Initial interface orientation' to 'Landscape (right home button)'
+
+  Finally, set your own URL Scheme value. the example below shows how to set URL Scheme with "myapp" value. It will be used in the cross promotion feature.
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
@@ -99,7 +101,7 @@ When you first call in-app messaging methods, you will see the test message belo
 You can also deliver your push messages anytime you want. Follow the steps below to configure the push notification settings in your app.
 
 1. Upload your APNS Certificate file (.p12) to our Dashboard
-  - You can export your .cer file to .p12 file using Keychain. Please refer [iOS Push Notification Certificate Guide](https://adfresca.zendesk.com/entries/21714780) to generate .p12 and upload to [Dashboard](https://admin.adfresca.com)
+  - You can export your .cer file to .p12 file using Keychain. Please refer to [iOS Push Notification Certificate Guide](https://adfresca.zendesk.com/entries/21714780) to generate .p12 and upload to [Dashboard](https://admin.adfresca.com)
 
 2. Check your provisioning
   - AD fresca only supports APNS production environment. So, you should build your app with App Store or Ad Hoc Provisioning file to enable production mode
@@ -110,7 +112,7 @@ You can also deliver your push messages anytime you want. Follow the steps below
 
   - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ....
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound];   // Push Notification 기능을 이용할 경우 등록.      
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound];  
   } 
 
   - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -130,7 +132,7 @@ You can also deliver your push messages anytime you want. Follow the steps below
 
 AD fresca supports a test mode feature. With the test mode feature, you can deliver your test message to only registred test devices. 
 
-To register your test device to our dashboard, you need to know your test device ID from our SDK. SDK provodies two ways to show test device ID.
+To register your test device to our dashboard, you need to know your test device ID from our SDK. SDK provides two ways to show test device ID.
  
 1. Using testDeviceId Property
   - After connecting your device with Xcode, you can simply print out test device ID with a logger.
@@ -505,7 +507,7 @@ In this example, ItemViewController will be displayed when you set the campaign 
 
 ### Cross Promotion Configuration
 
-IUsing Incentivized CPI & CPA Campaign, your users in 'Media App' can get an incentive item when they install 'Adverting App' from the campaigns.
+Using Incentivized CPI & CPA Campaign, your users in 'Media App' can get an incentive item when they install 'Adverting App' from the campaigns.
 
 - Medial App: the media app which displays the promotion image and gives an incentive item to users
 - AdvertisingApp: the promotion app which is displayed with an image in the media app's screen.
@@ -526,7 +528,7 @@ To integrate SDK with this feature, you should set URL Schema value for the adve
 
   For Incentivized CPI Campaign, SDK Installation of the advertising app is not required. You can only set URL Schema to use app's install.
 
-  However, If you use Incentivized CPA Campaign, SDK installation is required and you should also implement 'Marketing Event' feature to check a reward condition. For example, when you set the reward condition to check 'Tutorial Complete' event, you should call the marketing event method to inform your user achieved the goal.
+  However, If you use Incentivized CPA Campaign, SDK installation is required and you should also implement 'Marketing Moment' feature to check a reward condition. For example, when you set the reward condition to check 'Tutorial Complete' event, you should call the marketing event method to inform your user achieved the goal.
     
   ```objective-c
   - (void)didTutorialComplete {

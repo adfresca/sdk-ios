@@ -1,35 +1,29 @@
 ## Contents
-- [Introduction](#introduction)
-- [Quick Start](#quick-start)
+- [Basic Integration](#basic-integration)
     - [Installation](#installation)
-    - [Code](#code)
-- [Test Device ID](#test-device-id) 
-- [Custom Parameter](#custom-parameter)
-- [Marketing Event](#marketing-event)
-- [In-App-Purchase Count](#in-app-purchase-count) 
-- [Push Notification](#push-notification)
-- [Custom URL](#custom-url)
-- [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta)
-- [CPI Identifier](#cpi-identifier)
-- [Reward Item](#reward-item)
-- [Advanced Features](#advanced-features)
-    - [AdFrescaViewDelegate](#adfrescaviewdelegate) 
-    - [Timeout Interval](#timeout-interval) 
-    - [IFV Only Option](#ifv-only-option)
-- [Trouble Shooting](#trouble-shooting)
+    - [Start Session](#start-session)
+    - [In-App Messaging](#in-app-messaging)
+    - [Push Messaging](#push-messaging)
+    - [Test Device Registration](#test-device-registration)
+- [IAP & Reward](#iap--reward)
+  - [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta)
+  - [Give Reward](#give-reward)
+- [Dynamic Targeting](#dynamic-targeting)
+  - [Custom Parameter](#custom-parameter)
+  - [Marketing Moment](#marketing-moment)
+- [Advanced](#advanced)
+  - [AdFrescaViewDelegate](#adfrescaviewdelegate) 
+  - [Timeout Interval](#timeout-interval) 
+- [Reference](#reference)
+  - [Custom URL Schema](#custom-url-schema)
+  - [Cross Promotion Configuration](#cross-promotion-configuration)
+  - [IFV Only Option](#ifv-only-option)
+- [Troubleshooting](#troubleshooting)
 - [Release Notes](#release-notes)
 
 * * *
 
-## Introduction
-
-AD fresca는 게임 운영자나 마케터가 앱 내 사용자 특성을 실시간으로 파악하여  더 자주, 더 오래 플레이하고, 더 많이 결제하도록 유도하는 라이브 서비스 운영 툴을 제공합니다
-
-게임 운영자나 마케터는 [Dashboard](https://admin.adfresca.com) 사이트를 통해 실시간으로 타겟팅한 사용자에게 메시지를 전달할 수 있으며, 이를 실제 앱에 적용하기 위하여 게임 개발팀에서는 아래 제공되는 SDK를 손쉽게 설치하고 가이드에 따라 코드를 적용합니다.
-
-* * *
-
-## Quick Start
+## Basic Integration
 
 ### Installation
 
@@ -39,11 +33,11 @@ AD fresca는 게임 운영자나 마케터가 앱 내 사용자 특성을 실시
 
 SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
-1. 제공되는 AdFresca 폴더를 Xcode 프로젝트에 Drag & Drop 하여 추가합니다.
+1) 제공되는 AdFresca 폴더를 Xcode 프로젝트에 Drag & Drop 하여 추가합니다.
 
   <img src="https://adfresca.zendesk.com/attachments/token/4uzya7c9rw4twus/?name=Screen+Shot+2013-03-27+at+8.22.04+PM.png" width="600" />
 
-2. System Configuration.framework, StoreKit.framework, AdSupport.framework(선택)를 Xcode 프로젝트에 추가합니다.
+2) System Configuration.framework, StoreKit.framework, AdSupport.framework(선택)를 Xcode 프로젝트에 추가합니다.
   
   <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
   
@@ -52,281 +46,131 @@ SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
   만약, 앱 업데이트 과정에서 AdSupport.framework를 제외하거나 새로 추가하는 경우 [IFV Only Option](#ifv-only-option) 항목의 내용을 참고하여 주시기 바랍니다.
 
-3. Build Setting의 Other Linker Flags 값을 –ObjC로 설정 혹은 추가합니다. 
+3) Build Setting의 Other Linker Flags 값을 –ObjC로 설정 혹은 추가합니다. 
 
   <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
 
-4. Info.plst 파일의 'aps-environment' 값을 'production' 으로 설정합니다. (Push Notification 적용 시 반드시 확인해주시기 바랍니다.)
+4) Info.plst 파일의 'aps-environment' 값을 'production' 으로 설정합니다. (Push Notification 적용 시 반드시 확인해주시기 바랍니다.)
 
   <img src="https://adfresca.zendesk.com/attachments/token/bd7oz41zoh5zjs4/?name=Screen+Shot+2013-02-07+at+5.22.50+PM.png" width="600" />
 
   만약 앱이 가로 방향만을 지원한다면 'Initial interface orientation' 값을 'Landscape (right home button)' 으로 설정합니다.
 
-아무런 에러 없이 빌드가 성공헀다면 모든 설치가 정상적으로 완료된 것입니다. 만약 Duplicate Symbol 등의 Linking Error 가 발생하였다면 아래의 '[Trouble Shooting](#trouble-shooting)' 항목을 확인해주시기 바랍니다
+  마지막으로, URL Scheme 값을 지정합니다. 아래의 예제는 'myapp' 이라는 스키마 값을 지정한 예제입니다. 해당 값은 크로스 프로모션 기능을 이용하기 위하여 사용됩니다.
 
-### Code
+  <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
-AD fresca SDK 통해 사용자에게 메시지를 전달하기 위한 주요 코드를 적용합니다. 아래의 코드만으로도 게임 운영자 / 마케터가 지정한 캠페인의 콘텐츠를 화면에 표시하고, 푸시 메시지를 전송할 수 있습니다.
+아무런 에러 없이 빌드가 성공헀다면 모든 설치가 정상적으로 완료된 것입니다. 만약 Duplicate Symbol 등의 Linking Error 가 발생하였다면 아래의 '[Troubleshooting](#troubleshooting)' 항목을 확인해주시기 바랍니다
+
+### Start Session
+
+이제 SDK 적용을 시작하기 위해 몇 가지 간단한 코드를 적용합니다. 첫 번째로 API Key를 설정하고 앱의 실행을 기록하는 startSession() 메소드를 적용합니다. API Key는 [Dashboard](https://admin.adfresca.com) 사이트에서 등록한 앱을 선택한 후 Overview 메뉴의 Settings - API Keys 버튼을 클릭하여 확인이 가능합니다.
+
+startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백그라운드에서 재실행될 때 자동으로 앱의 실행을 기록합니다.
 
 ```objective-c
 // AppDelegate.m
 #import <AdFresca/AdFrescaView.h>
- 
-// 앱이 최초로 실행되는 이벤트에서 API KEY 설정을 합니다.
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   [AdFrescaView startSession:@"YOUR_API_KEY"];
-
-  [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound];   // Push Notification 기능을 등록     
+  ....
 } 
+```
 
-// 아래와 같이 코드를 적용하여 매칭되는 캠페인의 콘텐츠를 내려받고 표시합니다.
+### In-App Messaging
 
+인-앱 메시징 기능을 이용하여, 사용자에게 원하는 메시지를 실시간으로 전달할 수 있습니다. 메시지를 전달하고자 하는 시점에 load(), show() 메소드만을 호출하여 적용이 가능합니다. 메시지는 전면 interstitial 이미지, 텍스트, 혹은 iframe 웹페이지 형태로 화면에 표시될 수 있습니다. 메시지는 현재 플레이 중인 사용자가 인-앱 메시징 캠페인의 조건과 매칭된 경우에만 화면에 표시됩니다. 조건에 만족하는 캠페인이 없다면 사용자는 아무런 화면을 보지 않고 자연스럽게 플레이를 이어갑니다. 매칭과 관련한 인-앱 메시징의 다이나믹 타겟팅 기능은 아래의 [Dynamic Targeting](#dynamic-targeting) 항목에서 보다 자세히 설명하고 있습니다.
+
+```objective-c
 - (void)applicationDidBecomeActive:(UIApplication *)application {
   AdFrescaView *fresca = [AdFrescaView sharedAdView]; 
   [fresca load]; 
   [fresca show]; 
 } 
-
-// Push Notification 기능을 사용하기 위해 아래 코드를 삽입합니다. 자세한 내용은 '[Push Notification](#push-notification)' 항목을 참고해 주세요.
-
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-  [AdFrescaView registerDeviceToken:deviceToken];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-  if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
-    [AdFrescaView handlePushNotification:userInfo];
-  }
-}
 ```
 
-`[AdFrescaView startSession:@"YOUR_API_KEY"];` API Key 를 설정하며 앱의 시작을 알립니다. API Key는 [Dashboard](https://admin.adfresca.com) 사이트에서 앱 추가 후 Overview 메뉴의 Settings - API Keys 버튼을 클릭하여 확인이 가능합니다. 이 메소드는 반드시 didFinishLaunchingWithOptions 이벤트에서 실행합니다.
-
-`[fresca load];` 서버로부터 매칭되는 캠페인의 콘텐츠를 내려받습니다. 
-
-`[fresca show];` 내려받은 콘텐츠를 화면에 표시합니다.
-
-앱이 실행 되면 다음과 같은 화면이 보여집니다. 정상적으로 콘텐츠 뷰가 화면에 표시되고, 터치 시 앱스토어 페이지로 이동하는지 확인합니다.
+첫 번째로 인-앱 메시징 코드를 적용한 경우, 아래와 같이 테스트 이미지 메시지가 표시됩니다. 해당 이미지를 터치하면 앱스토어 페이지로 이동합니다. 현재 보고 있는 테스트 메시지는 이후 테스트 모드 설정을 변경하여 더이상 보이지 않도록 설정하게 됩니다.
 
 <img src="https://adfresca.zendesk.com/attachments/token/ans53bfy6mwq2e9/?name=4444.png" width="240" />
 &nbsp;
 <img src="https://adfresca.zendesk.com/attachments/token/ec7byt0qtj00qpb/?name=5555.png" height="240" />
 
-* * *
+### Push Messaging
 
-## Test Device ID
+푸시 메시징 기능을 이용하여 사용자가 앱을 실행하지 않을 때에도 언제든 메시지를 전달할 수 있습니다. 아래의 과정을 통하여 푸시 메시징 기능을 적용합니다.
 
-AD fresca는 테스트 모드 기능을 지원하여 테스트를 원하는 디바이스에만 지정한 캠페인의 콘텐츠를 화면에 표시하고 푸시 메시지를 전송할 수 있습니다. 이로 인해 SDK가 적용된 앱이 이미 앱스토어에 출시된 경우, 게임 운영팀 혹은 개발팀에게만 새로운 메시지를 전달할 수 있도록 지원합니다.
+1) APNS 인증서 파일(.p12)을 Dashboard에 등록하기
+  - Keychain 툴을 이용하여 .cer 인증서 파일을 .p12로 변환하고 [Dashboard](https://admin.adfresca.com) 사이트에 등록합니다.
+  - 보다 자세한 설명은 [iOS Push Notification 인증서 설정 및 적용하기](https://adfresca.zendesk.com/entries/21714780) 가이드를 통하여 확인이 가능합니다.
 
-테스트 기기 등록을 위한 아이디 값은 SDK를 통해 추출이 가능하며 2가지 방법을 지원 합니다.
+2) Info.plast 확인하기 / Provision 확인하기
+- AD fresca는 APNS의 Production 환경만을 지원합니다. 때문에 빌드가 production으로 빌드되어야 정상적인 서비스 이용이 가능합니다.
+- Info.plst 파일의 'aps-environment' 값을 'production' 으로 설정되어 있어야 합니다.
+- App Store / Ad Hoc release에 사용하는 Provision 인증서를 사용하여 빌드되어야 합니다.
+
+3) AppDelegate 코드 적용하기 
+
+  ```objective-c
+  #import <AdFresca/AdFrescaView.h>
+
+  - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    ....
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound];  
+  } 
+
+  - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    // Register user's push device token to our SDK
+    [AdFrescaView registerDeviceToken:deviceToken];
+  }
+
+  - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    /// Check a push notification is form AD fresca. Also, ignore a notification received when app is already running 
+    if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
+      [AdFrescaView handlePushNotification:userInfo];
+    }  
+  } 
+  ```
+
+### Test Device Registration
+
+_**(현재 In-App-Purchase Tracking 기능은 SDK 2.4.0-beta 버전에서만 지원됩니다.)**_
+
+_In-App-Purchase Tracking_  기능을 통하여 현재 앱에서 발생하고 있는 모든 인-앱 결제를 분석하고 캠페인 타겟팅에 이용할 수 있습니다.
+
+AD fresca의 In-App-Purchase Tracking은 2가지 유형이 있습니다.
  
 1. testDeviceId Property를 사용하여 로그로 출력하는 방법
   - 테스트에 사용할 기기를 개발PC에 연결한 후 로그를 통해 해당 아이디 값을 출력하여 확인 합니다. 
+
+  ```objective-c
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];
+  NSLog(@"AD fresca Test Device ID = %@", fresca.testDeviceId); 
+  [fresca load];
+  [fresca show];
+```
 
 2. printTestDeviceId Property를 설정하여 뷰에 기기 아이디를 화면에 표시하는 방법
   - 개발자가 기기를 직접 연결할 수 없는 경우, 설정을 활성화 한 상태로 앱 빌드를 전덜하여 설치합니다. 화면에 표시된 기기 아이디를 직접 기록하여 등록할 수 있습니다.
   - 담당 마케터가 원격에서 근무하는 경우 해당 기능을 유용하게 사용할 수 있습니다.
   - 설정이 활성화된 상태로 앱이 배포되지 않도록 주의해야 합니다.
 
-```objective-c
-AdFrescaView *fresca = [AdFrescaView sharedAdView];
-NSLog(@"AD fresca Test Device ID = %@", fresca.testDeviceId);  // 로그로 기기 ID를 출력. 
-fresca.printTestDeviceId = YES; // 콘텐츠 뷰에 테스트 기기 ID가 함께 표시되도록 설정
-[fresca load];
-[fresca show];
-```
-
-아이디 값을 확인한 후 [Dashboard](https://admin.adfresca.com) 사이트에서 테스트 기기를 등록하고, 테스트 모드 기능을 이용하기 위해서는 [테스트 기기 및 테스트 모드 관리하기](https://adfresca.zendesk.com/entries/21921047) 가이드 내용에 따라 작업을 진행합니다.
-
-* * *
-
-## Custom Parameter
-
-커스텀 파라미터는 캠페인 진행 시, 타겟팅을 위해 사용할 사용자의 상태 값을 의미합니다.
-
-AD fresca SDK는 기본적으로 '국가, 언어, 앱 버전, 실행 횟수 등'의 디바이스 고유 데이터를 수집하며, 동시에 각 앱 내에서 고유하게 사용되는 특수한 상태 값들(예: 캐릭터 레벨, 보유 포인트, 스테이지 등)을 커스텀 파라미터로 정의하고 수집하여 분석 및 타겟팅 기능을 제공합니다.
-
-커스텀 파라미터 설정은 [Dashboard](https://admin.adfresca.com) 사이트를 접속하여 앱의 Overview 메뉴 -> Settings - Custom Parameters 버튼을 클릭하여 확인할 수 있습니다.
-
-SDK 적용을 위해서는 Dashboard에서 지정된 각 커스텀 파라미터의 '인덱스' 값이 필요합니다. 인덱스 값은 1,2,3,4 와 같은 Integer 형태의 고유 값이며 소스코드에 Constant 형태로 지정하여 이용하는 것을 권장합니다.
-
-Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며, *setCustomParameterWithValue** 메소드를 사용하여 각 인덱스 값에 맞게 상태 값을 설정합니다.
-
-```objective-c
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  ...
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forIndex:CUSTOM_PARAM_INDEX_LEVEL];                    
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forIndex:CUSTOM_PARAM_INDEX_STAGE];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forIndex:CUSTOM_PARAM_INDEX_FACEBOOK];   
-}
-
-- (void)levelDidChange:(int)level {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL];  // 사용자 level 정보를 가장 최신으로 업데이트 
-}   
-```
-
-**주의:** 모든 커스텀 파라미터의의 초기 설정은 항상 didFinishLaunchingWithOptions 이벤트에서 적용하며, 이후에 값이 변경되는 경우 각 위치에서 업데이트 합니다.
-
-만약 불가피하게 didFinishLaunchingWithOptions() 이벤트에서 커스텀 파라미터 값을 설정할 수 없는 경우, 앱을 최초로 실행한 사용자의 프로파일은 업데이트되지 않으며 해당 사용자의 2회째 앱 실행부터 SDK가 로컬에 캐싱해둔 값이 전달됩니다. 최초로 실행된 사용자의 프로파일까지 통계 및 타겟팅하기 위해서는 아래와 같이 초기 값 설정을 진행합니다. 또한, 사용자의 로그인 이벤트 이후 모든 커스텀 파라미터의 값을 설정할 수 있도록 구현합니다.
-
-```objective-c
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  ...
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  if (isUserFirstRun) {
-    [fresca setCustomParameterWithValue:[NSNumber numberWithInt:defaultLevel] forIndex:CUSTOM_PARAM_INDEX_LEVEL];                    
-    [fresca setCustomParameterWithValue:[NSNumber numberWithInt:defaultStage] forIndex:CUSTOM_PARAM_INDEX_STAGE];
-    [fresca setCustomParameterWithValue:[NSNumber numberWithBool:defaultFacebookFlag] forIndex:CUSTOM_PARAM_INDEX_FACEBOOK];  
-  } 
-}
-
-// 유저 로그인 성공
-
-- (void)userDidSignIn {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forIndex:CUSTOM_PARAM_INDEX_LEVEL];                    
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forIndex:CUSTOM_PARAM_INDEX_STAGE];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forIndex:CUSTOM_PARAM_INDEX_FACEBOOK];   
-}   
-```
-
-* * *
-
-## Marketing Event
-
-마케팅 이벤트는 유저에게 메세지를 전달하고자 하는 상황을 의미합니다. (예: 캐릭터 레벨 업, 퀘스트 달성, 스토어 페이지 진입)
-
-마케팅 이벤트 기능을 사용하여 지정된 상황에 알맞는 캠페인이 노출되도록 할 수 있습니다.
-
-마케팅 이벤트 설정은 [Dashboard](https://admin.adfresca.com) 사이트를 접속하여 앱의 Overview 메뉴 -> Settings - Marketing Events 버튼을 클릭하여 확인할 수 있습니다.
-
-SDK 적용을 위해서는 Dashboard에서 지정된 각 마케팅 이벤트의 '인덱스' 값이 필요합니다. 인덱스 값은 1,2,3,4 와 같은 Integer 형태의 고유 값이며 소스코드에 Constant 형태로 지정하여 이용하는 것을 권장합니다.
-
-각 이벤트 발생 시, load() 메소드에 원하는 이벤트 인덱스 값을 인자로 넘겨주시면 간단히 적용이 완료됩니다.
-
-(load() 메소드에 인덱스를 설정하지 않은 경우, 인덱스 값은 '1' 값이 자동으로 지정됩니다.)
-
-```objective-c
-- (void)viewDidLoad {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca load:EVENT_INDEX_MAIN_PAGE]; // 메인 페이지에 설정한 캠페인 노출       
-  [fresca show];
-} 
-
-- (void)levelDidChange:(int)level {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL];  // 사용자 level 정보를 가장 최신으로 업데이트 
-  [fresca load:EVENT_INDEX_LEVEL_UP]; // 레벨업 이벤트에 설정한 캠페인 노출  
-  [fresca show];
-}  
-```
-
-* * *
-
-## In-App Purchase Count
-
-앱에서 IAP 기능을 사용하는 경우, 현재까지 사용자가 구매한 누적 횟수를 SDK에 설정하여 분석 및 타겟팅에 이용할 수 있습니다.
-
-**numberOfInAppPurchases** Property 값을 설정하여 현재까지 사용자가 구매한 누적 횟수 값을 SDK에 설정합니다. 커스텀 파라미터와 마찬가지로 앱 실행 혹은 사용자 로그인 이후에 값을 지정하고, IAP 결제가 일어난 직후에 갱신된 누적 구매 횟수 값을 설정합니다.
-
-```objective-c
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [AdFrescaView startSession:@"YOUR_API_KEY"];
-  ......
-
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];  
-  fresca.numberOfInAppPurchases = user.numberOfInAppPurchases; 
-  ......
-}
-
-- (void)userDidPurchase:(int)numberOfTotalInAppPurchases {
-  user.numberOfInAppPurchases = numberOfTotalInAppPurchases;
-
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  fresca.numberOfInAppPurchases = user.numberOfInAppPurchases; 
-}  
-```
-
-* * *
-
-## Push Notification
-
-AD fresca를 통해 Push Notification 메시지를 보내고 받을 수 있습니다.
-
-SDK를 적용하기 이전에 애플의 [Local and Push Notification Programming Guide](http://developer.apple.com/library/mac/#documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008194-CH1-SW1) 가이드 문서를 읽어보시길 권장합니다. 
-
-(현재 AD fresca의 Push Notification 서비스는 APNS의 Production 환경만을 지원하며, 추후 업데이트를 통해 Development 환경을 추가로 지원할 예정입니다.)
-
-1. Push Notification 인증서 파일을 생성하고 Dashboard 사이트에 등록합니다.
-  - [iOS Push Notification 인증서 설정 및 적용하기](https://adfresca.zendesk.com/entries/21714780) 가이드 를 따라 Production용 Push Notification Certificate를 생성하고 [Dashboard](https://admin.adfresca.com) 사이트에 등록합니다.
-
-2. Info.plast 확인하기 / Provision 확인하기
-  - Info.plst 파일의 'aps-environment' 값을 'production' 으로 설정합니다. 
-  - App Store / Ad Hoc release에 사용하는 Provision 인증서를 사용하여 빌드해야 합니다.
-
-3. AppDelegate 클래스의 이벤트 추가하기.
-  - AppDelegate.m 파일을 열어 아래와 같은 내용을 추가합니다.
   ```objective-c
-  #import <AdFresca/AdFrescaView.h>
-
-  - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [AdFrescaView startSession:@"YOUR_API_KEY"];
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound];   // Push Notification 기능을 이용할 경우 등록.      
-  } 
-
-  - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    // Push Notification을 수신 받기 위한 고유 토큰을 AD fresca에 등록합니다.
-    [AdFrescaView registerDeviceToken:deviceToken];
-  }
-
-  - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    // AD fresca를 통해 전달된 Notification만 사용하며 앱이 이미 실행 중인 경우, 무시합니다.
-    if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
-      // 만약 Push Notification에 URL Schema가 설정되어 있을 경우, 현재 위치에서 URL을 실행합니다.
-      [AdFrescaView handlePushNotification:userInfo];
-    }  
-  } 
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];
+  fresca.printTestDeviceId = YES;
+  [fresca load];
+  [fresca show];
   ```
 
-* * *
-
-## Custom URL
-
-Announcement 캠페인의 Click URL, Push Notification 캠페인의 URL Schema 설정 시에 자신의 앱 URL Schema를 사용할 수 있습니다.
-
-이를 통해 사용자가 콘텐츠를 클릭할 경우, 자신이 원하는 특정 앱 페이지로 이동하는 등의 액션을 지정할 수 있습니다.
-
-1. Info.plst 파일을 열어 사용할 URL Schema 정보를 설정 합니다.
-
-  <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png" />
-
-2. AppDelegate.m 파일을 열어 handleOpenURL 메소드를 구현합니다. 호출되는 URL 값에 따라 다른 페이지를 호출하도록 설정할 수 있습니다. 
-  ```objective-c
-  - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {  
-    if ([url.scheme isEqualToString:@"myapp"]) {
-      if ([url.host isEqualToString:@"item"]) {
-        ItemViewController *vc = [[ItemViewController alloc] init];
-        [navigationController pushViewController:vc animated:YES];
-        [vc release];
-        return YES;
-      }
-    }
-    return NO;
-  }
-```
-  위와  같이 구현한 경우, 캠페인의 Click URL을 'myapp://item' 으로 설정하여 전송하면, ItemViewController 페이지가 실행됩니다.
-
+테스트 디바이스 아이디를 확인한 이후에는, [Dashboard](https://admin.adfresca.com)를 접속하여 'Test Device' 메뉴를 통해 디바이스 등록이 가능합니다.
 
 * * *
 
-## In-App Purchase Tracking (Beta)
+## IAP & Reward
 
-_**(현재 In-App-Purchase Tracking 기능은 SDK 1.4.0-beta 버전에서만 지원됩니다.)**_
+### In-App Purchase Tracking (Beta)
 
-_In-App-Purchase Tracking_  기능을 통하여 현재 앱에서 발생하고 있는 모든 인-앱 결제를 분석하고 캠페인 타겟팅에 이용할 수 있습니다.
+_In-App-Purchase Tracking_ 기능을 통하여 현재 앱에서 발생하고 있는 모든 인-앱 결제를 분석하고 캠페인 타겟팅에 이용할 수 있습니다.
 
 AD fresca의 In-App-Purchase Tracking은 2가지 유형이 있습니다.
 
@@ -339,7 +183,7 @@ AD fresca의 In-App-Purchase Tracking은 2가지 유형이 있습니다.
 
 아래의 적용 예제를 참고하여 간단히 In-App-Purchase Tracking 기능을 적용합니다.
 
-### Actual Item Tracking
+#### Actual Item Tracking
 
 Actual Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다.
 
@@ -368,8 +212,6 @@ Actual Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 �
 }
 ```
 
-위 예제는 Google Play 결제 라이브러리를 기준으로 작성되었지만 아마존이나 티스토어 등 모든 결제 라이브러리에서도 AFPurchase 객체에 필요한 값을 얻어올 수 있습니다.
-
 Actual Item을 위한 AFPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
 
 Method | Description
@@ -380,7 +222,7 @@ price(double) | 아이템의 가격을 설정합니다. SKProduct 객체의 값�
 purchaseDate(date) | 결제된 시간을 NSDate 객체 형태로 설정합니다. 값이 설정되지 않은 경우 AD fresca 서비스에 기록되는 시간이 결제 시간으로 자동 설정됩니다.
 transactionReceiptData(nsdata| SKPaymentTransaction 객체의 transactionReceipt 값을 지정합니다. 추후 Receipt Verficiation 기능을 위해 필요한 데이터를 설정합니다. 
 
-### Virtual Item Tracking
+#### Virtual Item Tracking
 
 Virtual Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다.
 
@@ -408,7 +250,7 @@ price(double) | 가상 화폐로 결제한 가격 정보를 설정합니다. (�
 purchaseDate(date) | 결제된 시간을 NSDate 객체 형태로 설정합니다. 값이 설정되지 않은 경우 AD fresca 서비스에 기록되는 시간이 결제 시간으로 자동 설정됩니다.
 transactionReceiptData(nsdata| Virtual 아이템의 경우는 값을 지정하지 않습니다.
 
-### IAP Trouble Shooting
+#### IAP Trouble Shooting
 
 logPurchase() 메소드를 통해 기록된 AFPurchase 객체는 AD fresca 서비스에 업데이트되어 실시간으로 대쉬보드에 반영됩니다. 현재까지 등록된 아이템 리스트는 'Overview' 메뉴의 Settings - In App Items 페이지를 통해 확인할 수 있습니다.
 
@@ -441,46 +283,7 @@ logPurchase() 메소드를 통해 기록된 AFPurchase 객체는 AD fresca 서�
 
 * * *
 
-## CPI Identifier
-
-Incentivized CPI & CPA 캠페인 기능을 사용하여, 사용자가 Media App에서 Advertising App의 광고를 보고 앱을 설치하였을 때 보상으로 Media App의 아이템을 지급할 수 있습니다.
-
-- Medial App: 다른 앱의 광고를 노출하고, 광고 대상의 앱을 설치한 사용자들에게 보상을 지급하는 앱
-- Advertising: Media App에 광고가 노출되는 앱.
-
-Incentivized CPI & CPA 캠페인에 대한 보다 자세한 설명 및 [Dashboard](https://admin.adfresca.com) 사이트에서의 설정 방법은 [크로스 프로모션 이해하기](https://adfresca.zendesk.com/entries/22033960) 가이드를 참고하여 주시기 바랍니다.
-
-SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media App에서의 Reward Item 지급 기능을 구현해야 합니다.
-
-#### Advertising App 설정하기:
-
-  iOS 플랫폼의 경우 URL Schema 값을 이용하여 광고를 노출한 앱이 실제로 디바이스에 설치되었는지 검사하게 됩니다. 따라서 Advertising App 앱의 URL Schema을 설정하고 CPI Identifier로 사용합니다.
-
-  (현재 Incentivized CPI 캠페인을 진행할 경우, Advertising App의 SDK 설치는 필수가 아니며 URL Schema 설정만 진행되면 됩니다. 하지만 Incentivized CPA 캠페인을 진행할 경우 반드시 SDK 설치 및 [Marketing Event](#marketing-event) 기능이 적용되어야 합니다.)
-
-  Xcode 프로젝트의 Info.plst 파일을 열어 사용할 URL Schema 정보를 설정 합니다.
-
-  <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
-
-  위 경우 [Dashboard](https://admin.adfresca.com) 사이트에서 Advertising App의 CPI Identifier 값을 'myapp://' 으로 설정하게 됩니다. 
-  iOS 플랫폼의 경우 URL Schema 값이 다른 앱과 중복될 수 있습니다. 정상적인 캠페인 진행을 위해서는 최대한 Unique한 값을 선택해야 합니다.
-
-  마지막으로, Incentivized CPA 캠페인을 진행할 경우는 보상 조건으로 지정한 마케팅 이벤트가 발생되어야 합니다. 사용자가 보상 조건을 완료한 이후 아래와 같이 지정한 마케팅 이벤트를 호출합니다.
-    
-  ```objective-c
-  // 튜토리얼 완료 이벤트를 보상 조건으로 지정한 경우
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca load:EVENT_INDEX_TUTORIAL];     
-  [fresca show];
-  ```
-
-#### Media App SDK 적용하기:
-
-  Media App에서 보상 지급 여부를 확인하고, 사용자에게 아이템을 지급하기 위해서는 SDK 가이드의 [Reward Item](#reward-item) 항목의 내용을 구현합니다.
-
-* * *
-
-## Reward Item
+### Give Reward
 
 Reward Item 기능을 적용하여 현재 사용자에게 지급 가능한 보상 아이템이 있는지 검사하고, 보상 아이템을 사용자에게 지급할 수 있습니다.
 
@@ -528,10 +331,82 @@ SDK 적용을 위해서는 아래 2가지 코드를 이용합니다.
 
 * * *
 
-## Advanced Features
+## Dynamic Targeting
+
+### Custom Parameter
+
+커스텀 파라미터는 캠페인 진행 시, 타겟팅을 위해 사용할 사용자의 상태 값을 의미합니다.
+
+AD fresca SDK는 기본적으로 '국가, 언어, 앱 버전, 실행 횟수 등'의 디바이스 고유 데이터를 수집하며, 동시에 각 앱 내에서 고유하게 사용되는 특수한 상태 값들(예: 캐릭터 레벨, 보유 포인트, 스테이지 등)을 커스텀 파라미터로 정의하고 수집하여 분석 및 타겟팅 기능을 제공합니다.
+
+커스텀 파라미터 설정은 [Dashboard](https://admin.adfresca.com) 사이트를 접속하여 앱의 Overview 메뉴 -> Settings - Custom Parameters 버튼을 클릭하여 확인할 수 있습니다.
+
+SDK 적용을 위해서는 Dashboard에서 지정된 각 커스텀 파라미터의 '인덱스' 값이 필요합니다. 인덱스 값은 1,2,3,4 와 같은 Integer 형태의 고유 값이며 소스코드에 Constant 형태로 지정하여 이용하는 것을 권장합니다.
+
+Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며, *setCustomParameterValue** 메소드를 사용하여 각 인덱스 값에 맞게 상태 값을 설정합니다.
+
+앱이 실행되는 시점에 한 번 값을 설정하고, 이후에는 값이 새로 갱신되는 이벤트마다 새로운 값을 설정합니다.
+
+```objective-c
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
+{
+  ...
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forIndex:CUSTOM_PARAM_INDEX_LEVEL];                    
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forIndex:CUSTOM_PARAM_INDEX_STAGE];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forIndex:CUSTOM_PARAM_INDEX_FACEBOOK];   
+}
+
+- (void)levelDidChange:(int)level 
+{
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL];
+}   
+
+- (void)stageDidChange:(int)stage 
+{
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:stage] forIndex:CUSTOM_PARAM_INDEX_STAGE];
+}
+....
+```
+
+특정 커스텀 파라미터의 경우, 사용자의 로그인 작업 이후 설정이 가능할 수 있습니다. 해당 경우는 사용자의 로그인 이후에 필요한 커스텀 파라미터를 모두 설정할 수 있도록 합니다.
+
+* * *
+
+### Marketing Moment
+
+마케팅 모멘트는 유저에게 메세지를 전달하고자 하는 상황을 의미합니다. (예: 캐릭터 레벨 업, 퀘스트 달성, 스토어 페이지 진입)
+
+마케팅 모멘트 기능을 사용하여 지정된 상황에 알맞는 캠페인이 노출되도록 할 수 있습니다.
+
+마케팅 모멘트 설정은 [Dashboard](https://admin.adfresca.com) 사이트를 접속하여 앱의 Overview 메뉴 -> Settings - Marketing Moments 버튼을 클릭하여 확인할 수 있습니다.
+
+SDK 적용을 위해서는 Dashboard에서 지정된 각 마케팅 모멘트의 '인덱스' 값이 필요합니다. 인덱스 값은 1,2,3,4 와 같은 Integer 형태의 고유 값이며 소스코드에 Constant 형태로 지정하여 이용하는 것을 권장합니다.
+
+각 모멘트 발생 시, load() 메소드에 원하는 모멘트 인덱스 값을 인자로 넘겨주시면 간단히 적용이 완료됩니다.
+
+(load() 메소드에 인덱스를 설정하지 않은 경우, 인덱스 값은 '1' 값이 자동으로 지정됩니다.)
+
+```objective-c
+- (void)userDidEnterItemStore {
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
+  [fresca load:EVENT_INDEX_STORE_PAGE];    
+  [fresca show];
+} 
+
+- (void)levelDidChange:(int)level {
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL]; 
+  [fresca load:EVENT_INDEX_LEVEL_UP]; 
+  [fresca show];
+}  
+```
+
+## Advanced
 
 ### AdFrescaViewDelegate
-
 AdFrescaViewDelegate 를 직접 구현함으로써, 콘텐츠 뷰에서 발생하는 이벤트를 확인 할 수 있습니다. 
 
 ```objective-c
@@ -618,6 +493,77 @@ fresca.timeoutInterval = 3 // # secs
 [fresca show];
 ```
 
+* * *
+
+## Reference
+
+### Custom URL Schema
+
+캠페인의 Click URL 설정 시에 Custom URL Schema를 지정할 수 있습니다.
+
+이를 통해 사용자가 콘텐츠를 클릭할 경우, 자신이 원하는 특정 앱 페이지로 이동하는 등의 액션을 지정할 수 있습니다.
+
+1. Info.plst 파일을 열어 사용할 URL Schema 정보를 설정 합니다.
+
+  <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png" />
+
+2. AppDelegate.m 파일을 열어 handleOpenURL 메소드를 구현합니다. 호출되는 URL 값에 따라 다른 페이지를 호출하도록 설정할 수 있습니다. 
+  ```objective-c
+  - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {  
+    if ([url.scheme isEqualToString:@"myapp"]) {
+      if ([url.host isEqualToString:@"item"]) {
+        ItemViewController *vc = [[ItemViewController alloc] init];
+        [navigationController pushViewController:vc animated:YES];
+        [vc release];
+        return YES;
+      }
+    }
+    return NO;
+  }
+```
+  위와  같이 구현한 경우, 캠페인의 Click URL을 'myapp://item' 으로 설정하여 전송하면, ItemViewController 페이지가 실행됩니다.
+
+* * *
+
+### Cross Promotion Configuration
+
+Incentivized CPI & CPA 캠페인 기능을 사용하여, 사용자가 Media App에서 Advertising App의 광고를 보고 앱을 설치하였을 때 보상으로 Media App의 아이템을 지급할 수 있습니다.
+
+- Medial App: 다른 앱의 광고를 노출하고, 광고 대상의 앱을 설치한 사용자들에게 보상을 지급하는 앱
+- Advertising: Media App에 광고가 노출되는 앱.
+
+Incentivized CPI & CPA 캠페인에 대한 보다 자세한 설명 및 [Dashboard](https://admin.adfresca.com) 사이트에서의 설정 방법은 [크로스 프로모션 이해하기](https://adfresca.zendesk.com/entries/22033960) 가이드를 참고하여 주시기 바랍니다.
+
+SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media App에서의 Reward Item 지급 기능을 구현해야 합니다.
+
+#### Advertising App 설정하기:
+
+  iOS 플랫폼의 경우 URL Schema 값을 이용하여 광고를 노출한 앱이 실제로 디바이스에 설치되었는지 검사하게 됩니다. 따라서 Advertising App 앱의 URL Schema을 설정하고 CPI Identifier로 사용합니다.
+
+  (현재 Incentivized CPI 캠페인을 진행할 경우, Advertising App의 SDK 설치는 필수가 아니며 URL Schema 설정만 진행되면 됩니다. 하지만 Incentivized CPA 캠페인을 진행할 경우 반드시 SDK 설치 및 [Marketing Event](#marketing-event) 기능이 적용되어야 합니다.)
+
+  Xcode 프로젝트의 Info.plst 파일을 열어 사용할 URL Schema 정보를 설정 합니다.
+
+  <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
+
+  위 경우 [Dashboard](https://admin.adfresca.com) 사이트에서 Advertising App의 CPI Identifier 값을 'myapp://' 으로 설정하게 됩니다. 
+  iOS 플랫폼의 경우 URL Schema 값이 다른 앱과 중복될 수 있습니다. 정상적인 캠페인 진행을 위해서는 최대한 Unique한 값을 선택해야 합니다.
+
+  마지막으로, Incentivized CPA 캠페인을 진행할 경우는 보상 조건으로 지정한 마케팅 이벤트가 발생되어야 합니다. 사용자가 보상 조건을 완료한 이후 아래와 같이 지정한 마케팅 이벤트를 호출합니다.
+    
+  ```objective-c
+  // 튜토리얼 완료 이벤트를 보상 조건으로 지정한 경우
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
+  [fresca load:EVENT_INDEX_TUTORIAL];     
+  [fresca show];
+  ```
+
+#### Media App SDK 적용하기:
+
+  Media App에서 보상 지급 여부를 확인하고, 사용자에게 아이템을 지급하기 위해서는 SDK 가이드의 [Give Reward](#give-reward) 항목의 내용을 구현합니다.
+
+* * *
+
 ### IFV Only Option
 
 [SDK 설치 과정](#installation)에서 AdSupport.framework 를 추가한 경우 SDK는 IFA 값을 이용하여 디바이스를 구분하며, AdSupport.framework를 제외한 경우 IFV 값을 이용하여 디바이스를 구분하게 됩니다.
@@ -641,7 +587,8 @@ fresca.timeoutInterval = 3 // # secs
 
 * * *
 
-## Trouble Shooting
+## Troubleshooting
+
 SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되지 않을 수 있습니다.
 
 <img src="https://adfresca.zendesk.com/attachments/token/ikafbcqjnj9jbak/?name=6666.png">
