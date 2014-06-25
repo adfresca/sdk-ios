@@ -134,11 +134,9 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 
 ### Test Device Registration
 
-_**(현재 In-App-Purchase Tracking 기능은 SDK 2.4.0-beta 버전에서만 지원됩니다.)**_
+AD fresca는 테스트 모드 기능을 지원하여 테스트를 원하는 디바이스에만 원하는 메시지를 전달할 수 있습니다. 이로 인해 SDK가 적용된 앱이 이미 앱스토어에 출시된 경우, 게임 운영팀 혹은 개발팀에게만 새로운 메시지를 전달하여 테스트할 수 있도록 지원합니다.
 
-_In-App-Purchase Tracking_  기능을 통하여 현재 앱에서 발생하고 있는 모든 인-앱 결제를 분석하고 캠페인 타겟팅에 이용할 수 있습니다.
-
-AD fresca의 In-App-Purchase Tracking은 2가지 유형이 있습니다.
+테스트 기기 등록을 위한 아이디 값은 SDK를 통해 추출이 가능하며 2가지 방법을 지원 합니다.
  
 1. testDeviceId Property를 사용하여 로그로 출력하는 방법
   - 테스트에 사용할 기기를 개발PC에 연결한 후 로그를 통해 해당 아이디 값을 출력하여 확인 합니다. 
@@ -343,7 +341,7 @@ AD fresca SDK는 기본적으로 '국가, 언어, 앱 버전, 실행 횟수 등'
 
 SDK 적용을 위해서는 Dashboard에서 지정된 각 커스텀 파라미터의 '인덱스' 값이 필요합니다. 인덱스 값은 1,2,3,4 와 같은 Integer 형태의 고유 값이며 소스코드에 Constant 형태로 지정하여 이용하는 것을 권장합니다.
 
-Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며, *setCustomParameterValue** 메소드를 사용하여 각 인덱스 값에 맞게 상태 값을 설정합니다.
+Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며, **setCustomParameterWithValue** 메소드를 사용하여 각 인덱스 값에 맞게 상태 값을 설정합니다.
 
 앱이 실행되는 시점에 한 번 값을 설정하고, 이후에는 값이 새로 갱신되는 이벤트마다 새로운 값을 설정합니다.
 
