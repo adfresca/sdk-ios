@@ -29,7 +29,7 @@
 
 아래 링크를 통해 SDK 파일을 다운로드 합니다.
 
-[iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) (v1.4.1)
+[iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) 
 
 SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
