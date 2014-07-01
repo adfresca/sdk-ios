@@ -29,7 +29,7 @@
 
  Download SDK on the following link:
 
-[iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) (v1.4.1)
+[iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) 
 
 To add SDK into your Xcode project, please follow the instructions below:
 
