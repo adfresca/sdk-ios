@@ -512,7 +512,7 @@ Using Incentivized CPI & CPA Campaign, your users in 'Media App' can get an ince
 - Medial App: the media app which displays the promotion image and gives an incentive item to users
 - AdvertisingApp: the promotion app which is displayed with an image in the media app's screen.
 
-For more details of Incentivized campaigns and configuration guide in dashboard, please refer 'Understanding Cross-promotion (Korean)'  guide.
+For more details of Incentivized campaigns and configuration guide in dashboard, please refer ['Understanding Cross-promotion (Korean)'](https://adfresca.zendesk.com/entries/22033960)  guide.
 
 To integrate SDK with this feature, you should set URL Schema value for the adverting app and implement codes to give an incentive item to users in the media app.
 
