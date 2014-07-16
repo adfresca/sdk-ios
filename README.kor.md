@@ -534,20 +534,20 @@ Incentivized CPI & CPA 캠페인에 대한 보다 자세한 설명 및 [Dashboar
 
 SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media App에서의 Reward Item 지급 기능을 구현해야 합니다.
 
-#### Advertising App 설정하기:
+#### Advertising App 설정:
 
   iOS 플랫폼의 경우 URL Schema 값을 이용하여 광고를 노출한 앱이 실제로 디바이스에 설치되었는지 검사하게 됩니다. 따라서 Advertising App 앱의 URL Schema을 설정하고 CPI Identifier로 사용합니다.
 
   (현재 Incentivized CPI 캠페인을 진행할 경우, Advertising App의 SDK 설치는 필수가 아니며 URL Schema 설정만 진행되면 됩니다. 하지만 Incentivized CPA 캠페인을 진행할 경우 반드시 SDK 설치 및 [Marketing Moment](#marketing-moment) 기능이 적용되어야 합니다.)
 
-  Xcode 프로젝트의 Info.plst 파일을 열어 사용할 URL Schema 정보를 설정 합니다.
+  먼저 Xcode 프로젝트의 Info.plst 파일을 열어 사용할 URL Schema 정보를 확인합니다.
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
   위 경우 [Dashboard](https://admin.adfresca.com) 사이트에서 Advertising App의 CPI Identifier 값을 'myapp://' 으로 설정하게 됩니다. 
   iOS 플랫폼의 경우 URL Schema 값이 다른 앱과 중복될 수 있습니다. 정상적인 캠페인 진행을 위해서는 최대한 Unique한 값을 선택해야 합니다.
 
-  마지막으로, Incentivized CPA 캠페인을 진행할 경우는 보상 조건으로 지정한 마케팅 모멘트가 발생되어야 합니다. 사용자가 보상 조건을 완료한 이후 아래와 같이 지정한 마케팅 이벤트를 호출합니다.
+  마지막으로, Incentivized CPA 캠페인을 진행할 경우는 보상 조건으로 지정한 마케팅 모멘트가 발생되어야 합니다. 사용자가 보상 조건을 완료한 이후 아래와 같이 지정한 마케팅 모벤트를 호출합니다.
     
   ```objective-c
   // 튜토리얼 완료 모멘트를 보상 조건으로 지정한 경우
@@ -558,7 +558,7 @@ SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media 
 
 #### Media App SDK 적용하기:
 
-  Media App에서 보상 지급 여부를 확인하고, 사용자에게 아이템을 지급하기 위해서는 SDK 가이드의 [Give Reward](#give-reward) 항목의 내용을 구현합니다.
+  Media App에서 보상 지급 여부를 확인하고, 사용자에게 아이템을 지급하기 위해서는 SDK 가이드의 [Give Reward](#give-reward) 항목이 적용되어 있어야 합니다. 앞서 리워드 지급 기능을 적용하지 않았다면, 가이드에 따라 기능을 적용합니다.
 
 * * *
 
