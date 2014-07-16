@@ -512,9 +512,9 @@ Using Incentivized CPI & CPA Campaign, your users in 'Media App' can get an ince
 - Medial App: the media app which displays the promotion image and gives an incentive item to users
 - AdvertisingApp: the promotion app which is displayed with an image in the media app's screen.
 
-For more details of Incentivized campaigns and configuration guide in dashboard, please refer ['Understanding Cross-promotion (Korean)'](https://adfresca.zendesk.com/entries/22033960)  guide.
+For more details of Incentivized campaigns and configuration guide in dashboard, please refer to ['Understanding Cross-promotion (Korean)'](https://adfresca.zendesk.com/entries/22033960) guide.
 
-To integrate SDK with this feature, you should set URL Schema value for the adverting app and implement codes to give an incentive item to users in the media app.
+To integrate SDK with this feature, you should have URL Schema value for the adverting app and implement codes to give an incentive item to users in the media app.
 
 #### Configuration for Advertising App.:
 
@@ -522,18 +522,18 @@ To integrate SDK with this feature, you should set URL Schema value for the adve
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
-  In this case, you should set CPI Identifier value of advertising app to "myapp://" in our dashboard.
+  In this case, you should set CPI Identifier value of advertising app to "myapp://" in our dashboard (Overview > App Store Edit).
 
   For iOS, url schema value may be duplicated with other apps, so be careful to choose unique value.
 
   For Incentivized CPI Campaign, SDK Installation of the advertising app is not required. You can only set URL Schema to use app's install.
 
-  However, If you use Incentivized CPA Campaign, SDK installation is required and you should also implement 'Marketing Moment' feature to check a reward condition. For example, when you set the reward condition to check 'Tutorial Complete' event, you should call the marketing event method to inform your user achieved the goal.
+  However, If you use Incentivized CPA Campaign, SDK installation is required and you should also implement 'Marketing Moment' feature to check a reward condition. For example, when you set the reward condition to check 'Tutorial Complete' moment, you should call the marketing moment method to inform your user achieved the goal.
     
   ```objective-c
   - (void)didTutorialComplete {
     AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-    [fresca load:EVENT_INDEX_TUTORIAL_COMPLETE];  
+    [fresca load:MOMENT_INDEX_TUTORIAL_COMPLETE];  
     [fresca show];
   }  
   ```
