@@ -5,9 +5,10 @@
     - [In-App Messaging](#in-app-messaging)
     - [Push Messaging](#push-messaging)
     - [Test Device Registration](#test-device-registration)
-- [IAP & Reward](#iap--reward)
+- [IAP, Reward and Promotion](#iap-reward-and-promotion)
   - [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta)
   - [Give Reward](#give-reward)
+  - [Promotion](#promotion)
 - [Dynamic Targeting](#dynamic-targeting)
   - [Custom Parameter](#custom-parameter)
   - [Marketing Moment](#marketing-moment)
@@ -177,7 +178,7 @@ Let's get started to implement SDK codes with examples below.
 
 #### Actual Item Tracking
 
-In iOS, the purchase of 'Actual Item' is made with Apple's Storekit framework. When your user purchased the item successfully, simply create AFPurchase object and use logPurchase() method.
+In iOS, the purchase of 'Actual Item' is made with Apple's Storekit framework. When your user purchased the item successfully, simply create AFPurchase object and use logPurchase method. Also, call cancelPromotionPurchase method when user cancelled or failed to purchase.
 
 ```objective-c
 - (void)completeTransaction:(SKPaymentTransaction *)transaction
@@ -200,6 +201,12 @@ In iOS, the purchase of 'Actual Item' is made with Apple's Storekit framework. W
 
   [[AdFrescaView shardAdView] logPurchase:purchase];
 }
+
+- (void)failedTransaction:(SKPaymentTransaction *)transaction 
+{
+  [[AdFrescaView shardAdView] cancelPromotionPurchase];
+  ....
+}
 ```
 
 For more details of AFPurchase object with the actual item , check the table below.
@@ -214,7 +221,7 @@ transactionReceiptData(nsdata) | Set the receipt property of SKPaymentTransactio
 
 #### Virtual Item Tracking
 
-When users purchased your virtual item in the app, you can also create AFPurchase object and call logPurchase() method.
+When users purchased your virtual item in the app, you can also create AFPurchase object and call logPurchase() method. Also, call cancelPromotionPurchase method when user cancelled or failed to purchase.
 
 ```objective-c
 - (void)didPurchaseVirtualItem {
@@ -226,6 +233,10 @@ When users purchased your virtual item in the app, you can also create AFPurchas
                                     transactionReceiptData:nil]; 
 
   [[AdFrescaView shardAdView] logPurchase:purchase];
+}
+
+- (void)didFailToPurchaseVirtualItem {
+  [[AdFrescaView shardAdView] cancelPromotionPurchase];
 }
 ```
 
@@ -272,7 +283,7 @@ If you can't see any data in our dashboard, your AFPurchase object may be invali
 
 ### Give Reward
 
-When you set 'Reward Item' section of the announcement campaign or 'Inventive item' section of the incentivized CPI & CPA campaign, you should implement this 'reward item' code to give an reward item to your users.
+When you set 'Reward Item' section of the reward campaign or 'Inventive item' section of the incentivized CPI & CPA campaign, you should implement this 'reward item' code to give an reward item to your users.
 
 Implementing reward item codes, you can check if your user has any reward to receive, and then will be noticed with an reward item info.
 
@@ -303,22 +314,89 @@ To implement codes, we use two codes below:
   NSString *logMessage = [NSString stringWithFormat:@"You got the reward item! (%@)", item.name];
   NSLog(@"%@", logMessage);
   
-  // Using uniqueValue property, you can give an item to users.  
-  [self sendItemToUser:item.uniqueValue];
+  // Ggive an item to users.  
+  [self sendItemToUser:currentUserId itemId:item.uniqueValue quantity:item.quantity securityToken:item.securityToken];
 }
 ```
 
-You will implement your own 'sendItemToUser' method. This method may send the current user info and item's uniqueValue to your server. Then server gives the item to the user.
-
 itemRewarded event is called when each type of campaign's reward condition is completed.
 
-- Announcement Campaign: the event is called when your user see the campaign contents
+- Reward Campaign: the event is called when your user see the campaign contents
 - Incentivized CPI Campaign: the event is called when SDK checks Advertising App's install
 - Incentivized CPA Campaign: the event is called after SDK checks Advertising App's install and the user called the targeted marketing event in Advertising App
  
 If your users have any network disconnection or loss in theirs device, our SDK stored the reward data in the app's local storage, and then re-check in the next app session. So, we guarantee users will always get a reward from our SDK.
 
-(getAvailableRewardItems is deprecated, but we still support this method for backward compatibility)
+#### implementing sendItemToUser()
+
+You should give a reward item to your user using your own client code or back-end server api. Your client may send an api request with unique vale of item, quantity and security token values to your server. Then the server application will add a reward item to user's item inventory.
+
+#### Hack Proof
+
+Our SDK never call itemRewarded event more than once per a campaign. We always check it with device identifiers to avoid abusing. However, there is still possible for hackers to hijack your api request between your client and back-end server. To prevent this issue, we provide a security token value. A security token is unique value per your campaign. You can generate the token while you're creating a reward campaign. You can do hack proof works using the security token as belows:
+
+1. You will store a security token to your own database before starting a reward campaign. You should reject any reward requests with invalid token value.
+2. if some users are trying to request with the same token value more than once, you should reject that those requests.
+3. If you think your security token is exposed to hackers, you can always change the value in our dashboard.
+
+### Promotion
+
+Using sales promotion campaign, you can promote your in-app item to your users. When users tap an action button of image message, a purchase UI will appear to proceed user's purchase. SDK will automatically detect if users made a purchase or not, and then will update the campaign performance to dashboard in real time.
+
+To apply promotion feature, you should implement AFPromotionDelegate. onPromotion event is automatically called when users tap an action button of image message in sale promotion campaign. You just need to show purchase UI of promotion item using 'promotionPurchase' object. 
+
+For Actual Currency Item, you should use StoreKit library codes to show purchase UI. You can get product identifier value of SKProduct from ItemId property of promotionPurchase object.
+
+For Virtual Currency Item, you should use your own purchase UI which might be already implemented in your store page. Also there are discount options for virtual item sales promotion campaign. You can check the discount type using discountType property of promotionPurchase object
+
+1. **Discount Price**: users can buy a promotion item with specific discounted price. You can get price form price property.
+
+2. **Discount Rate**: users can buy a promotion item with discount rate. You will calculate the discounted price applying the discount rate which can be earned from discountRate property.
+
+```objective-c
+- (void)applicationDidBecomeActive:(UIApplication *)application 
+{
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];
+  [fresca setPromotionDelegate:self];
+}
+
+- (void)onPromotion:(AFPurchase *)promotionPurchase {
+  NSString *itemId = promotionPurchase.itemId;
+  NSString *logMessage = @"onPromotion: no logMessage";
+  
+  if (promotionPurchase.type == AFPurchaseTypeActualItem) {
+    // Use SKPaymentQueue to show the purchase ui of this item.
+    SKProduct *product = [self paymentWithProductIdentifier:itemId];
+    SKPayment *payment = [SKPayment paymentWithProduct:product];
+    [[SKPaymentQueue defaultQueue] addPayment:payment];
+    
+    logMessage = [NSString stringWithFormat:@"on ACTUAL_ITEM Promotion (%@)", itemId];
+    
+  } else if (promotionPurchase.type == AFPurchaseTypeVirtualItem) {
+    NSString *currencyCode = promotionPurchase.currencyCode;
+    
+    if (promotionPurchase.discountType == AFDiscountTypePrice) {
+      // Use a discounted price
+      double discountedPrice = promotionPurchase.price;
+      [self showPurchaseUIWithItemId:itemId withDiscountedPrice:discountedPrice];
+      logMessage = [NSString stringWithFormat:@"on VIRTUAL_ITEM Promotion (%@) with %.2f %@", itemId, discountedPrice, currencyCode];
+
+    } else if (promotionPurchase.discountType == AFDiscountTypeRate) {
+      // Use this rate to calculate a discounted price of item. discountedPrice = originalPrice - (originalPrice * discountRate)
+      double discountRate = promotionPurchase.discountRate;
+      [self showPurchaseUIWithItemId:itemId withDiscountRate:discountRate];
+      logMessage = [NSString stringWithFormat:@"on VIRTUAL_ITEM Promotion (%@) with %.2f %%", itemId, discountRate * 100.0];
+    }
+    
+    [self showAlert:logMessage];
+    NSLog(@"%@", logMessage);
+  }
+}
+
+```
+
+SDK will detect if users made a purchase using [In-App Purchase Tracking](#in-app-purchase-tracking-beta) feature. Thus, you should implement it to complete this promotion feature. Please make sure that you implement 'cancelPromotionPurchase' method when users cancelled or failed to purchase items.
+
 
 * * *
 
@@ -589,7 +667,14 @@ In other case, if you cannot see any message or get other errors, you can debug 
 
 ## Release Notes
 
-- **1.4.1 (2014/06/19 Updated)**
+- **1.4.3 (2014/08/18 Updated)**
+    - Support sales promotion campaign. Please refer to [Promotion](#promotion) section.
+    - Support security token of reward campaign's hack proof. Please refer to [Give Reward](#give-reward) section.
+    - Add cancelPromotionPurchase() method to [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta)
+    - Support tap area feature.
+- 1.4.2
+    - SDK will match multiple campaigns and show multiple messages in one marketing moment request.
+- 1.4.1
   - Support 64-bit architecture configuration of Xcode.
   - Include IAP Beta features to 1.4.1.
   - Rename some methods (loadAd -> load, showAd -> show, closeAd -> close). Old method will work fine as we guarantee the backward compatibility. 
