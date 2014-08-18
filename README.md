@@ -161,7 +161,7 @@ After you have your test device ID, you have to register it to [Dashboard](https
 
 * * *
 
-## IAP & Reward
+## IAP, Reward and Promotion
 
 ### In-App Purchase Tracking (Beta)
 
@@ -388,7 +388,6 @@ For Virtual Currency Item, you should use your own purchase UI which might be al
       logMessage = [NSString stringWithFormat:@"on VIRTUAL_ITEM Promotion (%@) with %.2f %%", itemId, discountRate * 100.0];
     }
     
-    [self showAlert:logMessage];
     NSLog(@"%@", logMessage);
   }
 }
