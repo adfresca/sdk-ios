@@ -28,11 +28,11 @@
 
 ### Installation
 
- Download SDK on the following link:
+ Download our SDK with the following link:
 
 [iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) 
 
-To add SDK into your Xcode project, please follow the instructions below:
+To add our SDK into your Xcode project, please follow the instructions below:
 
 1) Drag & Drop AdFresca folder into the framework folder on your Xcode project.
 
@@ -42,8 +42,8 @@ To add SDK into your Xcode project, please follow the instructions below:
   
   <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
   
-  - If you add AdSupport.framework, SDK collects [IFA(Identifier For Advertisers)](https://developer.apple.com/library/ios/documentation/AdSupport/Reference/ASIdentifierManager_Ref/ASIdentifierManager.html#jumpTo_3) value to distinguish the user's device. We use this value to provide the cross-promotion campaign with install and action tracking.
-  - If you do not add AdSupport.framework, SDK uses [IFV(Identifier For Vendor)](https://developer.apple.com/library/ios/documentation/uikit/reference/UIDevice_Class/Reference/UIDevice.html#jumpTo_7) value to distinguish user's device. In this case, you can't use any cross promotion feature. Also, as IFV's policy, your user may be recognized as a new user after re-installing app.
+  - If you add AdSupport.framework, our SDK collects [IFA(Identifier For Advertisers)](https://developer.apple.com/library/ios/documentation/AdSupport/Reference/ASIdentifierManager_Ref/ASIdentifierManager.html#jumpTo_3) value to distinguish the user's device. We use this value to provide the cross-promotion campaign with install and action tracking.
+  - If you do not add AdSupport.framework, our SDK uses [IFV(Identifier For Vendor)](https://developer.apple.com/library/ios/documentation/uikit/reference/UIDevice_Class/Reference/UIDevice.html#jumpTo_7) value to distinguish user's device. In this case, you can't use any cross promotion feature. Also, as IFV's policy, your user may be recognized as a new user after re-installing app.
 
   If you'd like to add AdSupport.framework or remove the framework from existing xcode project with our SDK, please refer to the [IFV Only Option](#ifv-only-option) section to migrate your users.
 
@@ -61,11 +61,11 @@ To add SDK into your Xcode project, please follow the instructions below:
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
-AD fresca SDK has been successfully installed without any build error. If you have a 'Duplicate Symbol' error, please refer to the [Troubleshooting](#troubleshooting) section.
+Nudge SDK has been successfully installed without any build error. If you have a 'Duplicate Symbol' error, please refer to the [Troubleshooting](#troubleshooting) section.
 
 ### Start Session
 
-Now, start to put some simple SDK codes in your app. You first need to call startSession() method with your API Key. To get your API Key, go to our [Dashboard](https://admin.adfresca.com) and then click 'Settings - API Keys' button in your app's 'Overview' page.
+Now, let’s start to put some simple SDK codes in your app. You first need to call startSession() method with your API Key. To get your API Key, go to our [Dashboard](https://admin.adfresca.com) and then click 'Settings - API Keys' button in your app's 'Overview' page.
 
 startSession() will start to detect when user starts app and resumes from the background.
 
@@ -81,7 +81,7 @@ startSession() will start to detect when user starts app and resumes from the ba
 
 ### In-App Messaging
 
-With the in-app messaging feature, you can deliver a message to your in-app users in real time. Simply put 'load' and 'show' methods where you want to deliver a message. The type of message can be an interstitial image, text, and iframe webpage. The message is only shown when your user matches the in-app messaging campaign's target logics. We will discuss more details of the in-app messaging's dynamic targeting features in the [Dynamic Targeting](#dynamic-targeting) section.
+With the in-app messaging feature, you can deliver a message to your in-app users in real time. Simply put 'load' and 'show' methods where you want to deliver a message. The type of message can be an interstitial image, text, and iframe webpage. The message is only shown when your user matches the in-app messaging campaign's target logics. We will discuss more in detail about the in-app messaging's dynamic targeting features in the [Dynamic Targeting](#dynamic-targeting) section.
 
 ```objective-c
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -91,7 +91,7 @@ With the in-app messaging feature, you can deliver a message to your in-app user
 } 
 ```
 
-When you first call in-app messaging methods, you will see the test message below. If you tap on the image, it will redirect to the product page of the app on the app store. You will hide this test message by chagning the test mode configuration later.
+When you first call in-app messaging methods, you will see the test message below. If you tap on the image, it will redirect to the product page of the app on the app store. You will hide this test message by changing the test mode configuration later.
 
 <img src="https://adfresca.zendesk.com/attachments/token/ans53bfy6mwq2e9/?name=4444.png" width="240" />
 &nbsp;
@@ -131,9 +131,9 @@ You can also deliver your push messages anytime you want. Follow the steps below
 
 ### Test Device Registration
 
-AD fresca supports a test mode feature. With the test mode feature, you can deliver your test message to only registred test devices. 
+Nudge supports a test mode feature. With the test mode feature, you can deliver test messages to only registered test devices. 
 
-To register your test device to our dashboard, you need to know your test device ID from our SDK. SDK provides two ways to show test device ID.
+To register your test device to our dashboard, you need to know your test device ID from our SDK. Our SDK provides two ways to show test device IDs.
  
 1. Using testDeviceId Property
   - After connecting your device with Xcode, you can simply print out test device ID with a logger.
@@ -165,16 +165,16 @@ After you have your test device ID, you have to register it to [Dashboard](https
 
 ### In-App Purchase Tracking (Beta)
 
-With In-App-Purchase Tracking , you can analyze all the purchases of your users, and use it for targeting specific user segment to display your campaigns. (targeting feature is coming soon)
+With In-App-Purchase Tracking , you can analyze all the purchases of your users, and use it for targeting specific user segments to display your campaigns. (targeting feature is coming soon)
 
 There are two types of purchases you can track with our SDK.
 
-1. **Actual Item Purchase Tracking:**  the purchases made by real money. For example, user purchased 'USD 1.99' to get 'Gold 100' cash item.
-2. **Virtual Item Purchase Tracking:** the purchases made by virtual money. For example, user purchased 'Gold 10' to get 'Rocket Launcher' item 
+1. **Actual Item Purchase Tracking:**  Purchases made with real money. For example, user purchased ‘$1.99' to get 'Gold 100' cash item.
+2. **Virtual Item Purchase Tracking:** Purchases made by virtual money. For example, user purchased 'Gold 10' to get 'Rocket Launcher' item 
 
-You don't need to write down any item list manually. All the Items tracked by SDK are automatically added to our dashboard. To see the list of item, go to 'Overview > Settings > In-App Items' page in our dashboard.
+You don't need to manually write down any item list. All the items are tracked by our SDK and automatically added to our dashboard. To see the list of items, go to 'Overview > Settings > In-App Items' page in our dashboard.
 
-Let's get started to implement SDK codes with examples below. 
+Let's get started and implement SDK codes with the examples below. 
 
 #### Actual Item Tracking
 
@@ -209,19 +209,19 @@ In iOS, the purchase of 'Actual Item' is made with Apple's Storekit framework. W
 }
 ```
 
-For more details of AFPurchase object with the actual item , check the table below.
+For more details of AFPurchase object with the actual item, check the table below.
 
 Method | Description
 ------------ | ------------- | ------------
-itemId(string) | Set the unique identifier of your item. This value is may not be different per the os platform or app store. We recommend that you make this value unique for all platforms and stores. Our service distinguish each item by this value.
-currencyCode(string) | Set the current code of IOS 4217 standard. You may use SKProduct's's value or manually set the value form your server.
-price(double) | Set the item price. you may use SKProduct's value or manually set the value from your server.
-purchaseDate(date) | Set the date of purchase. You may use SKPaymentTransaction.transactionDate value. If you set nil value, it will be automatically recorded by our SDK and server. Please don't use local time of user's device.
+itemId(string) | Set the unique identifier of your item. This value may not be different per the os platform or app store. We recommend that you make this value unique for all platforms and stores. Our service can distinguish each item by this value.
+currencyCode(string) | Set the current code of IOS 4217 standard. You may use SKProduct's's value or manually set the value from your server.
+price(double) | Set the item price. You may use SKProduct's value or manually set the value from your server.
+purchaseDate(date) | Set the date of purchase. You may use SKPaymentTransaction.transactionDate value. If you set nil value, it will be automatically recorded by our SDK and server. Please don't use local time of the user's device.
 transactionReceiptData(nsdata) | Set the receipt property of SKPaymentTransaction object. We will use it to verify the receipt in the future.
 
 #### Virtual Item Tracking
 
-When users purchased your virtual item in the app, you can also create AFPurchase object and call logPurchase() method. Also, call cancelPromotionPurchase method when user cancelled or failed to purchase.
+When users purchased your virtual item in the app, you can also create AFPurchase object and call logPurchase() method. Also, call cancelPromotionPurchase method when the user cancelled or failed to purchase.
 
 ```objective-c
 - (void)didPurchaseVirtualItem {
@@ -240,14 +240,14 @@ When users purchased your virtual item in the app, you can also create AFPurchas
 }
 ```
 
-For more details of AFPurchase object with the virtual item, check the table below.. You don't need to set transactionReceiptData property in the virtual item tracking.
+For more details of AFPurchase object with the virtual item, check the table below. You don't need to set transactionReceiptData property in the virtual item tracking.
 
 Method | Description
 ------------ | ------------- | ------------
-itemId(string) | Set the unique identifier of your item. This value is may not be different per the os platform or app store. We recommend that you make this value unique for all platforms and stores. Our service distinguish each item by this value.
+itemId(string) | Set the unique identifier of your item. This value may not be different per the os platform or app store. We recommend that you make this value unique for all platforms and stores. Our service can distinguish each item by this value.
 currencyCode(string) | Set the item's virtual currency code. (ex: 'gold', 'gas')
 price(double) | Set the item price. You may get this value from your server. (ex: 100 of gold)
-purchaseDate(date) | Set the date of purchase. If you set nil value, it will be automatically recorded by our SDK and server. Please don't use local time of user's device.
+purchaseDate(date) | Set the date of purchase. If you set nil value, it will be automatically recorded by our SDK and server. Please don't use local time of the user's device.
 transactionReceiptData(nsdata) | Set nil for AFPurchaseTypeVirtualItem
 
 #### IAP Troubleshooting
@@ -283,14 +283,14 @@ If you can't see any data in our dashboard, your AFPurchase object may be invali
 
 ### Give Reward
 
-When you set 'Reward Item' section of the reward campaign or 'Inventive item' section of the incentivized CPI & CPA campaign, you should implement this 'reward item' code to give an reward item to your users.
+When you set 'Reward Item' section of the reward campaign or 'Inventive item' section of the incentivized CPI & CPA campaigns, you should implement this 'reward item' code to give a reward item to your users.
 
-Implementing reward item codes, you can check if your user has any reward to receive, and then will be noticed with an reward item info.
+When implementing reward item codes, you can check if your user has any reward to receive, and then they will receive a notice with the reward item info.
 
-To implement codes, we use two codes below:
+To implement codes, we use the two codes noted below:
 
-- checkRewardItems method: this method is to check if any item is available to receive. we recommend to put this code when app becomes active. 
-- AFRewardItemDelegate implementation: when the reward condition is completed with current user, itemRewarded event is automatically called with AFRewardItem object from our SDK. you can give an item to the user with AFRewardItem object.
+- checkRewardItems method: This method is to check if any item is available to receive. We recommend to put this code when the app becomes active. 
+- AFRewardItemDelegate implementation: When the reward condition is completed with the current user, itemRewarded event is automatically called with AFRewardItem object from our SDK. You can give an item to the user with AFRewardItem object.
 
 ```objective-c
 // AppDelegate.h
@@ -321,37 +321,37 @@ To implement codes, we use two codes below:
 
 itemRewarded event is called when each type of campaign's reward condition is completed.
 
-- Reward Campaign: the event is called when your user see the campaign contents
-- Incentivized CPI Campaign: the event is called when SDK checks Advertising App's install
-- Incentivized CPA Campaign: the event is called after SDK checks Advertising App's install and the user called the targeted marketing event in Advertising App
+- Reward Campaign: The event is called when your user sees the campaign contents.
+- Incentivized CPI Campaign: The event is called when SDK checks Advertising App's install.
+- Incentivized CPA Campaign: The event is called after SDK checks Advertising App's install and the user called the targeted marketing event in Advertising App.
  
-If your users have any network disconnection or loss in theirs device, our SDK stored the reward data in the app's local storage, and then re-check in the next app session. So, we guarantee users will always get a reward from our SDK.
+If your users have any network connectivity issues, our SDK stores the reward data in the app's local storage, and then re-checks during the next app session. So, we guarantee users will always get a reward with our SDK.
 
 #### implementing sendItemToUser()
 
-You should give a reward item to your user using your own client code or back-end server api. Your client may send an api request with unique vale of item, quantity and security token values to your server. Then the server application will add a reward item to user's item inventory.
+You should give a reward item to your user using your own client code or back-end server api. Your client may send an api request with an unique vale of item, quantity and security token values to your server. Then the server application will add a reward item to the user's item inventory.
 
 #### Hack Proof
 
-Our SDK never call itemRewarded event more than once per a campaign. We always check it with device identifiers to avoid abusing. However, there is still possible for hackers to hijack your api request between your client and back-end server. To prevent this issue, we provide a security token value. A security token is unique value per your campaign. You can generate the token while you're creating a reward campaign. You can do hack proof works using the security token as belows:
+Our SDK never calls itemRewarded event more than once per campaign. We always check it with device identifiers to avoid abuse. However, it is still possible for hackers to hijack your api request between your client and back-end server. To prevent this issue, we provide a security token value. A security token is an unique value per your campaign. You can generate the token while you're creating a reward campaign. You can hack proof by using the security token as noted below:
 
-1. You will store a security token to your own database before starting a reward campaign. You should reject any reward requests with invalid token value.
-2. if some users are trying to request with the same token value more than once, you should reject that those requests.
+1. You will store a security token to your own database before starting a reward campaign. You should reject any reward requests with an invalid token value.
+2. If some users are trying to request with the same token value more than once, you should reject those requests.
 3. If you think your security token is exposed to hackers, you can always change the value in our dashboard.
 
 ### Promotion
 
-Using sales promotion campaign, you can promote your in-app item to your users. When users tap an action button of image message, a purchase UI will appear to proceed user's purchase. SDK will automatically detect if users made a purchase or not, and then will update the campaign performance to dashboard in real time.
+By using sales promotion campaigns, you can promote your in-app item to your users. When users tap on an action button of an image message, a purchase UI will appear to proceed with the user's purchase. Our SDK will automatically detect if users made a purchase or not, and then will update the campaign performance to our dashboard in real time.
 
-To apply promotion feature, you should implement AFPromotionDelegate. onPromotion event is automatically called when users tap an action button of image message in sale promotion campaign. You just need to show purchase UI of promotion item using 'promotionPurchase' object. 
+To apply our promotion features, you should implement AFPromotionDelegate. onPromotion event is automatically called when users tap on an action button of an image message in a sales promotion campaign. You just need to show the purchase UI of the promotion item using 'promotionPurchase' object. 
 
-For Actual Currency Item, you should use StoreKit library codes to show purchase UI. You can get product identifier value of SKProduct from ItemId property of promotionPurchase object.
+For Actual Currency Items, you should use StoreKit library codes to show purchase UI. You can get the product identifier value of SKProduct from ItemId property of promotionPurchase object.
 
-For Virtual Currency Item, you should use your own purchase UI which might be already implemented in your store page. Also there are discount options for virtual item sales promotion campaign. You can check the discount type using discountType property of promotionPurchase object
+For Virtual Currency Items, you should use your own purchase UI which might be already implemented in your store page. Also there are discount options for virtual item sales promotion campaigns. You can check the discount type using discountType property of promotionPurchase object
 
-1. **Discount Price**: users can buy a promotion item with specific discounted price. You can get price form price property.
+1. **Discount Price**: Users can buy a promotion item at a specific discounted price. You can get the price from price property.
 
-2. **Discount Rate**: users can buy a promotion item with discount rate. You will calculate the discounted price applying the discount rate which can be earned from discountRate property.
+2. **Discount Rate**: Users can buy a promotion item at a discount rate. You will calculate the discounted price applying the discount rate which can be earned from discountRate property.
 
 ```objective-c
 - (void)applicationDidBecomeActive:(UIApplication *)application 
@@ -394,7 +394,7 @@ For Virtual Currency Item, you should use your own purchase UI which might be al
 
 ```
 
-SDK will detect if users made a purchase using [In-App Purchase Tracking](#in-app-purchase-tracking-beta) feature. Thus, you should implement it to complete this promotion feature. Please make sure that you implement 'cancelPromotionPurchase' method when users cancelled or failed to purchase items.
+Our SDK will detect if users made a purchase using [In-App Purchase Tracking](#in-app-purchase-tracking-beta) feature. Thus, you should implement it to complete this promotion feature. Please make sure that you implement 'cancelPromotionPurchase' method when users cancelled or failed to purchase items.
 
 
 * * *
@@ -403,7 +403,7 @@ SDK will detect if users made a purchase using [In-App Purchase Tracking](#in-ap
 
 ### Custom Parameter
 
-Our SDK can collect user specific profiles such as level, stage, maximum score and etc. We use it to deliver a personalized and targeted message in real time to specific user segment that you can define.
+Our SDK can collect user specific profiles such as level, stage, maximum score and etc. We use it to deliver a personalized and targeted message in real time to specific user segments that you can define.
 
 To implement codes, simply call setCustomParameterWithValue method with passing parameter's index and value. You can get the custom parameter's index in our [Dashboard](https://admin.adfresca.com): 1) Select a App 2) In 'Overview' menu, click 'Settings - Custom Parameters' button.
 
@@ -433,13 +433,13 @@ You will call the method after your app is launched and the values have changed.
 ....
 ```
 
-In some cases, you may not able to set some custom parameters in didFinishLaunchingWithOptions event since you may need to get the values from you server. If so, you will need to set the custom parameters right after the user sign in.
+In some cases, you may not able to set some custom parameters in didFinishLaunchingWithOptions event since you may need to get the values from you server. If so, you will need to set the custom parameters right after the user signs in.
 
 * * *
 
 ### Marketing Moment
 
-Marketing Moment means the moment you want to engage with your users. For example, you may need to deliver the message when the user completes a quest or enters an item store. You will be able to use it with the [custom parameters](#custom-parameter) so you can deliver the personalized and targeted message in specific moment in real time.
+A Marketing Moment means the moment you want to engage with your users. For example, you may need to deliver the message when the user completes a quest or enters an item store. You will be able to use it with the [custom parameters](#custom-parameter) so you can deliver the personalized and targeted message at a specific moment in real time.
 
 To implement codes, simply call load method with passing marketing moment's index. You can get the marketing moment's index in our [Dashboard](https://admin.adfresca.com): 1) Select a App 2) In 'Overview' menu, click 'Settings - Marketing Moment' button. 
 
@@ -495,13 +495,13 @@ With implementing AdFrescaViewDelegate in your code, you can check all the event
 - (void)adViewClosed:(AdFrescaView *)adView {}
 ```
 
-There are many good practices implementing AdFrescaViewDelegate.
+There are many good practices when implementing AdFrescaViewDelegate.
 
 1. Scenarios 1: Display overlay contents in the bootup screen
   - Display Boot-up screen (Logo, etc)
   - Contents will be displayed over the boot-up screen
   - If the user closes the view, the main page will be loaded.
-2. Scenarios 2: Insert Contents between each stages
+2. Scenarios 2: Insert Contents between each stage
   - When the user touch 'Next Stage' button on your game, Contents will be displayed.
   - If the user closes the view and the page will be redirected to the next stage.
   - In these case, you need to use adViewClosed()
@@ -519,9 +519,9 @@ There are many good practices implementing AdFrescaViewDelegate.
 
 Caution:
 
-If user clicked contents that opens App Store or other applications, user will leave our of your app screen.
+If user clicked contents that opens App Store or other applications, user will leave your app screen.
 
-In this case, if you implemented adViewClosed() event like above example, user may see unnatural paging animation since app was temporarily paused by another application.
+In this case, if you implemented adViewClosed() event like above example, user may see an unnatural paging animation since the app was temporarily paused by another application.
 
 To fix this issue, follow the steps below:
   1. In dashboard, you should change 'Close mode' to 'Override' in your marketing moment settings. (it will prevent to close view when user clicked)
@@ -540,7 +540,7 @@ To fix this issue, follow the steps below:
 
 ### Timeout Interval
 
-You can set a timeout interval for marketing moment request. If the message is not loaded within this time interval, the message won't be displayed to users and SDK will return the control to your app.
+You can set a timeout interval for a marketing moment request. If the message is not loaded within this time interval, the message won't be displayed to users and our SDK will return control to your app.
 
 Default is 5 seconds and you can set from 1 seconds to 5 seconds.
 
@@ -557,7 +557,7 @@ fresca.timeoutInterval = 3 // # secs
 
 ### Custom URL Schema
 
-You can set your own URL Schema as 'Click URL' of the campaigns. So, you can navigate your users to the specific page or do some custom actions when user clicked the image message. 
+You can set your own URL Schema as 'Click URL' of the campaigns. So, you can navigate your users to a specific page or do some custom actions when a user clicks the image message. 
 
 1. Set your custom url schemes in Info.plst as follows
 
@@ -584,14 +584,14 @@ In this example, ItemViewController will be displayed when you set the campaign 
 
 ### Cross Promotion Configuration
 
-Using Incentivized CPI & CPA Campaign, your users in 'Media App' can get an incentive item when they install 'Adverting App' from the campaigns.
+When using Incentivized CPI & CPA Campaigns, your users in 'Media App' can get an incentive item when they install 'Adverting App' from the campaigns.
 
-- Medial App: the media app which displays the promotion image and gives an incentive item to users
-- AdvertisingApp: the promotion app which is displayed with an image in the media app's screen.
+- Medial App: The media app which displays the promotion image and gives an incentive item to users.
+- AdvertisingApp: The promotion app which is displayed with an image in the media app's screen.
 
-For more details of Incentivized campaigns and configuration guide in dashboard, please refer to ['Understanding Cross-promotion (Korean)'](https://adfresca.zendesk.com/entries/22033960) guide.
+For more details on incentivized campaigns and configuration guide in our dashboard, please refer to ['Understanding Cross-promotion (Korean)'](https://adfresca.zendesk.com/entries/22033960) guide.
 
-To integrate SDK with this feature, you should have URL Schema value for the adverting app and implement codes to give an incentive item to users in the media app.
+To integrate our SDK with this feature, you should have URL Schema value for the adverting app and implement codes to give an incentive item to users in the media app.
 
 #### Configuration for Advertising App.:
 
@@ -601,11 +601,11 @@ To integrate SDK with this feature, you should have URL Schema value for the adv
 
   In this case, you should set CPI Identifier value of advertising app to "myapp://" in our dashboard (Overview > App Store Edit).
 
-  For iOS, url schema value may be duplicated with other apps, so be careful to choose unique value.
+  For iOS, url schema value may be duplicated with other apps, so be careful to choose an unique value.
 
-  For Incentivized CPI Campaign, SDK Installation of the advertising app is not required. You can only set URL Schema to use app's install.
+  For Incentivized CPI Campaigns, our SDK Installation of the advertising app is not required. You can only set URL Schema to use app's install.
 
-  However, If you use Incentivized CPA Campaign, SDK installation is required and you should also implement 'Marketing Moment' feature to check a reward condition. For example, when you set the reward condition to check 'Tutorial Complete' moment, you should call the marketing moment method to inform your user achieved the goal.
+  However, if you use Incentivized CPA Campaigns, our SDK installation is required and you should also implement 'Marketing Moment' feature to check a reward condition. For example, when you set the reward condition to check 'Tutorial Complete' moment, you should call the marketing moment method to inform your user achieved the goal.
     
   ```objective-c
   - (void)didTutorialComplete {
@@ -625,7 +625,7 @@ To integrate SDK with this feature, you should have URL Schema value for the adv
 
 As [SDK Installation](#installation) describes, SDK uses [IFA(Identifier For Advertisers)](https://developer.apple.com/library/ios/documentation/AdSupport/Reference/ASIdentifierManager_Ref/ASIdentifierManager.html#jumpTo_3) value to distinguish the user's device if you add AdSupport.framework. In other hands, SDK uses [IFV(Identifier For Vendor)](https://developer.apple.com/library/ios/documentation/uikit/reference/UIDevice_Class/Reference/UIDevice.html#jumpTo_7) value to distinguish user's device if you do not add AdSupport.framework.
 
-If you are adding the framework or remove it while you're updating your app which already exists in the app store. The following issues may happen to you.
+If you are adding the framework or remove it while you're updating your app which already exists in the app store, the following issues may occur.
 
 1. When you are going to remove the framework that already used:
   - AD fresca serve will automatically migrate your users' identifier to IFV since we already know both IFA and IFV values. There won't be any issue. (The migration is only available with SDK version higher than 1.3.3)
@@ -640,7 +640,7 @@ If you are adding the framework or remove it while you're updating your app whic
 }
 ```
 
-Please contact us if you have any concern or issue of this section.
+Please contact us if you have any concerns or issues on this section.
 
 * * *
 
