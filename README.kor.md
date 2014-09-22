@@ -15,7 +15,7 @@
   - [AdFrescaViewDelegate](#adfrescaviewdelegate) 
   - [Timeout Interval](#timeout-interval) 
 - [Reference](#reference)
-  - [Custom URL Schema](#custom-url-schema)
+  - [Deep Link](#deep-link)
   - [Cross Promotion Configuration](#cross-promotion-configuration)
   - [IFV Only Option](#ifv-only-option)
 - [Troubleshooting](#troubleshooting)
@@ -509,7 +509,7 @@ fresca.timeoutInterval = 3 // # secs
 
 ### Deep Link
 
-캠페인의 Click URL 설정 시에 Custom URL Schema를 지정할 수 있습니다.
+캠페인의 Deep Link 설정 시에 Custom URL Schema를 지정할 수 있습니다.
 
 이를 통해 사용자가 콘텐츠를 클릭할 경우, 자신이 원하는 특정 앱 페이지로 이동하는 등의 액션을 지정할 수 있습니다.
 
