@@ -507,7 +507,7 @@ fresca.timeoutInterval = 3 // # secs
 
 ## Reference
 
-### Custom URL Schema
+### Deep Link
 
 캠페인의 Click URL 설정 시에 Custom URL Schema를 지정할 수 있습니다.
 
@@ -620,7 +620,9 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 
-- **1.4.1 (2014/06/19 Updated)**
+- v1.4.2
+	- 1개의 마케팅 모멘트에서 복 수 개의 캠페인이 매칭되어 표시가 가능하도록 변경되었습니다.
+- v1.4.1
   - Xcode의 64-bit 아키텍쳐 설정을 지원합니다.
   - 1.4.0-beta에서 지원하는 [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta) 기능을 통합하여 제공합니다.
   - 몇몇 메소드의 이름이 변경되었습니다. (load -> load, show -> show, closeAd -> close) 기존에 제공하던 메소드도 호환성을 위하여 정상적으로 지원합니다.
