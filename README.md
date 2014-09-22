@@ -678,43 +678,43 @@ In other case, if you cannot see any message or get other errors, you can debug 
 
 ## Release Notes
 
-- 1.4.5 (2014/09/22 Updated)
+- **v1.4.5 (2014/09/22 Updated)**
     - Fully tested with official ios 8. Also, there are no compatibility issues with older Nudge SDKs.
     - Please check [Push Messaging](#push-messaging) section to update your push registration codes with iOS 8.
     - Fix mior bugs of deep links.
-- 1.4.4	
+- v1.4.4	
     - Fully tested with ios 8 beta versions.
     - Fix mior bugs of promotion.
-- 1.4.3
+- v1.4.3
     - Support sales promotion campaign. Please refer to [Promotion](#promotion) section.
     - Support security token of reward campaign's hack proof. Please refer to [Give Reward](#give-reward) section.
     - Add cancelPromotionPurchase() method to [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta)
     - Support tap area feature.
-- 1.4.2
+- v1.4.2
     - SDK will match multiple campaigns and show multiple messages in one marketing moment request.
-- 1.4.1
+- v1.4.1
   - Support 64-bit architecture configuration of Xcode.
   - Include IAP Beta features to 1.4.1.
   - Rename some methods (loadAd -> load, showAd -> show, closeAd -> close). Old method will work fine as we guarantee the backward compatibility. 
-- 1.4.0-beta1
+- v1.4.0-beta1
   - 'In-App-Purchase Tracking' feature is now added to iOS SDK. Please refer to In-App-Purchase Tracking (Beta) section.
-- 1.3.5
+- v1.3.5
   - SDK supports 'Reward Item' feature of the announcement campaign.
   - SDK supports 'Incentivized CPA Campaign'. Please refer to 'CPI Identifier' section for detail. 
   - AFRewardItemDelegate is added for easier implementation of reward item. Please refer to 'Reward Item' section for detail 
-- 1.3.4 
+- v1.3.4 
   - Fix testDeviceId property to support all iOS versions
-- 1.3.3 
+- v1.3.3 
   - When APNS device token is registered or changed, SDK now updates  a token value to our service in real-time. (previous SDKs only updated the value when app session started). 
-- 1.3.2
+- v1.3.2
   - Update custom parameters to set long long type.
   - customParameterWithIndex method will return nil value if no data was set
-- 1.3.1 
+- v1.3.1 
   - Added 'Close mode' feature. You can control the closing action of an interstitial view on our dashboard.
   - SDK starts to cache n-App-Purchase Count, Custom Parameter information.
   - Fix a minor bug that landscape view was not normally shown on iOS 4.3
   - Update custom parameters to set long type.
-- 1.3.0
+- v1.3.0
   - Added Incentivized Campaign feature. Check '10. Reward Item' section.
 - v.1.2.1
   - numberOfInAppPurchases property is added. You can set how many times user purchased in-app items, and then use it for campaign targeting options. (See 'In-App Purchased User Management' for detail)
