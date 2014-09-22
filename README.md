@@ -16,7 +16,7 @@
   - [AdFrescaViewDelegate](#adfrescaviewdelegate) 
   - [Timeout Interval](#timeout-interval) 
 - [Reference](#reference)
-  - [Custom URL Schema](#custom-url-schema)
+  - [Deep Link](#deep-link)
   - [Cross Promotion Configuration](#cross-promotion-configuration)
   - [IFV Only Option](#ifv-only-option)
 - [Troubleshooting](#troubleshooting)
@@ -567,9 +567,9 @@ fresca.timeoutInterval = 3 // # secs
 
 ## Reference
 
-### Custom URL Schema
+### Deep Link
 
-You can set your own URL Schema as 'Click URL' of the campaigns. So, you can navigate your users to a specific page or do some custom actions when a user clicks the image message. 
+You can set your own URL Schema as 'Deep Link' of the campaigns. So, you can navigate your users to a specific page or do some custom actions when a user clicks the image message. 
 
 1. Set your custom url schemes in Info.plst as follows
 
@@ -678,7 +678,14 @@ In other case, if you cannot see any message or get other errors, you can debug 
 
 ## Release Notes
 
-- **1.4.3 (2014/08/18 Updated)**
+- 1.4.5 (2014/09/22 Updated)
+    - Fully tested with official ios 8. Also, there are no compatibility issues with older Nudge SDKs.
+    - Please check [Push Messaging](#push-messaging) section to update your push registration codes with iOS 8.
+    - Fix mior bugs of deep links.
+- 1.4.4	
+    - Fully tested with ios 8 beta versions.
+    - Fix mior bugs of promotion.
+- 1.4.3
     - Support sales promotion campaign. Please refer to [Promotion](#promotion) section.
     - Support security token of reward campaign's hack proof. Please refer to [Give Reward](#give-reward) section.
     - Add cancelPromotionPurchase() method to [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta)
