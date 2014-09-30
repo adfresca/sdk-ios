@@ -1,14 +1,14 @@
 ## Contents
 - [Basic Integration](#basic-integration)
-    - [Installation](#installation)
-    - [Start Session](#start-session)
-    - [In-App Messaging](#in-app-messaging)
-    - [Push Messaging](#push-messaging)
-    - [Test Device Registration](#test-device-registration)
-- [IAP, Reward and Promotion](#iap-reward-and-promotion)
+  - [Installation](#installation)
+  - [Start Session](#start-session)
+  - [In-App Messaging](#in-app-messaging)
+  - [Push Messaging](#push-messaging)
+  - [Test Device Registration](#test-device-registration)
+- [IAP, Reward and Sales Promotion](#iap-reward-and-sales-promotion)
   - [In-App Purchase Tracking](#in-app-purchase-tracking)
   - [Give Reward](#give-reward)
-  - [Promotion](#promotion)
+  - [Sales Promotion](#sales-promotion)
 - [Dynamic Targeting](#dynamic-targeting)
   - [Custom Parameter](#custom-parameter)
   - [Marketing Moment](#marketing-moment)
@@ -364,7 +364,7 @@ SDK에서 요청한 아이템을 사용자에게 지급해야 합니다. 클라�
 
 * * *
 
-### Promotion
+### Sales Promotion
 
 Sales Promotion 캠페인을 이용하여 특정 아이템의 구매를 유도할 수 있습니다. 사용자가 캠페인에 노출된 이미지 메시지를 클릭할 경우 해당 아이템의 결제 UI가 표시됩니다. SDK는 사용자의 실제 결제 여부까지 자동으로 트랙킹하여 대쉬보드에서 실시간으로 통계를 제공합니다. 
 
@@ -705,7 +705,7 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 - v1.4.4  
   - 프로모션 기능 관련하여 마이너 버그가 수정되었습니다.
 - v1.4.3
-  - 세일즈 프로모션 캠페인 기능을 지원합니다. 자세한 내용은 [Promotion](#promotion) 항목을 참고하여 주세요.
+  - 세일즈 프로모션 캠페인 기능을 지원합니다. 자세한 내용은 [Sales Promotion](#sales-promotion) 항목을 참고하여 주세요.
   - 리워드 지급 시에 시큐리티 토큰값을 이용하여 보안 이슈를 해결할 수 있습니다. 자세한 내용은 [Give Reward](#give-reward)   항목을 참고하여 주세요.
   - [In-App Purchase Tracking](#in-app-purchase-tracking) 기능에서 cancelPromotionPurchase() 메소드가 추가되었습니다. 
   - 이미지 메시지의 Tap Area 기능을 지원합니다.

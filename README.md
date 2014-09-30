@@ -1,14 +1,14 @@
 ## Contents
 - [Basic Integration](#basic-integration)
-    - [Installation](#installation)
-    - [Start Session](#start-session)
-    - [In-App Messaging](#in-app-messaging)
-    - [Push Messaging](#push-messaging)
-    - [Test Device Registration](#test-device-registration)
-- [IAP, Reward and Promotion](#iap-reward-and-promotion)
+  - [Installation](#installation)
+  - [Start Session](#start-session)
+  - [In-App Messaging](#in-app-messaging)
+  - [Push Messaging](#push-messaging)
+  - [Test Device Registration](#test-device-registration)
+- [IAP, Reward and Sales Promotion](#iap-reward-and-sales-promotion)
   - [In-App Purchase Tracking](#in-app-purchase-tracking)
   - [Give Reward](#give-reward)
-  - [Promotion](#promotion)
+  - [Sales Promotion](#sales-promotion)
 - [Dynamic Targeting](#dynamic-targeting)
   - [Custom Parameter](#custom-parameter)
   - [Marketing Moment](#marketing-moment)
@@ -351,7 +351,7 @@ Our SDK never calls itemRewarded event more than once per campaign. We always ch
 2. If some users are trying to request with the same token value more than once, you should reject those requests.
 3. If you think your security token is exposed to hackers, you can always change the value in our dashboard.
 
-### Promotion
+### Sales Promotion
 
 By using sales promotion campaigns, you can promote your in-app item to your users. When users tap on an action button of an image message, a purchase UI will appear to proceed with the user's purchase. Our SDK will automatically detect if users made a purchase or not, and then will update the campaign performance to our dashboard in real time.
 
@@ -687,7 +687,7 @@ In other case, if you cannot see any message or get other errors, you can debug 
 - v1.4.4	
     - Fix mior bugs of promotion.
 - v1.4.3
-    - Support sales promotion campaign. Please refer to [Promotion](#promotion) section.
+    - Support sales promotion campaign. Please refer to [Sales Promotion](#sales-promotion) section.
     - Support security token of reward campaign's hack proof. Please refer to [Give Reward](#give-reward) section.
     - Add cancelPromotionPurchase() method to [In-App Purchase Tracking](#in-app-purchase-tracking)
     - Support tap area feature.
