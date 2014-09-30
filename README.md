@@ -173,7 +173,7 @@ After you have your test device ID, you have to register it to [Dashboard](https
 
 * * *
 
-## IAP, Reward and Promotion
+## IAP, Reward and Sales Promotion
 
 ### In-App Purchase Tracking
 

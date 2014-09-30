@@ -177,7 +177,7 @@ Nudge는 테스트 모드 기능을 지원하여 테스트를 원하는 디바�
 
 * * *
 
-## IAP & Reward
+## IAP, Reward and Sales Promotion
 
 ### In-App Purchase Tracking
 
