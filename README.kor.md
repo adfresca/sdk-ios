@@ -607,7 +607,7 @@ fresca.timeoutInterval = 3 // # secs
     return NO;
   }
 ```
-  위와  같이 구현한 경우, 캠페인의 Click URL을 'myapp://item' 으로 설정하여 전송하면, ItemViewController 페이지가 실행됩니다.
+  위와  같이 구현한 경우, 캠페인의 Deep Link을 'myapp://item' 으로 설정하여 전송하면, ItemViewController 페이지가 실행됩니다.
 
 * * *
 

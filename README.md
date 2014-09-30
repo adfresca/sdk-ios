@@ -590,7 +590,7 @@ You can set your own URL Schema as 'Deep Link' of the campaigns. So, you can nav
   }
 ```
 
-In this example, ItemViewController will be displayed when you set the campaign click url as 'myapp://item'
+In this example, ItemViewController will be displayed when you set the campaign Deep Link as 'myapp://item'
 
 * * *
 
