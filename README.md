@@ -700,7 +700,7 @@ In other case, if you cannot see any message or get other errors, you can debug 
 - v1.4.01
   - 'In-App-Purchase Tracking' feature is now added to iOS SDK. Please refer to In-App-Purchase Tracking section.
 - v1.3.5
-  - SDK supports 'Reward Item' feature of the announcement campaign.
+  - SDK supports 'Reward Item' feature of the In-App Messaging campaign.
   - SDK supports 'Incentivized CPA Campaign'. Please refer to 'CPI Identifier' section for detail. 
   - AFRewardItemDelegate is added for easier implementation of reward item. Please refer to 'Reward Item' section for detail 
 - v1.3.4 
@@ -739,7 +739,7 @@ isInAppPurchasedUser property is deprecated. Please use numberOfInAppPurchases i
 - v0.9.8
   - testDeviceId, printTestDeviceId properties are added to support a test mode (Please, see 'Checking Test Device ID)
 - v0.9.7
-  - AD Slot feature added as an announcement feature added (See 'AD Slot Setting')
+  - AD Slot feature added as an In-App Messaging feature added (See 'AD Slot Setting')
   - adViewClosed bug fixed. adViewClosed event must be called after show() requested.
   - The AD Caching feature is optimized for better performance.
   - Typos in some methods are fixed.

@@ -2,7 +2,7 @@
 - [Basic Integration](#basic-integration)
     - [Installation](#installation)
     - [Start Session](#start-session)
-    - [In-App Messaging](#in-app-messaging)
+    - [인-앱 메시징 캠페인](#in-app-messaging)
     - [Push Messaging](#push-messaging)
     - [Test Device Registration](#test-device-registration)
 - [IAP, Reward and Promotion](#iap-reward-and-promotion)
@@ -79,7 +79,7 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 } 
 ```
 
-### In-App Messaging
+### 인-앱 메시징 캠페인
 
 인-앱 메시징 기능을 이용하여, 사용자에게 원하는 메시지를 실시간으로 전달할 수 있습니다. 메시지를 전달하고자 하는 시점에 load(), show() 메소드만을 호출하여 적용이 가능합니다. 메시지는 전면 interstitial 이미지, 텍스트, 혹은 iframe 웹페이지 형태로 화면에 표시될 수 있습니다. 메시지는 현재 플레이 중인 사용자가 인-앱 메시징 캠페인의 조건과 매칭된 경우에만 화면에 표시됩니다. 조건에 만족하는 캠페인이 없다면 사용자는 아무런 화면을 보지 않고 자연스럽게 플레이를 이어갑니다. 매칭과 관련한 인-앱 메시징의 다이나믹 타겟팅 기능은 아래의 [Dynamic Targeting](#dynamic-targeting) 항목에서 보다 자세히 설명하고 있습니다.
 
@@ -607,7 +607,7 @@ fresca.timeoutInterval = 3 // # secs
     return NO;
   }
 ```
-  위와  같이 구현한 경우, 캠페인의 Deep Link을 'myapp://item' 으로 설정하여 전송하면, ItemViewController 페이지가 실행됩니다.
+  위와  같이 구현한 경우, 캠페인의 Deep Link를 'myapp://item' 으로 설정하여 전송하면, ItemViewController 페이지가 실행됩니다.
 
 * * *
 
@@ -719,7 +719,7 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
   - 앱 내에서 발생하는 In-App Purchase 데이터를 트랙킹할 수 있는 기능이 추가되었습니다. 자세한 내용은 [In-App Purchase Tracking](#in-app-purchase-tracking) 항목을 참고하여 주세요. [In-App Purchase Tracking](#in-app-purchase-tracking) 항목을 참고하여 주세요.
 - v1.3.5
   - SDK 설치 과정에서 AdSupport framework 추가가 필수항목에서 제외됩니다. IFA 수집을 하지 않아도 SDK 이용이 가능하도록 수정되었습니다. 보다 자세한 내용은 [Installation](#installation) 항목을 참고하여 주세요.
-  - Announcement 캠페인을 통한 Reward Item 지급 기능을 지원합니다. 
+  - 인-앱 메시징 캠페인 캠페인을 통한 Reward Item 지급 기능을 지원합니다. 
   - Incentivized CPA 캠페인 기능을 지원합니다. 자세한 내용은 [CPI Identifier](#cpi-identifier) 항목을 참고하여 주세요.
   - AFRewardItemDelegate가 구현 기능이 추가되어, 지급 가능한 아이템이 발생할 시에 자동으로 itemRewarded 이벤트가 발생합니다. 보다 자세한 내용은 [Reward Item](#reward-item) 항목을 참고하여 주세요.
 - v1.3.4
