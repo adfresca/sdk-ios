@@ -6,7 +6,7 @@
     - [Push Messaging](#push-messaging)
     - [Test Device Registration](#test-device-registration)
 - [IAP, Reward and Promotion](#iap-reward-and-promotion)
-  - [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta)
+  - [In-App Purchase Tracking](#in-app-purchase-tracking)
   - [Give Reward](#give-reward)
   - [Promotion](#promotion)
 - [Dynamic Targeting](#dynamic-targeting)
@@ -175,7 +175,7 @@ After you have your test device ID, you have to register it to [Dashboard](https
 
 ## IAP, Reward and Promotion
 
-### In-App Purchase Tracking (Beta)
+### In-App Purchase Tracking
 
 With In-App-Purchase Tracking , you can analyze all the purchases of your users, and use it for targeting specific user segments to display your campaigns. (targeting feature is coming soon)
 
@@ -406,7 +406,7 @@ For Virtual Currency Items, you should use your own purchase UI which might be a
 
 ```
 
-Our SDK will detect if users made a purchase using [In-App Purchase Tracking](#in-app-purchase-tracking-beta) feature. Thus, you should implement it to complete this promotion feature. Please make sure that you implement 'cancelPromotionPurchase' method when users cancelled or failed to purchase items.
+Our SDK will detect if users made a purchase using [In-App Purchase Tracking](#in-app-purchase-tracking) feature. Thus, you should implement it to complete this promotion feature. Please make sure that you implement 'cancelPromotionPurchase' method when users cancelled or failed to purchase items.
 
 
 * * *
@@ -678,17 +678,18 @@ In other case, if you cannot see any message or get other errors, you can debug 
 
 ## Release Notes
 
-- **v1.4.5 (2014/09/22 Updated)**
+- **v1.4.6 (2014/09/26 Updated)**
+    - Support A/B test feature. (No coding is required)
+- v1.4.5
     - Fully tested with official ios 8. Also, there are no compatibility issues with older Nudge SDKs.
     - Please check [Push Messaging](#push-messaging) section to update your push registration codes with iOS 8.
     - Fix mior bugs of deep links.
 - v1.4.4	
-    - Fully tested with ios 8 beta versions.
     - Fix mior bugs of promotion.
 - v1.4.3
     - Support sales promotion campaign. Please refer to [Promotion](#promotion) section.
     - Support security token of reward campaign's hack proof. Please refer to [Give Reward](#give-reward) section.
-    - Add cancelPromotionPurchase() method to [In-App Purchase Tracking (Beta)](#in-app-purchase-tracking-beta)
+    - Add cancelPromotionPurchase() method to [In-App Purchase Tracking](#in-app-purchase-tracking)
     - Support tap area feature.
 - v1.4.2
     - SDK will match multiple campaigns and show multiple messages in one marketing moment request.
@@ -696,8 +697,8 @@ In other case, if you cannot see any message or get other errors, you can debug 
   - Support 64-bit architecture configuration of Xcode.
   - Include IAP Beta features to 1.4.1.
   - Rename some methods (loadAd -> load, showAd -> show, closeAd -> close). Old method will work fine as we guarantee the backward compatibility. 
-- v1.4.0-beta1
-  - 'In-App-Purchase Tracking' feature is now added to iOS SDK. Please refer to In-App-Purchase Tracking (Beta) section.
+- v1.4.01
+  - 'In-App-Purchase Tracking' feature is now added to iOS SDK. Please refer to In-App-Purchase Tracking section.
 - v1.3.5
   - SDK supports 'Reward Item' feature of the announcement campaign.
   - SDK supports 'Incentivized CPA Campaign'. Please refer to 'CPI Identifier' section for detail. 
