@@ -366,6 +366,13 @@ For Virtual Currency Items, you should use your own purchase UI which might be a
 2. **Discount Rate**: Users can buy a promotion item at a discount rate. You will calculate the discounted price applying the discount rate which can be earned from discountRate property.
 
 ```objective-c
+// AppDelegate.h
+@interface AppDelegate : UIResponder <UIApplicationDelegate, AFPromotionDelegate> {
+
+}
+....
+
+// AppDelegate.m
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
@@ -678,7 +685,11 @@ In other case, if you cannot see any message or get other errors, you can debug 
 
 ## Release Notes
 
-- **v1.4.6 (2014/09/26 Updated)**
+- **v1.4.8 (2014/11/11 Updated)**
+  - Support In-App Purchase Tracking feature for Unity Plugin
+- v1.4.7
+  - Fix the landscape image view bugs for iPhone 6 models
+- v1.4.6
     - Support A/B test feature. (No coding is required)
 - v1.4.5
     - Fully tested with official ios 8. Also, there are no compatibility issues with older Nudge SDKs.

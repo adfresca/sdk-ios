@@ -368,7 +368,7 @@ SDK에서 요청한 아이템을 사용자에게 지급해야 합니다. 클라�
 
 Sales Promotion 캠페인을 이용하여 특정 아이템의 구매를 유도할 수 있습니다. 사용자가 캠페인에 노출된 이미지 메시지를 클릭할 경우 해당 아이템의 결제 UI가 표시됩니다. SDK는 사용자의 실제 결제 여부까지 자동으로 트랙킹하여 대쉬보드에서 실시간으로 통계를 제공합니다. 
 
-프로모션 기능을 적용하기 위해서 AFPromotionListener를 구현합니다. 프로모션 캠페인이 노출된 후 사용자가 이미지 메시지의 액션 영역을 탭하면 onPromotion() 이벤트가 발생합니다. 이벤트에 넘어오는 promotionPurchase 객체 정보를 이용하여 사용자에게 아이템 결제 UI를 표시하도록 코드를 적용합니다.
+프로모션 기능을 적용하기 위해서 AFPromotionDelegate를 구현합니다. 프로모션 캠페인이 노출된 후 사용자가 이미지 메시지의 액션 영역을 탭하면 onPromotion() 이벤트가 발생합니다. 이벤트에 넘어오는 promotionPurchase 객체 정보를 이용하여 사용자에게 아이템 결제 UI를 표시하도록 코드를 적용합니다.
 
 Actual Currency 아이템의 경우 인-앱 결제 라이브러리를 이용하여 결제 UI를 표시합니다. promotionPurchase 객체의 ItemId 값이 아이템의 SKU 값에 해당됩니다. 아래의 예제는 구글 플레이의 결제 라이브러리 코드를 이용하고 있습니다.
 
@@ -378,6 +378,13 @@ Virtual Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상
 2. **Discount Rate**: 캠페인에 지정된 할인율을 적용하여 아이템을 판매합니다. discountRate 프로퍼티 값을 이용하여 할인율 정보를 받아옵니다.
 
 ```objective-c
+// AppDelegate.h
+@interface AppDelegate : UIResponder <UIApplicationDelegate, AFPromotionDelegate> {
+
+}
+....
+
+// AppDelegate.m
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
@@ -696,7 +703,11 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 
-- **v1.4.6 (2014/09/26 Updated)**
+- **v1.4.8 (2014/11/11 Updated)**
+  - 유니티 플러그인에서의 In-App Purchase Tracking 기능을 지원합니다.
+- v1.4.7
+  - 아이폰6 모델에서의 가로형 이미지 표시 문제를 해결하였습니다.
+- v1.4.6
   - A/B 테스트 기능을 지원합니다. 해당 기능은 별도의 코딩 작업 없이 이용 가능합니다.
 - v1.4.5
   - Nudge SDK는 iOS 8 버전에서 정상적으로 동작합니다. 최신 버전이 아닌 기존 버전들도 아무런 호환 이슈 없이 동작됩니다.
