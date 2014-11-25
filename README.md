@@ -102,7 +102,7 @@ When you first call in-app messaging methods, you will see the test message belo
 You can also deliver your push messages anytime you want. Follow the steps below to configure the push notification settings in your app.
 
 1. Upload your APNS Certificate file (.p12) to our Dashboard
-  - You can export your .cer file to .p12 file using Keychain. Please refer to [iOS Push Notification Certificate Guide](https://adfresca.zendesk.com/entries/21714780) to generate .p12 and upload to [Dashboard](https://admin.adfresca.com)
+  - You can export your .cer file to .p12 file using Keychain. Please refer to [iOS Push Notification Certificate Guide](https://adfresca.zendesk.com/entries/82614238) to generate .p12 and upload to [Dashboard](https://admin.adfresca.com)
 
 2. Check your provisioning
   - AD fresca only supports APNS production environment. So, you should build your app with App Store or Ad Hoc Provisioning file to enable production mode
