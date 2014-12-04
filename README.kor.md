@@ -185,8 +185,8 @@ _In-App-Purchase Tracking_ 기능을 통하여 현재 앱에서 발생하고 있
 
 Nudge의 In-App-Purchase Tracking은 2가지 유형이 있습니다.
 
-1. 실제 화폐를 통해 결제되는 Actual Item Purchase Tracking (예: USD $1.99를 결제하여 Gold 100개 아이템을 구입)
-2. 가상 화폐를 통해 결제되는 Virtual Item Purchase Tracking (예: Gold 10개를 이용하여 포션 아이템을 구입)
+1. 실제 화폐를 통해 결제되는 Hard Currency Item Purchase Tracking (예: USD $1.99를 결제하여 Gold 100개 아이템을 구입)
+2. 가상 화폐를 통해 결제되는 Soft Currency Item Purchase Tracking (예: Gold 10개를 이용하여 포션 아이템을 구입)
 
 위 2가지 유형의 데이터를 모두 Tracking 함으로써 앱의 매출뿐만 아니라 인-앱 사용자들의 아이템 구매 추이 분석까지 가능합니다.
 
@@ -194,9 +194,9 @@ Nudge의 In-App-Purchase Tracking은 2가지 유형이 있습니다.
 
 아래의 적용 예제를 참고하여 간단히 In-App-Purchase Tracking 기능을 적용합니다.
 
-#### Actual Item Tracking
+#### Hard Currency Item Tracking
 
-Actual Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
+Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
 
 적용 예제: 
 ```objective-c
@@ -211,7 +211,7 @@ Actual Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 �
   NSDate *transactionDate = transaction.transactionDate;
   NSData *transactionReceiptData = transaction.transactionReceipt;
 
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeActualItem
+  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeHardItem
                                                     itemId:itemId
                                               currencyCode:currencyCode
                                                      price:[price doubleValue]
@@ -229,7 +229,7 @@ Actual Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 �
 }
 ```
 
-Actual Item을 위한 AFPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
+Hard Currency Item을 위한 AFPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -239,15 +239,15 @@ price(double) | 아이템의 가격을 설정합니다. SKProduct 객체의 값�
 purchaseDate(date) | 결제된 시간을 NSDate 객체 형태로 설정합니다. 값이 설정되지 않은 경우 Nudge 서비스에 기록되는 시간이 결제 시간으로 자동 설정됩니다.
 transactionReceiptData(nsdata| SKPaymentTransaction 객체의 transactionReceipt 값을 지정합니다. 추후 Receipt Verficiation 기능을 위해 필요한 데이터를 설정합니다. 
 
-#### Virtual Item Tracking
+#### Soft Currency Item Tracking
 
-Virtual Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
+Soft Currency Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
 
 
 적용 예제: 
 ```objective-c
-- (void)didPurchaseVirtualItem {
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeVirtualItem
+- (void)didPurchaseSoftItem {
+  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeSoftItem
                                                     itemId:@"gun_001"
                                               currencyCode:@"gold"
                                                      price:100
@@ -257,12 +257,12 @@ Virtual Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경
   [[AdFrescaView shardAdView] logPurchase:purchase];
 }
 
-- (void)didFailToPurchaseVirtualItem {
+- (void)didFailToPurchaseSoftItem {
   [[AdFrescaView shardAdView] cancelPromotionPurchase];
 }
 ```
 
-Virtual Item을 위한 AFPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
+Soft Currency Item을 위한 AFPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -270,7 +270,7 @@ itemId(string) | 결제한 아이템의 고유 식별 아이디를 설정합니�
 currencyCode(string) | 결제에 사용한 가상화폐 고유 코드를 설정합니다. (예: gold)
 price(double) | 가상 화폐로 결제한 가격 정보를 설정합니다. (예: gold 10개의 경우 10 값을 설정)
 purchaseDate(date) | 결제된 시간을 NSDate 객체 형태로 설정합니다. 값이 설정되지 않은 경우 Nudge 서비스에 기록되는 시간이 결제 시간으로 자동 설정됩니다.
-transactionReceiptData(nsdata| Virtual 아이템의 경우는 값을 지정하지 않습니다.
+transactionReceiptData(nsdata| Soft 아이템의 경우는 값을 지정하지 않습니다.
 
 #### IAP Trouble Shooting
 
@@ -288,8 +288,8 @@ logPurchase() 메소드를 통해 기록된 AFPurchase 객체는 Nudge 서비스
 }
 
 // AppDelegate.m
-- (void)didPurchaseVirtualItem {
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeVirtualItem
+- (void)didPurchaseSoftItem {
+  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeSoftItem
                                                itemId:@"gun_001"
                                               currencyCode:@"gold"
                                                      price:100
@@ -370,9 +370,9 @@ Sales Promotion 캠페인을 이용하여 특정 아이템의 구매를 유도�
 
 프로모션 기능을 적용하기 위해서 AFPromotionDelegate를 구현합니다. 프로모션 캠페인이 노출된 후 사용자가 이미지 메시지의 액션 영역을 탭하면 onPromotion() 이벤트가 발생합니다. 이벤트에 넘어오는 promotionPurchase 객체 정보를 이용하여 사용자에게 아이템 결제 UI를 표시하도록 코드를 적용합니다.
 
-Actual Currency 아이템의 경우 인-앱 결제 라이브러리를 이용하여 결제 UI를 표시합니다. promotionPurchase 객체의 ItemId 값이 아이템의 SKU 값에 해당됩니다. 아래의 예제는 구글 플레이의 결제 라이브러리 코드를 이용하고 있습니다.
+Hard Currency 아이템의 경우 인-앱 결제 라이브러리를 이용하여 결제 UI를 표시합니다. promotionPurchase 객체의 ItemId 값이 아이템의 SKU 값에 해당됩니다. 아래의 예제는 구글 플레이의 결제 라이브러리 코드를 이용하고 있습니다.
 
-Virtual Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점 내 아이템 결제 UI를 표시하도록 코드를 작성합니다. Virtual Currency 프로모션의 경우는 2가지 가격 할인 옵션을 제공하고 있습니다. discountType 프로퍼티를 이용하여 할인 옵션을 확인할 수 있습니다.
+Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점 내 아이템 결제 UI를 표시하도록 코드를 작성합니다. Soft Currency 프로모션의 경우는 2가지 가격 할인 옵션을 제공하고 있습니다. discountType 프로퍼티를 이용하여 할인 옵션을 확인할 수 있습니다.
 
 1. **Discount Price**: 캠페인에 직접 지정된 가격으로 아이템을 판매합니다. price 프로퍼티 값을 이용하여 가격 정보를 얻습니다.
 2. **Discount Rate**: 캠페인에 지정된 할인율을 적용하여 아이템을 판매합니다. discountRate 프로퍼티 값을 이용하여 할인율 정보를 받아옵니다.
@@ -395,28 +395,28 @@ Virtual Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상
   NSString *itemId = promotionPurchase.itemId;
   NSString *logMessage = @"onPromotion: no logMessage";
   
-  if (promotionPurchase.type == AFPurchaseTypeActualItem) {
+  if (promotionPurchase.type == AFPurchaseTypeHardItem) {
     // Use SKPaymentQueue to show the purchase ui of this item.
     SKProduct *product = [self paymentWithProductIdentifier:itemId];
     SKPayment *payment = [SKPayment paymentWithProduct:product];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
     
-    logMessage = [NSString stringWithFormat:@"on ACTUAL_ITEM Promotion (%@)", itemId];
+    logMessage = [NSString stringWithFormat:@"on HARD_ITEM Promotion (%@)", itemId];
     
-  } else if (promotionPurchase.type == AFPurchaseTypeVirtualItem) {
+  } else if (promotionPurchase.type == AFPurchaseTypeSoftItem) {
     NSString *currencyCode = promotionPurchase.currencyCode;
     
     if (promotionPurchase.discountType == AFDiscountTypePrice) {
       // Use a discounted price
       double discountedPrice = promotionPurchase.price;
       [self showPurchaseUIWithItemId:itemId withDiscountedPrice:discountedPrice];
-      logMessage = [NSString stringWithFormat:@"on VIRTUAL_ITEM Promotion (%@) with %.2f %@", itemId, discountedPrice, currencyCode];
+      logMessage = [NSString stringWithFormat:@"on SOFT_ITEM Promotion (%@) with %.2f %@", itemId, discountedPrice, currencyCode];
 
     } else if (promotionPurchase.discountType == AFDiscountTypeRate) {
       // Use this rate to calculate a discounted price of item. discountedPrice = originalPrice - (originalPrice * discountRate)
       double discountRate = promotionPurchase.discountRate;
       [self showPurchaseUIWithItemId:itemId withDiscountRate:discountRate];
-      logMessage = [NSString stringWithFormat:@"on VIRTUAL_ITEM Promotion (%@) with %.2f %%", itemId, discountRate * 100.0];
+      logMessage = [NSString stringWithFormat:@"on SOFT_ITEM Promotion (%@) with %.2f %%", itemId, discountRate * 100.0];
     }
     
     NSLog(@"%@", logMessage);
@@ -703,7 +703,9 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 
-- **v1.4.8 (2014/11/11 Updated)**
+- **v1.4.9 _(2014/12/05 Updated)_**
+  - AFPurchase 객체에 AFPurchaseTypeHardItem, AFPurchaseTypeSoftItem purchase type이 추가되고 AFPurchaseTypeActualItem, AFPurchaseTypeVirtualItem 값이 deprecated 되었습니다. 자세한 내용은 [In-App Purchase Tracking](#in-app-purchase-tracking) 항목을 참고하여 주세요.
+- v1.4.8
   - 유니티 플러그인에서의 In-App Purchase Tracking 기능을 지원합니다.
 - v1.4.7
   - 아이폰6 모델에서의 가로형 이미지 표시 문제를 해결하였습니다.

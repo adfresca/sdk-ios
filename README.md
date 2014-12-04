@@ -181,16 +181,16 @@ With In-App-Purchase Tracking , you can analyze all the purchases of your users,
 
 There are two types of purchases you can track with our SDK.
 
-1. **Actual Item Purchase Tracking:**  Purchases made with real money. For example, user purchased ‘$1.99' to get 'Gold 100' cash item.
-2. **Virtual Item Purchase Tracking:** Purchases made by virtual money. For example, user purchased 'Gold 10' to get 'Rocket Launcher' item 
+1. **Hard Currency Item Purchase Tracking:**  Purchases made with real money. For example, user purchased ‘$1.99' to get 'Gold 100' cash item.
+2. **Soft Currency Item Purchase Tracking:** Purchases made by virtual money. For example, user purchased 'Gold 10' to get 'Rocket Launcher' item 
 
 You don't need to manually write down any item list. All the items are tracked by our SDK and automatically added to our dashboard. To see the list of items, go to 'Overview > Settings > In-App Items' page in our dashboard.
 
 Let's get started and implement SDK codes with the examples below. 
 
-#### Actual Item Tracking
+#### Hard Currency Item Tracking
 
-In iOS, the purchase of 'Actual Item' is made with Apple's Storekit framework. When your user purchased the item successfully, simply create AFPurchase object and use logPurchase method. Also, call cancelPromotionPurchase method when user cancelled or failed to purchase.
+In iOS, the purchase of 'Hard Currency Item' is made with Apple's Storekit framework. When your user purchased the item successfully, simply create AFPurchase object and use logPurchase method. Also, call cancelPromotionPurchase method when user cancelled or failed to purchase.
 
 ```objective-c
 - (void)completeTransaction:(SKPaymentTransaction *)transaction
@@ -204,7 +204,7 @@ In iOS, the purchase of 'Actual Item' is made with Apple's Storekit framework. W
   NSDate *transactionDate = transaction.transactionDate;
   NSData *transactionReceiptData = transaction.transactionReceipt;
 
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeActualItem
+  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeHardItem
                                                     itemId:itemId
                                               currencyCode:currencyCode
                                                      price:[price doubleValue]
@@ -221,7 +221,7 @@ In iOS, the purchase of 'Actual Item' is made with Apple's Storekit framework. W
 }
 ```
 
-For more details of AFPurchase object with the actual item, check the table below.
+For more details of AFPurchase object with the hard currency item, check the table below.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -231,13 +231,13 @@ price(double) | Set the item price. You may use SKProduct's value or manually se
 purchaseDate(date) | Set the date of purchase. You may use SKPaymentTransaction.transactionDate value. If you set nil value, it will be automatically recorded by our SDK and server. Please don't use local time of the user's device.
 transactionReceiptData(nsdata) | Set the receipt property of SKPaymentTransaction object. We will use it to verify the receipt in the future.
 
-#### Virtual Item Tracking
+#### Soft Currency Item Tracking
 
-When users purchased your virtual item in the app, you can also create AFPurchase object and call logPurchase() method. Also, call cancelPromotionPurchase method when the user cancelled or failed to purchase.
+When users purchased your soft currency item in the app, you can also create AFPurchase object and call logPurchase() method. Also, call cancelPromotionPurchase method when the user cancelled or failed to purchase.
 
 ```objective-c
-- (void)didPurchaseVirtualItem {
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeVirtualItem
+- (void)didPurchaseSoftItem {
+  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeSoftItem
                                                     itemId:@"gun_001"
                                               currencyCode:@"gold"
                                                      price:100
@@ -247,20 +247,20 @@ When users purchased your virtual item in the app, you can also create AFPurchas
   [[AdFrescaView shardAdView] logPurchase:purchase];
 }
 
-- (void)didFailToPurchaseVirtualItem {
+- (void)didFailToPurchaseSoftItem {
   [[AdFrescaView shardAdView] cancelPromotionPurchase];
 }
 ```
 
-For more details of AFPurchase object with the virtual item, check the table below. You don't need to set transactionReceiptData property in the virtual item tracking.
+For more details of AFPurchase object with the soft currency item, check the table below. You don't need to set transactionReceiptData property in the soft currency item tracking.
 
 Method | Description
 ------------ | ------------- | ------------
 itemId(string) | Set the unique identifier of your item. This value may not be different per the os platform or app store. We recommend that you make this value unique for all platforms and stores. Our service can distinguish each item by this value.
-currencyCode(string) | Set the item's virtual currency code. (ex: 'gold', 'gas')
+currencyCode(string) | Set the item's soft currency code. (ex: 'gold', 'gas')
 price(double) | Set the item price. You may get this value from your server. (ex: 100 of gold)
 purchaseDate(date) | Set the date of purchase. If you set nil value, it will be automatically recorded by our SDK and server. Please don't use local time of the user's device.
-transactionReceiptData(nsdata) | Set nil for AFPurchaseTypeVirtualItem
+transactionReceiptData(nsdata) | Set nil for AFPurchaseTypeSoftItem
 
 #### IAP Troubleshooting
 
@@ -276,8 +276,8 @@ If you can't see any data in our dashboard, your AFPurchase object may be invali
 }
 
 // AppDelegate.m
-- (void)didPurchaseVirtualItem {
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeVirtualItem
+- (void)didPurchaseSoftItem {
+  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeSoftItem
                                                itemId:@"gun_001"
                                               currencyCode:@"gold"
                                                      price:100
@@ -357,9 +357,9 @@ By using sales promotion campaigns, you can promote your in-app item to your use
 
 To apply our promotion features, you should implement AFPromotionDelegate. onPromotion event is automatically called when users tap on an action button of an image message in a sales promotion campaign. You just need to show the purchase UI of the promotion item using 'promotionPurchase' object. 
 
-For Actual Currency Items, you should use StoreKit library codes to show purchase UI. You can get the product identifier value of SKProduct from ItemId property of promotionPurchase object.
+For Hard Currency Items, you should use StoreKit library codes to show purchase UI. You can get the product identifier value of SKProduct from ItemId property of promotionPurchase object.
 
-For Virtual Currency Items, you should use your own purchase UI which might be already implemented in your store page. Also there are discount options for virtual item sales promotion campaigns. You can check the discount type using discountType property of promotionPurchase object
+For Soft Currency Items, you should use your own purchase UI which might be already implemented in your store page. Also there are discount options for soft currency item sales promotion campaigns. You can check the discount type using discountType property of promotionPurchase object
 
 1. **Discount Price**: Users can buy a promotion item at a specific discounted price. You can get the price from price property.
 
@@ -383,28 +383,28 @@ For Virtual Currency Items, you should use your own purchase UI which might be a
   NSString *itemId = promotionPurchase.itemId;
   NSString *logMessage = @"onPromotion: no logMessage";
   
-  if (promotionPurchase.type == AFPurchaseTypeActualItem) {
+  if (promotionPurchase.type == AFPurchaseTypeHardItem) {
     // Use SKPaymentQueue to show the purchase ui of this item.
     SKProduct *product = [self paymentWithProductIdentifier:itemId];
     SKPayment *payment = [SKPayment paymentWithProduct:product];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
     
-    logMessage = [NSString stringWithFormat:@"on ACTUAL_ITEM Promotion (%@)", itemId];
+    logMessage = [NSString stringWithFormat:@"on HARD_ITEM Promotion (%@)", itemId];
     
-  } else if (promotionPurchase.type == AFPurchaseTypeVirtualItem) {
+  } else if (promotionPurchase.type == AFPurchaseTypeSoftItem) {
     NSString *currencyCode = promotionPurchase.currencyCode;
     
     if (promotionPurchase.discountType == AFDiscountTypePrice) {
       // Use a discounted price
       double discountedPrice = promotionPurchase.price;
       [self showPurchaseUIWithItemId:itemId withDiscountedPrice:discountedPrice];
-      logMessage = [NSString stringWithFormat:@"on VIRTUAL_ITEM Promotion (%@) with %.2f %@", itemId, discountedPrice, currencyCode];
+      logMessage = [NSString stringWithFormat:@"on SOFT_ITEM Promotion (%@) with %.2f %@", itemId, discountedPrice, currencyCode];
 
     } else if (promotionPurchase.discountType == AFDiscountTypeRate) {
       // Use this rate to calculate a discounted price of item. discountedPrice = originalPrice - (originalPrice * discountRate)
       double discountRate = promotionPurchase.discountRate;
       [self showPurchaseUIWithItemId:itemId withDiscountRate:discountRate];
-      logMessage = [NSString stringWithFormat:@"on VIRTUAL_ITEM Promotion (%@) with %.2f %%", itemId, discountRate * 100.0];
+      logMessage = [NSString stringWithFormat:@"on SOFT_ITEM Promotion (%@) with %.2f %%", itemId, discountRate * 100.0];
     }
     
     NSLog(@"%@", logMessage);
@@ -684,8 +684,9 @@ In other case, if you cannot see any message or get other errors, you can debug 
 * * *
 
 ## Release Notes
-
-- **v1.4.8 (2014/11/11 Updated)**
+- **v1.4.9 _(2014/12/05 Updated)_**
+  - AFPurchaseTypeHardItem and AFPurchaseTypeSoftItem enums are added to AFPurchase class to replace AFPurchaseTypeActualItem and AFPurchaseTypeVirtualItem which will be deprecated. Please refer to [In-App Purchase Tracking](#in-app-purchase-tracking) section.
+- v1.4.8
   - Support In-App Purchase Tracking feature for Unity Plugin
 - v1.4.7
   - Fix the landscape image view bugs for iPhone 6 models
