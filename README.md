@@ -38,7 +38,7 @@ To add our SDK into your Xcode project, please follow the instructions below:
 
   <img src="https://adfresca.zendesk.com/attachments/token/4uzya7c9rw4twus/?name=Screen+Shot+2013-03-27+at+8.22.04+PM.png" width="600" />
 
-2) Add System Configuration.framework and AdSupport.framework, StoreKit.framework into your target if these frameworks are not added yet.
+2) Add System Configuration.framework, StoreKit.framework, and AdSupport.framework (optional) into your target if these frameworks are not added yet.
   
   <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
   
