@@ -105,7 +105,7 @@ You can also deliver your push messages anytime you want. Follow the steps below
   - You can export your .cer file to .p12 file using Keychain. Please refer to [iOS Push Notification Certificate Guide](https://adfresca.zendesk.com/entries/82614238) to generate .p12 and upload to [Dashboard](https://admin.adfresca.com)
 
 2. Check your provisioning
-  - AD fresca only supports APNS production environment. So, you should build your app with App Store or Ad Hoc Provisioning file to enable production mode
+  - Nudge only supports APNS production environment. So, you should build your app with App Store or Ad Hoc Provisioning file to enable production mode
 
 3. Add some codes to AppDelegate 
   ```objective-c
@@ -134,7 +134,7 @@ You can also deliver your push messages anytime you want. Follow the steps below
   }
 
   - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    /// Check a push notification is form AD fresca. Also, ignore a notification received when app is already running 
+    /// Check a push notification is form Nudge. Also, ignore a notification received when app is already running 
     if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
       [AdFrescaView handlePushNotification:userInfo];
     }  
@@ -152,7 +152,7 @@ To register your test device to our dashboard, you need to know your test device
 
   ```objective-c
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  NSLog(@"AD fresca Test Device ID = %@", fresca.testDeviceId); 
+  NSLog(@"Nudge Test Device ID = %@", fresca.testDeviceId); 
   [fresca load];
   [fresca show];
 ```
@@ -647,7 +647,7 @@ As [SDK Installation](#installation) describes, SDK uses [IFA(Identifier For Adv
 If you are adding the framework or remove it while you're updating your app which already exists in the app store, the following issues may occur.
 
 1. When you are going to remove the framework that already used:
-  - AD fresca serve will automatically migrate your users' identifier to IFV since we already know both IFA and IFV values. There won't be any issue. (The migration is only available with SDK version higher than 1.3.3)
+  - Nudge server will automatically migrate your users' identifier to IFV since we already know both IFA and IFV values. There won't be any issue. (The migration is only available with SDK version higher than 1.3.3)
 2. When you are going to add the framework:
   - Since our SDK does not have users' previous IFA values, we can't do the migration process. To solve this issue, we provide **setUseIFVOnly** method. If you set 'YES' value to the method, our SDK will try to match users with IFV value even though the framework is added. If you don't use this method while adding the frameowkr, your exstitng users will be recognized as new users. Please be careful to read this section.
 
@@ -671,7 +671,7 @@ Duplicated Symbol Error of SBJson may occur if you already have SBJson in your p
 
 In this case, compiling will fail with the errors above.
 
-You need to remove 'SBJson' folder in our SDK folder to solve this issue. The latest AD fresca SDK uses [3.1 release](https://github.com/stig/json-framework/tree/v3.1) version of SBJson. You may have a problem when you use older versions in your project.
+You need to remove 'SBJson' folder in our SDK folder to solve this issue. The latest Nudge SDK uses [3.1 release](https://github.com/stig/json-framework/tree/v3.1) version of SBJson. You may have a problem when you use older versions in your project.
 
 In other case, if you cannot see any message or get other errors, you can debug by implementing didFailToReceiveAdWithException event method of  AdFrescaViewDelegate 
 
