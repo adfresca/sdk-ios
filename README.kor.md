@@ -726,7 +726,9 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 
-- **v1.4.9 _(2014/12/05 Updated)_**
+- **v1.5.0 _(2014/12/17 Updated)_**
+  - [Stickiness Custom Parameter](#stickiness-custom-parameter)을 지원합니다.
+- v1.4.9
   - AFPurchase 객체에 AFPurchaseTypeHardItem, AFPurchaseTypeSoftItem purchase type이 추가되고 AFPurchaseTypeActualItem, AFPurchaseTypeVirtualItem 값이 deprecated 되었습니다. 자세한 내용은 [In-App Purchase Tracking](#in-app-purchase-tracking) 항목을 참고하여 주세요.
 - v1.4.8
   - 유니티 플러그인에서의 In-App Purchase Tracking 기능을 지원합니다.
