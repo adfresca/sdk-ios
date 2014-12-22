@@ -476,6 +476,20 @@ After you write the code, you can now use 'Today's play count, 'Average play cou
 }
 ```
 
+If your app was already launched to app stores, you need to set the accumulated value before you call incrCustomParameterWithAmount method. You can check if the custom parameter value is already set or not by using **hasCustomParameterWithIndex(index)** method. If the value is not set yet, set the accumulated value from your app server.
+
+```objective-c
+- (void)didUserSignIn 
+{
+  ....
+
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];       
+  if (![fresca hasCustomParameterWithIndex:CUSTOM_PARAM_INDEX_PLAY_COUNT]) {
+    [fresca setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forIndex:CUSTOM_PARAM_INDEX_PLAY_COUNT];
+  }
+}
+```
+
 * * *
 
 ### Marketing Moment
@@ -706,7 +720,11 @@ In other case, if you cannot see any message or get other errors, you can debug 
 * * *
 
 ## Release Notes
-- **v1.4.9 _(2014/12/05 Updated)_**
+- **v1.5.1 _(2014/12/22 Updated)_**
+  - Add hasCustomParameterWithIndex method. 
+- 1.5.0
+  - Add [Stickiness Custom Parameter](#stickiness-custom-parameter) feature.
+- v1.4.9
   - AFPurchaseTypeHardItem and AFPurchaseTypeSoftItem enums are added to AFPurchase class to replace AFPurchaseTypeActualItem and AFPurchaseTypeVirtualItem which will be deprecated. Please refer to [In-App Purchase Tracking](#in-app-purchase-tracking) section.
 - v1.4.8
   - Support In-App Purchase Tracking feature for Unity Plugin

@@ -489,6 +489,20 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 }
 ```
 
+만약 기존에 출시된 앱에서 새로 Stickiness Custom Parameter를 적용하는 경우, incrCustomParameterWithAmount 호출 이전에 기존의 누적값을 설정해두어야 합니다. **hasCustomParameterWithIndex(index)** 메소드를 이용하여 기존에 설정된 값이 존재하는지 검사한 후 아직 설정된 값이 없다면 누적 값을 미리 설정합니다. (기존의 누적 값은 앱 서버를 통하여 받아옵니다.)
+
+```objective-c
+- (void)didUserSignIn 
+{
+  ....
+
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];       
+  if (![fresca hasCustomParameterWithIndex:CUSTOM_PARAM_INDEX_PLAY_COUNT]) {
+    [fresca setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forIndex:CUSTOM_PARAM_INDEX_PLAY_COUNT];
+  }
+}
+```
+
 * * *
 
 ### Marketing Moment
@@ -726,7 +740,9 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 
-- **v1.5.0 _(2014/12/17 Updated)_**
+- **v1.5.1 _(2014/12/22 Updated)_**
+  - hasCustomParameterWithIndex 메소드가 추가되었습니다.
+- 1.5.0
   - [Stickiness Custom Parameter](#stickiness-custom-parameter)을 지원합니다.
 - v1.4.9
   - AFPurchase 객체에 AFPurchaseTypeHardItem, AFPurchaseTypeSoftItem purchase type이 추가되고 AFPurchaseTypeActualItem, AFPurchaseTypeVirtualItem 값이 deprecated 되었습니다. 자세한 내용은 [In-App Purchase Tracking](#in-app-purchase-tracking) 항목을 참고하여 주세요.
