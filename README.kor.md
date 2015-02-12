@@ -431,41 +431,43 @@ Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점
 
 커스텀 파라미터는 캠페인 진행 시, 타겟팅을 위해 사용할 사용자의 상태 값을 의미합니다.
 
-Nudge SDK는 기본적으로 '국가, 언어, 앱 버전, 실행 횟수 등'의 디바이스 고유 데이터를 수집하며, 동시에 각 앱 내에서 고유하게 사용되는 특수한 상태 값들(예: 캐릭터 레벨, 보유 포인트, 스테이지 등)을 커스텀 파라미터로 정의하고 수집하여 분석 및 타겟팅 기능을 제공합니다.
+Nudge SDK는 기본적으로 '국가, 언어, 앱 버전, 실행 횟수 등'의 디바이스 고유 데이터를 수집하며, 동시에 각 앱 내에서 고유하게 사용되는 특수한 상태 값들(예: 캐릭터 레벨, 현재 스테이지, 페이스북 연동 여부 등)을 커스텀 파라미터로 정의하고 수집하여 분석 및 타겟팅 기능을 제공합니다.
 
-커스텀 파라미터 설정은 [Dashboard](https://admin.adfresca.com) 사이트를 접속하여 앱의 Overview 메뉴 -> Settings - Custom Parameters 버튼을 클릭하여 확인할 수 있습니다.
+Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며, **setCustomParameterWithValue** 메소드를 사용하여 각 고유 키 값에 맞게 상태 값을 설정합니다.
 
-SDK 적용을 위해서는 Dashboard에서 지정된 각 커스텀 파라미터의 '인덱스' 값이 필요합니다. 인덱스 값은 1,2,3,4 와 같은 Integer 형태의 고유 값이며 소스코드에 Constant 형태로 지정하여 이용하는 것을 권장합니다.
-
-Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며, **setCustomParameterWithValue** 메소드를 사용하여 각 인덱스 값에 맞게 상태 값을 설정합니다.
-
-앱이 실행되는 시점에 한 번 값을 설정하고, 이후에는 값이 새로 갱신되는 이벤트마다 새로운 값을 설정합니다.
+앱이 실행되는 시점에 한 번 값을 설정하고, 이후에는 값이 새로 변경되는 이벤트마다 새로운 값을 설정합니다. (사용자의 로그인 이후 최초 설정이 가능한 값은 로그인 직후에 설정합니다.)
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
   ...
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forIndex:CUSTOM_PARAM_INDEX_LEVEL];                    
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forIndex:CUSTOM_PARAM_INDEX_STAGE];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forIndex:CUSTOM_PARAM_INDEX_FACEBOOK];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];                    
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];   
 }
 
 - (void)levelDidChange:(int)level 
 {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
 }   
 
 - (void)stageDidChange:(int)stage 
 {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:stage] forIndex:CUSTOM_PARAM_INDEX_STAGE];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:stage] forKey:"stage"];
 }
 ....
 ```
 
-특정 커스텀 파라미터의 경우, 사용자의 로그인 작업 이후 설정이 가능할 수 있습니다. 해당 경우는 사용자의 로그인 이후에 필요한 커스텀 파라미터를 모두 설정할 수 있도록 합니다.
+코드가 적용되었으면 [Dashboard](https://dashboard.nudge.do)에 접속하여 등록된 커스텀 파라미터 리스트를 확인하고 활성화('Activate')해야 합니다. 커스텀 파라미터 리스트는 Overview 메뉴 -> Settings - Custom Parameters 버튼을 클릭하여 확인할 수 있습니다.
+
+<img src="https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/custom_parameter_index.png">
+
+각 커스텀 파라미터의 'Name' 값을 입력하고 'Activate' 버튼을 눌러 활성화합니다. 최대 20개까지 가능하며 활성화된 이후부터 데이터 수집 및 타겟팅이 가능합니다.
+
+###
 
 * * *
 
@@ -485,11 +487,11 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 - (void)didFinishGame
 {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forIndex:CUSTOM_PARAM_INDEX_PLAY_COUNT];
+  [fresca incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:"play_count"];
 }
 ```
 
-만약 기존에 출시된 앱에서 새로 Stickiness Custom Parameter를 적용하는 경우, incrCustomParameterWithAmount 호출 이전에 기존의 누적값을 설정해두어야 합니다. **hasCustomParameterWithIndex(index)** 메소드를 이용하여 기존에 설정된 값이 존재하는지 검사한 후 아직 설정된 값이 없다면 누적 값을 미리 설정합니다. (기존의 누적 값은 앱 서버를 통하여 받아옵니다.)
+만약 기존에 출시된 앱에서 새로 Stickiness Custom Parameter를 적용하는 경우, incrCustomParameterWithAmount 호출 이전에 기존의 누적값을 설정해두어야 합니다. **hasCustomParameterWithKey(key)** 메소드를 이용하여 기존에 설정된 값이 존재하는지 검사한 후 아직 설정된 값이 없다면 누적 값을 미리 설정합니다. (기존의 누적 값은 앱 서버를 통하여 받아옵니다.)
 
 ```objective-c
 - (void)didUserSignIn 
@@ -497,8 +499,8 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
   ....
 
   AdFrescaView *fresca = [AdFrescaView sharedAdView];       
-  if (![fresca hasCustomParameterWithIndex:CUSTOM_PARAM_INDEX_PLAY_COUNT]) {
-    [fresca setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forIndex:CUSTOM_PARAM_INDEX_PLAY_COUNT];
+  if (![fresca hasCustomParameterWithKey:"play_count"]) {
+    [fresca setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forKey:"play_count"];
   }
 }
 ```
@@ -740,9 +742,13 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 
-- **v1.5.1 _(2014/12/22 Updated)_**
+- **v1.5.3 _(2015/02/13 Updated)_**
+  - [Custom Parameter](#custom-parameter) 설정 시 정수 형태의 고유 인덱스 값이 아닌 문자열 형태의 고유 키 값을 사용할 수 있도록 변경되었습니다. (인덱스를 이용하는 기존 방식도 그대로 지원합니다.)
+- v1.5.2
+  - [Stickiness Custom Parameter](#stickiness-custom-parameter)를 이용한 인앱 메시징 매칭 시 값 변경이 바로 적용되지 않던 문제를 해결하였습니다.
+- v1.5.1
   - hasCustomParameterWithIndex 메소드가 추가되었습니다.
-- 1.5.0
+- v1.5.0
   - [Stickiness Custom Parameter](#stickiness-custom-parameter)을 지원합니다.
 - v1.4.9
   - AFPurchase 객체에 AFPurchaseTypeHardItem, AFPurchaseTypeSoftItem purchase type이 추가되고 AFPurchaseTypeActualItem, AFPurchaseTypeVirtualItem 값이 deprecated 되었습니다. 자세한 내용은 [In-App Purchase Tracking](#in-app-purchase-tracking) 항목을 참고하여 주세요.

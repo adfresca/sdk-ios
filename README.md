@@ -425,34 +425,39 @@ Our SDK will detect if users made a purchase using [In-App Purchase Tracking](#i
 
 Our SDK can collect user specific profiles such as level, stage, maximum score and etc. We use it to deliver a personalized and targeted message in real time to specific user segments that you can define.
 
-To implement codes, simply call setCustomParameterWithValue method with passing parameter's index and value. You can get the custom parameter's index in our [Dashboard](https://admin.adfresca.com): 1) Select a App 2) In 'Overview' menu, click 'Settings - Custom Parameters' button.
+To implement codes, simply call setCustomParameterWithValue method with passing parameter's unique key and its value.
 
-You will call the method after your app is launched and the values have changed. 
+You will call the method after your app is launched and the values have changed. (if you can't set the values without user sign in, you may set them right after users sign in.)
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
   ...
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forIndex:CUSTOM_PARAM_INDEX_LEVEL];                    
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forIndex:CUSTOM_PARAM_INDEX_STAGE];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forIndex:CUSTOM_PARAM_INDEX_FACEBOOK];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];                    
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];   
 }
 
 - (void)levelDidChange:(int)level 
 {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
 }   
 
 - (void)stageDidChange:(int)stage 
 {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:stage] forIndex:CUSTOM_PARAM_INDEX_STAGE];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:stage] forKey:"stage"];
 }
+....
 ```
 
-In some cases, you may not able to set some custom parameters in didFinishLaunchingWithOptions event since you may need to get the values from you server. If so, you will need to set the custom parameters right after the user signs in.
+After you write the codes, you will be able to see a list of custom parameters you added on [Dashboard](https://admin.adfresca.com). 1) Select a App 2) In 'Overview' menu, click 'Settings - Custom Parameters' button.
+
+<img src="https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/custom_parameter_index.png">
+
+You need to set 'Name' value of each custom parameter to activate. You can activate custom parameters up to 20. Nudge only allows activated custom parameters to collect data and provide targeting features.
 
 * * *
 
@@ -472,11 +477,11 @@ After you write the code, you can now use 'Today's play count, 'Average play cou
 - (void)didFinishGame
 {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forIndex:CUSTOM_PARAM_INDEX_PLAY_COUNT];
+  [fresca incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:"play_count"];
 }
 ```
 
-If your app was already launched to app stores, you need to set the accumulated value before you call incrCustomParameterWithAmount method. You can check if the custom parameter value is already set or not by using **hasCustomParameterWithIndex(index)** method. If the value is not set yet, set the accumulated value from your app server.
+If your app was already launched to app stores, you need to set the accumulated value before you call incrCustomParameterWithAmount method. You can check if the custom parameter value is already set or not by using **hasCustomParameterWithKey(key)** method. If the value is not set yet, set the accumulated value from your app server.
 
 ```objective-c
 - (void)didUserSignIn 
@@ -484,8 +489,8 @@ If your app was already launched to app stores, you need to set the accumulated 
   ....
 
   AdFrescaView *fresca = [AdFrescaView sharedAdView];       
-  if (![fresca hasCustomParameterWithIndex:CUSTOM_PARAM_INDEX_PLAY_COUNT]) {
-    [fresca setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forIndex:CUSTOM_PARAM_INDEX_PLAY_COUNT];
+  if (![fresca hasCustomParameterWithKey:"play_count"]) {
+    [fresca setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forKey:"play_count"];
   }
 }
 ```
