@@ -92,7 +92,7 @@ With the in-app messaging feature, you can deliver a message to your in-app user
 } 
 ```
 
-When you first call in-app messaging methods, you will see the test message below. If you tap on the image, it will redirect to the product page of the app on the app store. You will hide this test message by changing the test mode configuration later.
+When you call in-app messaging methods, you will see the test message below. If you tap on the image, it will redirect to the product page of the app on the app store. You will hide this test message by changing the test mode configuration later.
 
 <img src="https://adfresca.zendesk.com/attachments/token/ans53bfy6mwq2e9/?name=4444.png" width="240" />
 &nbsp;
@@ -100,15 +100,15 @@ When you first call in-app messaging methods, you will see the test message belo
 
 ### Push Messaging
 
-You can also deliver your push messages anytime you want. Follow the steps below to configure the push notification settings in your app.
+You can send push messages using Nudge. Follow the steps below to configure the push notification settings in your app.
 
 1. Upload your APNS Certificate file (.p12) to our Dashboard
   - You can export your .cer file to .p12 file using Keychain. Please refer to [iOS Push Notification Certificate Guide](https://adfresca.zendesk.com/entries/82614238) to generate .p12 and upload to [Dashboard](https://admin.adfresca.com)
 
 2. Check your provisioning
-  - Nudge only supports APNS production environment. So, you should build your app with App Store or Ad Hoc Provisioning file to enable production mode
+  - Nudge only supports APNS production environment. So, you should build your app with App Store or Ad Hoc Provisioning file to enable production mode.
 
-3. Add some codes to AppDelegate 
+3. Add the following codes to AppDelegate 
   ```objective-c
   #import <AdFresca/AdFrescaView.h>
 
@@ -146,7 +146,7 @@ You can also deliver your push messages anytime you want. Follow the steps below
 
 Nudge supports a test mode feature. With the test mode feature, you can deliver test messages to only registered test devices. 
 
-To register your test device to our dashboard, you need to know your test device ID from our SDK. Our SDK provides two ways to show test device IDs.
+To register your test device to our dashboard, you need to get your test device ID from our SDK. Our SDK provides two ways to show test device IDs.
  
 1. Using testDeviceId Property
   - After connecting your device with Xcode, you can simply print out test device ID with a logger.
@@ -178,12 +178,12 @@ After you have your test device ID, you have to register it to [Dashboard](https
 
 ### In-App Purchase Tracking
 
-With In-App-Purchase Tracking , you can analyze all the purchases of your users, and use it for targeting specific user segments to display your campaigns. (targeting feature is coming soon)
+With In-App-Purchase Tracking , you can analyze all the purchases of your users, and use it for targeting specific user segments to display your campaigns.
 
 There are two types of purchases you can track with our SDK.
 
-1. **Hard Currency Item Purchase Tracking:**  Purchases made with real money. For example, user purchased ‘$1.99' to get 'Gold 100' cash item.
-2. **Soft Currency Item Purchase Tracking:** Purchases made by virtual money. For example, user purchased 'Gold 10' to get 'Rocket Launcher' item 
+1. **Hard Currency Item Purchase Tracking:**  Purchases made with real money. For example, user purchased ‘$1.99' to get 'Gold 100' cash item
+2. **Soft Currency Item Purchase Tracking:** Purchases made with virtual money. For example, user purchased 'Gold 10' to get 'Rocket Launcher' item
 
 You don't need to manually write down any item list. All the items are tracked by our SDK and automatically added to our dashboard. To see the list of items, go to 'Overview > Settings > In-App Items' page in our dashboard.
 
@@ -191,7 +191,7 @@ Let's get started and implement SDK codes with the examples below.
 
 #### Hard Currency Item Tracking
 
-In iOS, the purchase of 'Hard Currency Item' is made with Apple's Storekit framework. When your user purchased the item successfully, simply create AFPurchase object and use logPurchase method. Also, call cancelPromotionPurchase method when user cancelled or failed to purchase.
+In iOS, the purchase of 'Hard Currency Item' is made with Apple's Storekit framework. When a user purchased the item successfully, simply create AFPurchase object and use logPurchase method. Also, call cancelPromotionPurchase method when a user cancelled or failed to purchase.
 
 ```objective-c
 - (void)completeTransaction:(SKPaymentTransaction *)transaction
@@ -234,7 +234,7 @@ transactionReceiptData(nsdata) | Set the receipt property of SKPaymentTransactio
 
 #### Soft Currency Item Tracking
 
-When users purchased your soft currency item in the app, you can also create AFPurchase object and call logPurchase() method. Also, call cancelPromotionPurchase method when the user cancelled or failed to purchase.
+When a user purchased a soft currency item in the app, you can also create AFPurchase object and call logPurchase() method. Also, call cancelPromotionPurchase method when a user cancelled or failed to purchase.
 
 ```objective-c
 - (void)didPurchaseSoftItem {
@@ -253,7 +253,7 @@ When users purchased your soft currency item in the app, you can also create AFP
 }
 ```
 
-For more details of AFPurchase object with the soft currency item, check the table below. You don't need to set transactionReceiptData property in the soft currency item tracking.
+For more details of AFPurchase object with soft currency items, check the table below. You don't need to set transactionReceiptData property in soft currency item tracking.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -267,7 +267,7 @@ transactionReceiptData(nsdata) | Set nil for AFPurchaseTypeSoftItem
 
 After you call logPurchase() method, the purchase data is updated to our dashboard in real-time. You can see the list of updated item in 'Overview > Settings > In-App Items' menu.
 
-If you can't see any data in our dashboard, your AFPurchase object may be invalid. To check it, you can implement  AFPurchaseDelegate and call log logPurchase(purchase, delegate) method. 
+If you don't see any data in our dashboard, your AFPurchase object may be invalid. To check it, you can implement  AFPurchaseDelegate and call log logPurchase(purchase, delegate) method. 
 
 ```objective-c
 // AppDelegate.h
@@ -296,14 +296,12 @@ If you can't see any data in our dashboard, your AFPurchase object may be invali
 
 ### Give Reward
 
-When you set 'Reward Item' section of the reward campaign or 'Inventive item' section of the incentivized CPI & CPA campaigns, you should implement this 'reward item' code to give a reward item to your users.
-
-When implementing reward item codes, you can check if your user has any reward to receive, and then they will receive a notice with the reward item info.
+When you set 'Reward Item' section of the reward campaign or 'Incentive item' section of the incentivized CPI & CPA campaigns, you should implement this 'reward item' code to give a reward item to users.
 
 To implement codes, we use the two codes noted below:
 
 - checkRewardItems method: This method is to check if any item is available to receive. We recommend to put this code when the app becomes active. 
-- AFRewardItemDelegate implementation: When the reward condition is completed with the current user, itemRewarded event is automatically called with AFRewardItem object from our SDK. You can give an item to the user with AFRewardItem object.
+- AFRewardItemDelegate implementation: When there is a reward available for a user, itemRewarded event is automatically called with AFRewardItem object from our SDK. You can give an item to the user with AFRewardItem object.
 
 ```objective-c
 // AppDelegate.h
@@ -332,31 +330,33 @@ To implement codes, we use the two codes noted below:
 }
 ```
 
-itemRewarded event is called when each type of campaign's reward condition is completed.
+itemRewarded event is called when there is a reward available for a user.
 
 - Reward Campaign: The event is called when your user sees the campaign contents.
-- Incentivized CPI Campaign: The event is called when SDK checks Advertising App's install.
-- Incentivized CPA Campaign: The event is called after SDK checks Advertising App's install and the user called the targeted marketing event in Advertising App.
+- Incentivized CPI Campaign: The event is called when SDK confirms Advertising App's install.
+- Incentivized CPA Campaign: The event is called after SDK confirms Advertising App's install and the user called the targeted marketing event in Advertising App.
  
-If your users have any network connectivity issues, our SDK stores the reward data in the app's local storage, and then re-checks during the next app session. So, we guarantee users will always get a reward with our SDK.
+If a user has any network connectivity issues, our SDK stores the reward data in the app's local storage, and then re-checks during the next app session. So, we guarantee the user will always get a reward with our SDK.
 
 #### implementing sendItemToUser()
 
-You should give a reward item to your user using your own client code or back-end server api. Your client may send an api request with an unique vale of item, quantity and security token values to your server. Then the server application will add a reward item to the user's item inventory.
+You need to give a reward item to the user using your own client code or back-end server API. Your client may send an API request with an unique value of the item, quantity and security token value to your server. Then the server application will add the reward item to the user's item inventory.
 
-#### Hack Proof
+#### Hack Proof Code
 
-Our SDK never calls itemRewarded event more than once per campaign. We always check it with device identifiers to avoid abuse. However, it is still possible for hackers to hijack your api request between your client and back-end server. To prevent this issue, we provide a security token value. A security token is an unique value per your campaign. You can generate the token while you're creating a reward campaign. You can hack proof by using the security token as noted below:
+Our SDK never calls itemRewarded event more than once per campaign by checking it with device identifiers to avoid abuse. However it is still possible for hackers to hijack your API request between your client and your back-end server. 
 
-1. You will store a security token to your own database before starting a reward campaign. You should reject any reward requests with an invalid token value.
-2. If some users are trying to request with the same token value more than once, you should reject those requests.
-3. If you think your security token is exposed to hackers, you can always change the value in our dashboard.
+If you want more security, you can use a security token, which is a unique value generated per reward campaign. We generate a new token for you when you create a reward campaign but you can use your own. Here are steps to implement hack proof codes:
+
+1. You will store a security token to your own database before starting a reward campaign. You should reject any reward requests with an invalid token.
+2. If some users request rewards with the same token more than once, you should reject those requests.
+3. If you think your security token is exposed to hackers, you can always change its value in our dashboard.
 
 ### Sales Promotion
 
-By using sales promotion campaigns, you can promote your in-app item to your users. When users tap on an action button of an image message, a purchase UI will appear to proceed with the user's purchase. Our SDK will automatically detect if users made a purchase or not, and then will update the campaign performance to our dashboard in real time.
+You can promote in-game items to specific user segements. When a user taps on an action button of an in-app message, a purchase UI will appear. Our SDK will automatically detect if the user made a purchase or not, and then will update the campaign performance in our dashboard in real time. Please note that [In-App Purchase Tracking](#in-app-purchase-tracking) feature is a prerequisite to this promotion feature.
 
-To apply our promotion features, you should implement AFPromotionDelegate. onPromotion event is automatically called when users tap on an action button of an image message in a sales promotion campaign. You just need to show the purchase UI of the promotion item using 'promotionPurchase' object. 
+Start implementing AFPromotionDelegate. onPromotion event is automatically called when a user taps on an action button of an image message in a sales promotion campaign. You just need to show the purchase UI of the promotion item using 'promotionPurchase' object. 
 
 For Hard Currency Items, you should use StoreKit library codes to show purchase UI. You can get the product identifier value of SKProduct from ItemId property of promotionPurchase object.
 
@@ -414,7 +414,7 @@ For Soft Currency Items, you should use your own purchase UI which might be alre
 
 ```
 
-Our SDK will detect if users made a purchase using [In-App Purchase Tracking](#in-app-purchase-tracking) feature. Thus, you should implement it to complete this promotion feature. Please make sure that you implement 'cancelPromotionPurchase' method when users cancelled or failed to purchase items.
+Please make sure that you implement 'cancelPromotionPurchase' method when a user cancelled or failed to purchase items.
 
 
 * * *
@@ -423,11 +423,11 @@ Our SDK will detect if users made a purchase using [In-App Purchase Tracking](#i
 
 ### Custom Parameter
 
-Our SDK can collect user specific profiles such as level, stage, maximum score and etc. We use it to deliver a personalized and targeted message in real time to specific user segments that you can define.
+Our SDK can collect user specific data such as level, stage, maximum score and etc. We use them to deliver a personalized and targeted message in real time to specific user segments that you can define.
 
 To implement codes, simply call setCustomParameterWithValue method with passing parameter's unique key and its value.
 
-You will call the method after your app is launched and the values have changed. (if you can't set the values without user sign in, you may set them right after users sign in.)
+You will call the method after your app is launched and when the values have changed. (if you can't set the values without user sign in, you may set them right after a user signs in.)
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
@@ -453,11 +453,11 @@ You will call the method after your app is launched and the values have changed.
 ....
 ```
 
-After you write the codes, you will be able to see a list of custom parameters you added on [Dashboard](https://admin.adfresca.com). 1) Select a App 2) In 'Overview' menu, click 'Settings - Custom Parameters' button.
+After you write the codes and set values, you will be able to see a list of custom parameters you added on [Dashboard](https://admin.adfresca.com). 1) Select an App 2) In 'Overview' menu, click 'Settings - Custom Parameters' button.
 
 <img src="https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/custom_parameter_index.png">
 
-You need to set 'Name' value of each custom parameter to activate. You can activate custom parameters up to 20. Nudge only allows activated custom parameters to collect data and provide targeting features.
+You need to set 'Name' value of each custom parameter to activate. You can activate custom parameters up to 20. Nudge only collects data of activated custom parameters and use them for targeting.
 
 * * *
 
@@ -465,13 +465,13 @@ You need to set 'Name' value of each custom parameter to activate. You can activ
 
 (Stickiness Custom Parameter is currently in beta. To use this feature, contact our [support team](mailto:support@nudge.do))
 
-If your app has any value to measure user stickiness such as ‘play count’ in a stage based game, you can use it to create a  'Stickiness Custom Parameter' with Nudge. ou can define user segments such as 'users who played 30 times in a week' and 'Users who played 5 times today'.
+If your app has a value to measure a user's stickiness (e.g. ‘play count’ in a stage-based game), you can use it to create a  'Stickiness Custom Parameter' with Nudge. You can define user segments such as 'users who played 30 stages in a week' and 'Users who played 5 stages today'.
 
-To begin, you first need to set a new custom parameter such as 'play count’, and then configure it to a stickiness mode (stickiness mode can only be configured by Nudge team currently).
+To begin, you first need to set a new custom parameter (e.g. play count), and then set it as stickiness custom parameter (stickiness mode can only be set by Nudge team currently).
 
 To implement codes, simply pass the value to **incrCustomParameterWithAmount** method whenever the stickiness value is increased. Our SDK will automatically calculate the accumulated value and daily increased value and update user profiles.
 
-After you write the code, you can now use 'Today's play count, 'Average play count in a week', and 'Total play count in a week' conditions to define your user segments in our dashboard.
+After you write the code, you will see new filters available in Segment UI of our dashboard. (e.g. 'Today's play count', 'Average play count in a week', and 'Total play count in a week').
 
 ```objective-c
 - (void)didFinishGame
@@ -481,7 +481,7 @@ After you write the code, you can now use 'Today's play count, 'Average play cou
 }
 ```
 
-If your app was already launched to app stores, you need to set the accumulated value before you call incrCustomParameterWithAmount method. You can check if the custom parameter value is already set or not by using **hasCustomParameterWithKey(key)** method. If the value is not set yet, set the accumulated value from your app server.
+If your app is already live in app stores and have live data, you need to set the most up-to-date value before you call incrCustomParameterWithAmount method. You can check if the custom parameter value is already set by using **hasCustomParameterWithKey(key)** method. If the value is not set yet, set the accumulated value from your app server.
 
 ```objective-c
 - (void)didUserSignIn 
@@ -499,9 +499,9 @@ If your app was already launched to app stores, you need to set the accumulated 
 
 ### Marketing Moment
 
-A Marketing Moment means the moment you want to engage with your users. For example, you may need to deliver the message when the user completes a quest or enters an item store. You will be able to use it with the [custom parameters](#custom-parameter) so you can deliver the personalized and targeted message at a specific moment in real time.
+A Marketing Moment is where and when to engage your users. For example, you may need to deliver the message when the user completes a quest or enters into the in-app store. You can deliver the personalized and targeted message at a specific moment in real time.
 
-To implement codes, simply call load method with passing marketing moment's index. You can get the marketing moment's index in our [Dashboard](https://admin.adfresca.com): 1) Select a App 2) In 'Overview' menu, click 'Settings - Marketing Moment' button. 
+To implement codes, simply call load method with passing marketing moment's index. You can get the marketing moment's index in our [Dashboard](https://admin.adfresca.com): 1) Select an App 2) In 'Overview' menu, click 'Settings - Marketing Moment' button. 
 
 You will call the method after the moment has happened in the app.
 
@@ -524,7 +524,7 @@ You will call the method after the moment has happened in the app.
 
 ### AdFrescaViewDelegate
 
-With implementing AdFrescaViewDelegate in your code, you can check all the events on the SDK 
+With implementing AdFrescaViewDelegate in your code, you can check all the events in the SDK. 
 
 ```objective-c
 // ViewController.h
