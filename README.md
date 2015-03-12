@@ -350,7 +350,7 @@ If you want more security, you can use a security token, which is a unique value
 
 1. You will store a security token to your own database before starting a reward campaign. You should reject any reward requests with an invalid token.
 2. If some users request rewards with the same token more than once, you should reject those requests.
-3. If you think your security token is exposed to hackers, you can always change its value in our dashboard.
+3. If you think your security token is exposed to hackers, you can always change it in our dashboard.
 
 ### Sales Promotion
 
