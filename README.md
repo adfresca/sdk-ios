@@ -182,10 +182,10 @@ With In-App-Purchase Tracking , you can analyze all the purchases of your users,
 
 There are two types of purchases you can track with our SDK.
 
-1. **Hard Currency Item Purchase Tracking:**  Purchases made with real money. For example, user purchased ‘$1.99' to get 'Gold 100' cash item
-2. **Soft Currency Item Purchase Tracking:** Purchases made with virtual money. For example, user purchased 'Gold 10' to get 'Rocket Launcher' item
+1. **Hard Currency Item Purchase Tracking:**  Purchases made with real money. For example, a user purchased ‘$1.99' to get 'Gold 100' cash item
+2. **Soft Currency Item Purchase Tracking:** Purchases made with virtual money. For example, a user purchased 'Gold 10' to get 'Rocket Launcher' item
 
-You don't need to manually write down any item list. All the items are tracked by our SDK and automatically added to our dashboard. To see the list of items, go to 'Overview > Settings > In-App Items' page in our dashboard.
+You don't need to manually write down an item list. All the items are tracked by our SDK and automatically added to our dashboard. To see the list of items, go to 'Overview > Settings > In-App Items' page in our dashboard.
 
 Let's get started and implement SDK codes with the examples below. 
 
