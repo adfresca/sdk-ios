@@ -301,7 +301,7 @@ When you set 'Reward Item' section of the reward campaign or 'Incentive item' se
 To implement codes, we use the two codes noted below:
 
 - checkRewardItems method: This method is to check if any item is available to receive. We recommend to put this code when the app becomes active. 
-- AFRewardItemDelegate implementation: When there is a reward available for a user, itemRewarded event is automatically called with AFRewardItem object from our SDK. You can give an item to the user with AFRewardItem object.
+- AFRewardItemDelegate implementation: When there is a reward available for the user, itemRewarded event is automatically called with AFRewardItem object from our SDK. You can give an item to the user with AFRewardItem object.
 
 ```objective-c
 // AppDelegate.h
@@ -346,7 +346,7 @@ You need to give a reward item to the user using your own client code or back-en
 
 Our SDK never calls itemRewarded event more than once per campaign by checking it with device identifiers to avoid abuse. However it is still possible for hackers to hijack your API request between your client and your back-end server. 
 
-If you want more security, you can use a security token, which is a unique value generated per reward campaign. We generate a new token for you when you create a reward campaign but you can use your own. Here are steps to implement hack proof codes:
+If you want more security, you can use a security token, which is a unique value generated per a reward campaign. We generate a new token for you when you create a reward campaign but you can use your own. Here are steps to implement hack proof codes:
 
 1. You will store a security token to your own database before starting a reward campaign. You should reject any reward requests with an invalid token.
 2. If some users request rewards with the same token more than once, you should reject those requests.
