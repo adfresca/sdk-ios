@@ -142,8 +142,6 @@ To register your test device to our dashboard, you need to get your test device 
   ```objective-c
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
   NSLog(@"Nudge Test Device ID = %@", fresca.testDeviceId); 
-  [fresca load];
-  [fresca show];
 ```
 
 2. Displaying test device ID on your app screen using printTestDeviceId property

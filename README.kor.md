@@ -145,8 +145,6 @@ Nudge는 테스트 모드 기능을 지원하여 테스트를 원하는 디바�
   ```objective-c
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
   NSLog(@"Nudge Test Device ID = %@", fresca.testDeviceId); 
-  [fresca load];
-  [fresca show];
 ```
 
 2. printTestDeviceId Property를 설정하여 뷰에 기기 아이디를 화면에 표시하는 방법
