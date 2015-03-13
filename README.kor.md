@@ -66,7 +66,7 @@ SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
 ### Start Session
 
-이제 SDK 적용을 시작하기 위해 몇 가지 간단한 코드를 적용합니다. 첫 번째로 API Key를 설정하고 앱의 실행을 기록하는 startSession() 메소드를 적용합니다. API Key는 [Dashboard](https://admin.adfresca.com) 사이트에서 등록한 앱을 선택한 후 Overview 메뉴의 Settings - API Keys 버튼을 클릭하여 확인이 가능합니다.
+이제 SDK 적용을 시작하기 위해 몇 가지 간단한 코드를 적용합니다. 첫 번째로 API Key를 설정하고 앱의 실행을 기록하는 startSession() 메소드를 적용합니다. API Key는 [Dashboard](https://dashboard.nudge.do) 사이트에서 등록한 앱을 선택한 후 Overview 메뉴의 Settings - API Keys 버튼을 클릭하여 확인이 가능합니다.
 
 startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백그라운드에서 재실행될 때 자동으로 앱의 실행을 기록합니다.
 
@@ -103,7 +103,7 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 푸시 메시징 기능을 이용하여 사용자가 앱을 실행하지 않을 때에도 언제든 메시지를 전달할 수 있습니다. 아래의 과정을 통하여 푸시 메시징 기능을 적용합니다.
 
 1) APNS 인증서 파일(.p12)을 Dashboard에 등록하기
-  - Keychain 툴을 이용하여 .cer 인증서 파일을 .p12로 변환하고 [Dashboard](https://admin.adfresca.com) 사이트에 등록합니다.
+  - Keychain 툴을 이용하여 .cer 인증서 파일을 .p12로 변환하고 [Dashboard](https://dashboard.nudge.do) 사이트에 등록합니다.
   - 보다 자세한 설명은 [iOS Push Notification 인증서 설정 및 적용하기](https://adfresca.zendesk.com/entries/21714780) 가이드를 통하여 확인이 가능합니다.
 
 2) Info.plast 확인하기 / Provision 확인하기
@@ -174,7 +174,7 @@ Nudge는 테스트 모드 기능을 지원하여 테스트를 원하는 디바�
   [fresca show];
   ```
 
-테스트 디바이스 아이디를 확인한 이후에는, [Dashboard](https://admin.adfresca.com)를 접속하여 'Test Device' 메뉴를 통해 디바이스 등록이 가능합니다.
+테스트 디바이스 아이디를 확인한 이후에는, [Dashboard](https://dashboard.nudge.do)를 접속하여 'Test Device' 메뉴를 통해 디바이스 등록이 가능합니다.
 
 * * *
 
@@ -465,9 +465,7 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 
 <img src="https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/custom_parameter_index.png">
 
-각 커스텀 파라미터의 'Name' 값을 입력하고 'Activate' 버튼을 눌러 활성화합니다. 최대 20개까지 가능하며 활성화된 이후부터 데이터 수집 및 타겟팅이 가능합니다.
-
-###
+이제 각 커스텀 파라미터의 'Name' 값을 입력하여 활성화합니다. 최대 20개까지 가능하며 활성화된 이후부터 데이터 수집 및 타겟팅이 가능합니다.
 
 * * *
 
@@ -513,7 +511,7 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 
 마케팅 모멘트 기능을 사용하여 지정된 상황에 알맞는 캠페인이 노출되도록 할 수 있습니다.
 
-마케팅 모멘트 설정은 [Dashboard](https://admin.adfresca.com) 사이트를 접속하여 앱의 Overview 메뉴 -> Settings - Marketing Moments 버튼을 클릭하여 확인할 수 있습니다.
+마케팅 모멘트 설정은 [Dashboard](https://dashboard.nudge.do) 사이트를 접속하여 앱의 Overview 메뉴 -> Settings - Marketing Moments 버튼을 클릭하여 확인할 수 있습니다.
 
 SDK 적용을 위해서는 Dashboard에서 지정된 각 마케팅 모멘트의 '인덱스' 값이 필요합니다. 인덱스 값은 1,2,3,4 와 같은 Integer 형태의 고유 값이며 소스코드에 Constant 형태로 지정하여 이용하는 것을 권장합니다.
 
@@ -530,7 +528,7 @@ SDK 적용을 위해서는 Dashboard에서 지정된 각 마케팅 모멘트의 
 
 - (void)levelDidChange:(int)level {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL]; 
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"]; 
   [fresca load:EVENT_INDEX_LEVEL_UP]; 
   [fresca show];
 }  
@@ -664,7 +662,7 @@ Incentivized CPI & CPA 캠페인 기능을 사용하여, 사용자가 Media App�
 - Medial App: 다른 앱의 광고를 노출하고, 광고 대상의 앱을 설치한 사용자들에게 보상을 지급하는 앱
 - Advertising: Media App에 광고가 노출되는 앱.
 
-Incentivized CPI & CPA 캠페인에 대한 보다 자세한 설명 및 [Dashboard](https://admin.adfresca.com) 사이트에서의 설정 방법은 [크로스 프로모션 이해하기](https://adfresca.zendesk.com/entries/22033960) 가이드를 참고하여 주시기 바랍니다.
+Incentivized CPI & CPA 캠페인에 대한 보다 자세한 설명 및 [Dashboard](https://dashboard.nudge.do) 사이트에서의 설정 방법은 [크로스 프로모션 이해하기](https://adfresca.zendesk.com/entries/22033960) 가이드를 참고하여 주시기 바랍니다.
 
 SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media App에서의 Reward Item 지급 기능을 구현해야 합니다.
 
@@ -678,7 +676,7 @@ SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media 
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
-  위 경우 [Dashboard](https://admin.adfresca.com) 사이트에서 Advertising App의 CPI Identifier 값을 'myapp://' 으로 설정하게 됩니다.
+  위 경우 [Dashboard](https://dashboard.nudge.do) 사이트에서 Advertising App의 CPI Identifier 값을 'myapp://' 으로 설정하게 됩니다.
   
   iOS 플랫폼의 경우 URL Schema 값이 다른 앱과 중복될 수 있습니다. 정상적인 캠페인 진행을 위해서는 고유한 값을 사용해야 합니다.
 

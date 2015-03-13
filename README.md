@@ -66,7 +66,7 @@ Nudge SDK has been successfully installed without any build error. If you have a
 
 ### Start Session
 
-Now, let’s start to put some simple SDK codes in your app. You first need to call startSession() method with your API Key. To get your API Key, go to our [Dashboard](https://admin.adfresca.com) and then click 'Settings - API Keys' button in your app's 'Overview' page.
+Now, let’s start to put some simple SDK codes in your app. You first need to call startSession() method with your API Key. To get your API Key, go to our [Dashboard](https://dashboard.nudge.do) and then click 'Settings - API Keys' button in your app's 'Overview' page.
 
 startSession() will start to detect when user starts app and resumes from the background.
 
@@ -103,7 +103,7 @@ When you first call in-app messaging methods, you will see the test message belo
 You can also deliver your push messages anytime you want. Follow the steps below to configure the push notification settings in your app.
 
 1. Upload your APNS Certificate file (.p12) to our Dashboard
-  - You can export your .cer file to .p12 file using Keychain. Please refer to [iOS Push Notification Certificate Guide](https://adfresca.zendesk.com/entries/82614238) to generate .p12 and upload to [Dashboard](https://admin.adfresca.com)
+  - You can export your .cer file to .p12 file using Keychain. Please refer to [iOS Push Notification Certificate Guide](https://adfresca.zendesk.com/entries/82614238) to generate .p12 and upload to [Dashboard](https://dashboard.nudge.do)
 
 2. Check your provisioning
   - Nudge only supports APNS production environment. So, you should build your app with App Store or Ad Hoc Provisioning file to enable production mode
@@ -170,7 +170,7 @@ To register your test device to our dashboard, you need to know your test device
   [fresca show];
   ```
 
-After you have your test device ID, you have to register it to [Dashboard](https://admin.adfresca.com). You can register your device in the 'Test Device' menu.
+After you have your test device ID, you have to register it to [Dashboard](https://dashboard.nudge.do). You can register your device in the 'Test Device' menu.
 
 * * *
 
@@ -453,7 +453,7 @@ You will call the method after your app is launched and the values have changed.
 ....
 ```
 
-After you write the codes, you will be able to see a list of custom parameters you added on [Dashboard](https://admin.adfresca.com). 1) Select a App 2) In 'Overview' menu, click 'Settings - Custom Parameters' button.
+After you write the codes, you will be able to see a list of custom parameters you added on [Dashboard](https://dashboard.nudge.do). 1) Select a App 2) In 'Overview' menu, click 'Settings - Custom Parameters' button.
 
 <img src="https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/custom_parameter_index.png">
 
@@ -501,7 +501,7 @@ If your app was already launched to app stores, you need to set the accumulated 
 
 A Marketing Moment means the moment you want to engage with your users. For example, you may need to deliver the message when the user completes a quest or enters an item store. You will be able to use it with the [custom parameters](#custom-parameter) so you can deliver the personalized and targeted message at a specific moment in real time.
 
-To implement codes, simply call load method with passing marketing moment's index. You can get the marketing moment's index in our [Dashboard](https://admin.adfresca.com): 1) Select a App 2) In 'Overview' menu, click 'Settings - Marketing Moment' button. 
+To implement codes, simply call load method with passing marketing moment's index. You can get the marketing moment's index in our [Dashboard](https://dashboard.nudge.do): 1) Select a App 2) In 'Overview' menu, click 'Settings - Marketing Moment' button. 
 
 You will call the method after the moment has happened in the app.
 
