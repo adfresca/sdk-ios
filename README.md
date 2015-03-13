@@ -109,38 +109,26 @@ You can send push messages using Nudge. Follow the steps below to configure the 
   - Nudge only supports APNS production environment. So, you should build your app with App Store or Ad Hoc Provisioning file to enable production mode.
 
 3. Add the following codes to AppDelegate 
-  ```objective-c
-  #import <AdFresca/AdFrescaView.h>
 
-  - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    ....
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-      UIUserNotificationType types = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
-      UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
-      [application registerUserNotificationSettings:notificationSettings];
-      [application registerForRemoteNotifications];
-    } else {
-      [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
-    }
+```objective-c
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  ...
+  NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+  if (userInfo != nil) [self application:application didReceiveRemoteNotification:userInfo];
+} 
 
-    NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-	if (userInfo != nil) {
-	  [self application:application didReceiveRemoteNotification:userInfo];
-	}
-  } 
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  [AdFrescaView registerDeviceToken:deviceToken];
+}
 
-  - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    // Register user's push device token to our SDK
-    [AdFrescaView registerDeviceToken:deviceToken];
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+  if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
+    [AdFrescaView handlePushNotification:userInfo];
   }
+} 
+```
 
-  - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    /// Check a push notification is form Nudge. Also, ignore a notification received when app is already running 
-    if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
-      [AdFrescaView handlePushNotification:userInfo];
-    }  
-  } 
-  ```
+If you haven't implemented any push notification before, please refer to the [full sample code](https://gist.github.com/sunku/791f1ff2d7d1b37ca9f8#file-gistfile1-m)
 
 ### Test Device Registration
 

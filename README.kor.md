@@ -113,38 +113,25 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 
 3) AppDelegate 코드 적용하기 
 
-  ```objective-c
-  #import <AdFresca/AdFrescaView.h>
+```objective-c
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  ...
+  NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+  if (userInfo != nil) [self application:application didReceiveRemoteNotification:userInfo];
+} 
 
-  - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    ....
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-      UIUserNotificationType types = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
-      UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
-      [application registerUserNotificationSettings:notificationSettings];
-      [application registerForRemoteNotifications];
-    } else {
-      [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
-    }
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  [AdFrescaView registerDeviceToken:deviceToken];
+}
 
-    NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-	if (userInfo != nil) {
-	  [self application:application didReceiveRemoteNotification:userInfo];
-	}
-  } 
-  
-  - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    // Register user's push device token to our SDK
-    [AdFrescaView registerDeviceToken:deviceToken];
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+  if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
+    [AdFrescaView handlePushNotification:userInfo];
   }
+} 
+```
 
-  - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    /// Check a push notification is form Nudge. Also, ignore a notification received when app is already running 
-    if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
-      [AdFrescaView handlePushNotification:userInfo];
-    }  
-  } 
-  ```
+만약 푸시 노티피케이션 기능을 처음 적용하는 경우 [샘플 코드](https://gist.github.com/sunku/791f1ff2d7d1b37ca9f8#file-gistfile1-m)를 확인하여 필요한 모든 코드를 확인합니다.
 
 ### Test Device Registration
 
