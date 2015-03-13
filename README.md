@@ -66,7 +66,7 @@ Nudge SDK has been successfully installed without any build error. If you have a
 
 ### Start Session
 
-Now, let’s start to put some simple SDK codes in your app. You first need to call startSession() method with your API Key. To get your API Key, go to our [Dashboard](https://dashboard.nudge.do) and then click 'Settings - API Keys' button in your app's 'Overview' page.
+Now, let’s start to put some simple SDK codes in your app. You first need to call startSession() method with your API Key. To get your API Key, go to our [Dashboard](https://admin.adfresca.com) and then click 'Settings - API Keys' button in your app's 'Overview' page.
 
 startSession() will start to detect when user starts app and resumes from the background.
 
@@ -103,32 +103,44 @@ When you call in-app messaging methods, you will see the test message below. If 
 You can send push messages using Nudge. Follow the steps below to configure the push notification settings in your app.
 
 1. Upload your APNS Certificate file (.p12) to our Dashboard
-  - You can export your .cer file to .p12 file using Keychain. Please refer to [iOS Push Notification Certificate Guide](https://adfresca.zendesk.com/entries/82614238) to generate .p12 and upload to [Dashboard](https://dashboard.nudge.do)
+  - You can export your .cer file to .p12 file using Keychain. Please refer to [iOS Push Notification Certificate Guide](https://adfresca.zendesk.com/entries/82614238) to generate .p12 and upload to [Dashboard](https://admin.adfresca.com)
 
 2. Check your provisioning
   - Nudge only supports APNS production environment. So, you should build your app with App Store or Ad Hoc Provisioning file to enable production mode.
 
 3. Add the following codes to AppDelegate 
+  ```objective-c
+  #import <AdFresca/AdFrescaView.h>
 
-```objective-c
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  ...
-  NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-  if (userInfo != nil) [self application:application didReceiveRemoteNotification:userInfo];
-} 
+  - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    ....
+    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+      UIUserNotificationType types = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
+      UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+      [application registerUserNotificationSettings:notificationSettings];
+      [application registerForRemoteNotifications];
+    } else {
+      [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+    }
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-  [AdFrescaView registerDeviceToken:deviceToken];
-}
+    NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+	if (userInfo != nil) {
+	  [self application:application didReceiveRemoteNotification:userInfo];
+	}
+  } 
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-  if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
-    [AdFrescaView handlePushNotification:userInfo];
+  - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    // Register user's push device token to our SDK
+    [AdFrescaView registerDeviceToken:deviceToken];
   }
-} 
-```
 
-If you haven't implemented any push notification before, please refer to the [full sample code](https://gist.github.com/sunku/791f1ff2d7d1b37ca9f8#file-gistfile1-m)
+  - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    /// Check a push notification is form Nudge. Also, ignore a notification received when app is already running 
+    if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
+      [AdFrescaView handlePushNotification:userInfo];
+    }  
+  } 
+  ```
 
 ### Test Device Registration
 
@@ -142,6 +154,8 @@ To register your test device to our dashboard, you need to get your test device 
   ```objective-c
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
   NSLog(@"Nudge Test Device ID = %@", fresca.testDeviceId); 
+  [fresca load];
+  [fresca show];
 ```
 
 2. Displaying test device ID on your app screen using printTestDeviceId property
@@ -156,7 +170,7 @@ To register your test device to our dashboard, you need to get your test device 
   [fresca show];
   ```
 
-After you have your test device ID, you have to register it to [Dashboard](https://dashboard.nudge.do). You can register your device in the 'Test Device' menu.
+After you have your test device ID, you have to register it to [Dashboard](https://admin.adfresca.com). You can register your device in the 'Test Device' menu.
 
 * * *
 
@@ -409,11 +423,11 @@ Please make sure that you implement 'cancelPromotionPurchase' method when a user
 
 ### Custom Parameter
 
-Our SDK can collect user specific data such as level, stage, maximum score and etc. We use them to deliver a personalized and targeted message in real time to specific user segments that you can define.
+Our SDK can collect user specific data such as level, stage, maximum score, etc. We use them to deliver a personalized and targeted message in real time to specific user segments that you can define.
 
 To implement codes, simply call setCustomParameterWithValue method with passing parameter's unique key and its value.
 
-You will call the method after your app is launched and when the values have changed. (if you can't set the values without user sign in, you may set them right after a user signs in.)
+You will call the method after your app is launched and when the values have changed. (If you can't set the values without user sign in, you may set them right after a user signs in.)
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
@@ -439,7 +453,7 @@ You will call the method after your app is launched and when the values have cha
 ....
 ```
 
-After you write the codes, you will be able to see a list of custom parameters you added on [Dashboard](https://dashboard.nudge.do). 1) Select a App 2) In 'Overview' menu, click 'Settings - Custom Parameters' button.
+After you write the codes and set values, you will be able to see a list of custom parameters you added on [Dashboard](https://admin.adfresca.com). 1) Select an App 2) In 'Overview' menu, click 'Settings - Custom Parameters' button.
 
 <img src="https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/custom_parameter_index.png">
 
@@ -485,9 +499,9 @@ If your app is already live in app stores and have live data, you need to set th
 
 ### Marketing Moment
 
-A Marketing Moment is where and when to engage your users. For example, you may need to deliver the message when the user completes a quest or enters into the in-app store. You can deliver the personalized and targeted message at a specific moment in real time.
+A Marketing Moment is where and when you want to engage your users. For example, you may need to deliver the message when the user completes a quest or enters into the in-app store. You can deliver the personalized and targeted message at a specific moment in real time.
 
-To implement codes, simply call load method with passing marketing moment's index. You can get the marketing moment's index in our [Dashboard](https://dashboard.nudge.do): 1) Select a App 2) In 'Overview' menu, click 'Settings - Marketing Moment' button. 
+To implement codes, simply call load method with passing marketing moment's index. You can get the marketing moment's index in our [Dashboard](https://admin.adfresca.com): 1) Select an App 2) In 'Overview' menu, click 'Settings - Marketing Moment' button. 
 
 You will call the method after the moment has happened in the app.
 
