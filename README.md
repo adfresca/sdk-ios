@@ -725,7 +725,11 @@ In other case, if you cannot see any message or get other errors, you can debug 
 * * *
 
 ## Release Notes
-- **v1.5.1 _(2014/12/22 Updated)_**
+- **v1.5.3 _(2015/02/13 Updated)_**
+  - [Custom Parameter](#custom-parameter) provides 'string' unique key. (Integer key is still available)
+- v1.5.2
+  - Fix minor bugs with 'Stickiness Custom Parameter'
+- 1.5.1
   - Add hasCustomParameterWithIndex method. 
 - 1.5.0
   - Add [Stickiness Custom Parameter](#stickiness-custom-parameter) feature.
