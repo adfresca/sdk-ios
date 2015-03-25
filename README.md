@@ -114,15 +114,6 @@ You can send push messages using Nudge. Follow the steps below to configure the 
 
   - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ....
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-      UIUserNotificationType types = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
-      UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
-      [application registerUserNotificationSettings:notificationSettings];
-      [application registerForRemoteNotifications];
-    } else {
-      [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
-    }
-
     NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
 	if (userInfo != nil) {
 	  [self application:application didReceiveRemoteNotification:userInfo];
