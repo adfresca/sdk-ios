@@ -5,6 +5,7 @@
   - [In-App Messaging](#in-app-messaging)
   - [Push Messaging](#push-messaging)
   - [Test Device Registration](#test-device-registration)
+  - [Test Mode](#test-mode)
 - [IAP, Reward and Sales Promotion](#iap-reward-and-sales-promotion)
   - [In-App Purchase Tracking](#in-app-purchase-tracking)
   - [Give Reward](#give-reward)
@@ -92,7 +93,7 @@ With the in-app messaging feature, you can deliver a message to your in-app user
 } 
 ```
 
-When you call in-app messaging methods, you will see the test message below. If you tap on the image, it will redirect to the product page of the app on the app store. You will hide this test message by changing the test mode configuration later.
+When you call in-app messaging methods, you will see the test message below. If you tap on the image, it will redirect to the product page of the app on the app store. You will hide this test message by changing the test campaign mode configuration later.
 
 <img src="https://adfresca.zendesk.com/attachments/token/ans53bfy6mwq2e9/?name=4444.png" width="240" />
 &nbsp;
@@ -135,7 +136,7 @@ You can send push messages using Nudge. Follow the steps below to configure the 
 
 ### Test Device Registration
 
-Nudge supports a test mode feature. With the test mode feature, you can deliver test messages to only registered test devices. 
+Nudge supports a test campaign feature. With the test campaign feature, you can deliver test messages to only registered test devices. 
 
 To register your test device to our dashboard, you need to get your test device ID from our SDK. Our SDK provides two ways to show test device IDs.
  
@@ -162,6 +163,19 @@ To register your test device to our dashboard, you need to get your test device 
   ```
 
 After you have your test device ID, you have to register it to [Dashboard](https://admin.adfresca.com). You can register your device in the 'Test Device' menu.
+
+### Test Mode
+
+Nudge SDK supports a test mode feature. With the test mode feature, you can verify your SDK codes. When you add **setTestMode(YES)** code, SDK will print a log message with a result for each your SDK code. 
+
+  ```objective-c
+  [AdFrescaView setTestMode:YES];
+  ```
+
+<img src="https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/ios_sdk_test_mode.png" width="900" />
+
+The test mode currently provides 'Start Session', 'Push Messaging', 'In-App Purchase Tracking', 'Custom Parameter', and 'Stickiness Custom Parameter' logs. Other feature support will be available soon.
+
 
 * * *
 
@@ -716,7 +730,9 @@ In other case, if you cannot see any message or get other errors, you can debug 
 * * *
 
 ## Release Notes
-- **v1.5.3 _(2015/02/13 Updated)_**
+- **v1.5.4 _(2015/03/27 Updated)_**
+  - [Test Mode](#test-mode) is added.
+- v1.5.3
   - [Custom Parameter](#custom-parameter) provides 'string' unique key. (Integer key is still available)
 - v1.5.2
   - Fix minor bugs with 'Stickiness Custom Parameter'
