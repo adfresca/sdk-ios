@@ -330,7 +330,7 @@ To implement codes, we use the two codes noted below:
   NSString *logMessage = [NSString stringWithFormat:@"You got the reward item! (%@)", item.name];
   NSLog(@"%@", logMessage);
   
-  // Ggive an item to users.  
+  // Give an item to users.  
   [self sendItemToUser:currentUserId itemId:item.uniqueValue quantity:item.quantity securityToken:item.securityToken];
 }
 ```
