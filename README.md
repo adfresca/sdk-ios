@@ -53,7 +53,7 @@ To add our SDK into your Xcode project, please follow the instructions below:
 
   <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
 
-4) In Info.plst, set 'aps-environment' value as 'production'. It is necessary to use a push notification feature.
+4) In Info.plist, set 'aps-environment' value as 'production'. It is necessary to use a push notification feature.
 
   <img src="https://adfresca.zendesk.com/attachments/token/bd7oz41zoh5zjs4/?name=Screen+Shot+2013-02-07+at+5.22.50+PM.png" width="600" />
 
@@ -623,7 +623,7 @@ fresca.timeoutInterval = 3 // # secs
 
 You can set your own URL Schema as 'Deep Link' of the campaigns. So, you can navigate your users to a specific page or do some custom actions when a user clicks the image message. 
 
-1. Set your custom url schemes in Info.plst as follows
+1. Set your custom url schemes in Info.plist as follows
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png" />
 
@@ -659,7 +659,7 @@ To integrate our SDK with this feature, you should have URL Schema value for the
 
 #### Configuration for Advertising App.:
 
-  Check your url schemes to check app install in Info.plst as follows
+  Check your url schemes to check app install in Info.plist as follows
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
