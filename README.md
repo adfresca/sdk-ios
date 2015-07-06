@@ -127,7 +127,8 @@ You can send push messages using Nudge. Follow the steps below to configure the 
   }
 
   - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    if ([AdFrescaView isFrescaNotification:userInfo]) {
+    /// Check a push notification is form Nudge. Also, ignore a notification received when app is already running 
+    if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
       [AdFrescaView handlePushNotification:userInfo];
     }  
   } 
@@ -729,12 +730,7 @@ In other case, if you cannot see any message or get other errors, you can debug 
 * * *
 
 ## Release Notes
-
-- **v1.5.6 _(2015/06/02 Updated)_**
-  - Support 'Push Reward Campaign'. Please refer to [Push Messaging](#push-messaging) section to revise your 'if statement' code in 'didReceiveRemoteNotification' event
-- v1.5.5
-  - For [In-App Purchase Tracking](#in-app-purchase-tracking), fixed an item name issue with '%' character. 
-- v1.5.4
+- **v1.5.4 _(2015/03/27 Updated)_**
   - [Test Mode](#test-mode) is added.
 - v1.5.3
   - [Custom Parameter](#custom-parameter) provides 'string' unique key. (Integer key is still available)

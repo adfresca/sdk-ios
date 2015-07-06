@@ -125,9 +125,9 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-  if ([AdFrescaView isFrescaNotification:userInfo]) {
+  if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
     [AdFrescaView handlePushNotification:userInfo];
-  }  
+  }
 } 
 ```
 
@@ -725,13 +725,7 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 
-- **v1.5.6 _(2015/06/02 Updated)_**
-  - Push Reward Campaign 기능을 지원합니다. [Push Messaging](#push-messaging) 항목을 참고하여 didReceiveRemoteNotification 이벤트의 분기문을 예제 코드와 같이 수정해야 합니다.
-- v1.5.5
-  - [In-App Purchase Tracking](#in-app-purchase-tracking) 기능에서 '%' 문자가 포함된 아이템 이름을 입력받을 수 있도록 개선되었습니다.
-- v1.5.4
-  - [Test Mode](#test-mode) 기능이 추가되었습니다.
-- v1.5.3
+- **v1.5.3 _(2015/02/13 Updated)_**
   - [Custom Parameter](#custom-parameter) 설정 시 정수 형태의 고유 인덱스 값이 아닌 문자열 형태의 고유 키 값을 사용할 수 있도록 변경되었습니다. (인덱스를 이용하는 기존 방식도 그대로 지원합니다.)
 - v1.5.2
   - [Stickiness Custom Parameter](#stickiness-custom-parameter)를 이용한 인앱 메시징 매칭 시 값 변경이 바로 적용되지 않던 문제를 해결하였습니다.
