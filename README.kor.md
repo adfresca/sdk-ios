@@ -52,7 +52,7 @@ SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
   <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
 
-4) Info.plst 파일의 'aps-environment' 값을 'production' 으로 설정합니다. (Push Notification 적용 시 반드시 확인해주시기 바랍니다.)
+4) Info.plist 파일의 'aps-environment' 값을 'production' 으로 설정합니다. (Push Notification 적용 시 반드시 확인해주시기 바랍니다.)
 
   <img src="https://adfresca.zendesk.com/attachments/token/bd7oz41zoh5zjs4/?name=Screen+Shot+2013-02-07+at+5.22.50+PM.png" width="600" />
 
@@ -106,9 +106,9 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
   - Keychain 툴을 이용하여 .cer 인증서 파일을 .p12로 변환하고 [Dashboard](https://dashboard.nudge.do) 사이트에 등록합니다.
   - 보다 자세한 설명은 [iOS Push Notification 인증서 설정 및 적용하기](https://adfresca.zendesk.com/entries/21714780) 가이드를 통하여 확인이 가능합니다.
 
-2) Info.plast 확인하기 / Provision 확인하기
+2) Info.plist 확인하기 / Provision 확인하기
 - Nudge는 APNS의 Production 환경만을 지원합니다. 때문에 빌드가 production으로 빌드되어야 정상적인 서비스 이용이 가능합니다.
-- Info.plst 파일의 'aps-environment' 값을 'production' 으로 설정되어 있어야 합니다.
+- Info.plist 파일의 'aps-environment' 값을 'production' 으로 설정되어 있어야 합니다.
 - App Store / Ad Hoc release에 사용하는 Provision 인증서를 사용하여 빌드되어야 합니다.
 
 3) AppDelegate 코드 적용하기 
@@ -125,9 +125,9 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-  if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
+  if ([AdFrescaView isFrescaNotification:userInfo]) {
     [AdFrescaView handlePushNotification:userInfo];
-  }
+  }  
 } 
 ```
 
@@ -618,7 +618,7 @@ fresca.timeoutInterval = 3 // # secs
 
 이를 통해 사용자가 콘텐츠를 클릭할 경우, 자신이 원하는 특정 앱 페이지로 이동하는 등의 액션을 지정할 수 있습니다.
 
-1. Info.plst 파일을 열어 사용할 URL Schema 정보를 설정 합니다.
+1. Info.plist 파일을 열어 사용할 URL Schema 정보를 설정 합니다.
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png" />
 
@@ -657,7 +657,7 @@ SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media 
 
   (현재 Incentivized CPI 캠페인을 진행할 경우, Advertising App의 SDK 설치는 필수가 아니며 URL Schema 설정만 진행되면 됩니다. 하지만 Incentivized CPA 캠페인을 진행할 경우 반드시 SDK 설치 및 [Marketing Moment](#marketing-moment) 기능이 적용되어야 합니다.)
 
-  먼저 Xcode 프로젝트의 Info.plst 파일을 열어 사용할 URL Schema 정보를 확인합니다.
+  먼저 Xcode 프로젝트의 Info.plist 파일을 열어 사용할 URL Schema 정보를 확인합니다.
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
@@ -725,7 +725,13 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 
-- **v1.5.3 _(2015/02/13 Updated)_**
+- **v1.5.6 _(2015/06/02 Updated)_**
+  - Push Reward Campaign 기능을 지원합니다. [Push Messaging](#push-messaging) 항목을 참고하여 didReceiveRemoteNotification 이벤트의 분기문을 예제 코드와 같이 수정해야 합니다.
+- v1.5.5
+  - [In-App Purchase Tracking](#in-app-purchase-tracking) 기능에서 '%' 문자가 포함된 아이템 이름을 입력받을 수 있도록 개선되었습니다.
+- v1.5.4
+  - [Test Mode](#test-mode) 기능이 추가되었습니다.
+- v1.5.3
   - [Custom Parameter](#custom-parameter) 설정 시 정수 형태의 고유 인덱스 값이 아닌 문자열 형태의 고유 키 값을 사용할 수 있도록 변경되었습니다. (인덱스를 이용하는 기존 방식도 그대로 지원합니다.)
 - v1.5.2
   - [Stickiness Custom Parameter](#stickiness-custom-parameter)를 이용한 인앱 메시징 매칭 시 값 변경이 바로 적용되지 않던 문제를 해결하였습니다.

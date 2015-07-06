@@ -53,7 +53,7 @@ To add our SDK into your Xcode project, please follow the instructions below:
 
   <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
 
-4) In Info.plst, set 'aps-environment' value as 'production'. It is necessary to use a push notification feature.
+4) In Info.plist, set 'aps-environment' value as 'production'. It is necessary to use a push notification feature.
 
   <img src="https://adfresca.zendesk.com/attachments/token/bd7oz41zoh5zjs4/?name=Screen+Shot+2013-02-07+at+5.22.50+PM.png" width="600" />
 
@@ -127,8 +127,7 @@ You can send push messages using Nudge. Follow the steps below to configure the 
   }
 
   - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    /// Check a push notification is form Nudge. Also, ignore a notification received when app is already running 
-    if ([AdFrescaView isFrescaNotification:userInfo] && [application applicationState] != UIApplicationStateActive) {
+    if ([AdFrescaView isFrescaNotification:userInfo]) {
       [AdFrescaView handlePushNotification:userInfo];
     }  
   } 
@@ -624,7 +623,7 @@ fresca.timeoutInterval = 3 // # secs
 
 You can set your own URL Schema as 'Deep Link' of the campaigns. So, you can navigate your users to a specific page or do some custom actions when a user clicks the image message. 
 
-1. Set your custom url schemes in Info.plst as follows
+1. Set your custom url schemes in Info.plist as follows
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png" />
 
@@ -660,7 +659,7 @@ To integrate our SDK with this feature, you should have URL Schema value for the
 
 #### Configuration for Advertising App.:
 
-  Check your url schemes to check app install in Info.plst as follows
+  Check your url schemes to check app install in Info.plist as follows
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
@@ -730,7 +729,12 @@ In other case, if you cannot see any message or get other errors, you can debug 
 * * *
 
 ## Release Notes
-- **v1.5.4 _(2015/03/27 Updated)_**
+
+- **v1.5.6 _(2015/06/02 Updated)_**
+  - Support 'Push Reward Campaign'. Please refer to [Push Messaging](#push-messaging) section to revise your 'if statement' code in 'didReceiveRemoteNotification' event
+- v1.5.5
+  - For [In-App Purchase Tracking](#in-app-purchase-tracking), fixed an item name issue with '%' character. 
+- v1.5.4
   - [Test Mode](#test-mode) is added.
 - v1.5.3
   - [Custom Parameter](#custom-parameter) provides 'string' unique key. (Integer key is still available)
