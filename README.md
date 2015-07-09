@@ -15,7 +15,7 @@
   - [Stickiness Custom Parameter](#stickiness-custom-parameter)
   - [Marketing Moment](#marketing-moment)
 - [Advanced](#advanced)
-  - [AdFrescaViewDelegate](#adfrescaviewdelegate) 
+  - [NudgeDelegate](#nudgedelegate) 
   - [Timeout Interval](#timeout-interval) 
 - [Reference](#reference)
   - [Deep Link](#deep-link)
@@ -36,7 +36,7 @@
 
 To add our SDK into your Xcode project, please follow the instructions below:
 
-1) Drag & Drop AdFresca folder into the framework folder on your Xcode project.
+1) Drag & Drop Nudge folder into the framework folder on your Xcode project.
 
   <img src="https://adfresca.zendesk.com/attachments/token/4uzya7c9rw4twus/?name=Screen+Shot+2013-03-27+at+8.22.04+PM.png" width="600" />
 
@@ -73,10 +73,10 @@ startSession() will start to detect when user starts app and resumes from the ba
 
 ```objective-c
 // AppDelegate.m
-#import <AdFresca/AdFrescaView.h>
+#import <Nudge/Nudge.h>
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [AdFrescaView startSession:@"YOUR_API_KEY"];
+  [Nudge startSession:@"YOUR_API_KEY"];
   ....
 } 
 ```
@@ -87,9 +87,9 @@ With the in-app messaging feature, you can deliver a message to your in-app user
 
 ```objective-c
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView]; 
-  [fresca load]; 
-  [fresca show]; 
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge load]; 
+  [nudge show]; 
 } 
 ```
 
@@ -111,7 +111,7 @@ You can send push messages using Nudge. Follow the steps below to configure the 
 
 3. Add the following codes to AppDelegate 
   ```objective-c
-  #import <AdFresca/AdFrescaView.h>
+  #import <Nudge/Nudge.h>
 
   - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ....
@@ -123,12 +123,12 @@ You can send push messages using Nudge. Follow the steps below to configure the 
 
   - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // Register user's push device token to our SDK
-    [AdFrescaView registerDeviceToken:deviceToken];
+    [Nudge registerDeviceToken:deviceToken];
   }
 
   - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    if ([AdFrescaView isFrescaNotification:userInfo]) {
-      [AdFrescaView handlePushNotification:userInfo];
+    if ([Nudge isNudgeNotification:userInfo]) {
+      [Nudge handlePushNotification:userInfo];
     }  
   } 
   ```
@@ -143,10 +143,10 @@ To register your test device to our dashboard, you need to get your test device 
   - After connecting your device with Xcode, you can simply print out test device ID with a logger.
 
   ```objective-c
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  NSLog(@"Nudge Test Device ID = %@", fresca.testDeviceId); 
-  [fresca load];
-  [fresca show];
+  Nudge *nudge = [Nudge sharedAdView];
+  NSLog(@"Nudge Test Device ID = %@", nudge.testDeviceId); 
+  [nudge load];
+  [nudge show];
 ```
 
 2. Displaying test device ID on your app screen using printTestDeviceId property
@@ -155,10 +155,10 @@ To register your test device to our dashboard, you need to get your test device 
   - printTestDeviceId property must be set to false when you distribute your app on the store. 
 
   ```objective-c
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  fresca.printTestDeviceId = YES;
-  [fresca load];
-  [fresca show];
+  Nudge *nudge = [Nudge sharedAdView];
+  nudge.printTestDeviceId = YES;
+  [nudge load];
+  [nudge show];
   ```
 
 After you have your test device ID, you have to register it to [Dashboard](https://admin.adfresca.com). You can register your device in the 'Test Device' menu.
@@ -168,7 +168,7 @@ After you have your test device ID, you have to register it to [Dashboard](https
 Nudge SDK supports a test mode feature. With the test mode feature, you can verify your SDK codes. When you add **setTestMode(YES)** code, SDK will print a log message with a result for each your SDK code. 
 
   ```objective-c
-  [AdFrescaView setTestMode:YES];
+  [Nudge setTestMode:YES];
   ```
 
 <img src="http://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/ios_sdk_test_mode.png" width="900" />
@@ -195,7 +195,7 @@ Let's get started and implement SDK codes with the examples below.
 
 #### Hard Currency Item Tracking
 
-In iOS, the purchase of 'Hard Currency Item' is made with Apple's Storekit framework. When a user purchased the item successfully, simply create AFPurchase object and use logPurchase method. Also, call cancelPromotionPurchase method when a user cancelled or failed to purchase.
+In iOS, the purchase of 'Hard Currency Item' is made with Apple's Storekit framework. When a user purchased the item successfully, simply create NPurchase object and use logPurchase method. Also, call cancelPromotionPurchase method when a user cancelled or failed to purchase.
 
 ```objective-c
 - (void)completeTransaction:(SKPaymentTransaction *)transaction
@@ -209,24 +209,24 @@ In iOS, the purchase of 'Hard Currency Item' is made with Apple's Storekit frame
   NSDate *transactionDate = transaction.transactionDate;
   NSData *transactionReceiptData = transaction.transactionReceipt;
 
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeHardItem
-                                                    itemId:itemId
-                                              currencyCode:currencyCode
-                                                     price:[price doubleValue]
-                                              purchaseDate:transactionDate
-                                    transactionReceiptData:transactionReceiptData];
+  NPurchase *purchase = [NPurchase buildPurchaseWithType:NPurchaseTypeHardItem
+                                                  itemId:itemId
+                                            currencyCode:currencyCode
+                                                   price:[price doubleValue]
+                                            purchaseDate:transactionDate
+                                  transactionReceiptData:transactionReceiptData];
 
-  [[AdFrescaView shardAdView] logPurchase:purchase];
+  [[Nudge shardAdView] logPurchase:purchase];
 }
 
 - (void)failedTransaction:(SKPaymentTransaction *)transaction 
 {
-  [[AdFrescaView shardAdView] cancelPromotionPurchase];
+  [[Nudge shardAdView] cancelPromotionPurchase];
   ....
 }
 ```
 
-For more details of AFPurchase object with the hard currency item, check the table below.
+For more details of NPurchase object with the hard currency item, check the table below.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -238,26 +238,26 @@ transactionReceiptData(nsdata) | Set the receipt property of SKPaymentTransactio
 
 #### Soft Currency Item Tracking
 
-When a user purchased a soft currency item in the app, you can also create AFPurchase object and call logPurchase() method. Also, call cancelPromotionPurchase method when a user cancelled or failed to purchase.
+When a user purchased a soft currency item in the app, you can also create NPurchase object and call logPurchase() method. Also, call cancelPromotionPurchase method when a user cancelled or failed to purchase.
 
 ```objective-c
 - (void)didPurchaseSoftItem {
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeSoftItem
-                                                    itemId:@"gun_001"
-                                              currencyCode:@"gold"
-                                                     price:100
-                                              purchaseDate:nil
-                                    transactionReceiptData:nil]; 
+  NPurchase *purchase = [NPurchase buildPurhcaseWithType:NPurchaseTypeSoftItem
+                                                  itemId:@"gun_001"
+                                            currencyCode:@"gold"
+                                                   price:100
+                                            purchaseDate:nil
+                                  transactionReceiptData:nil]; 
 
-  [[AdFrescaView shardAdView] logPurchase:purchase];
+  [[Nudge shardAdView] logPurchase:purchase];
 }
 
 - (void)didFailToPurchaseSoftItem {
-  [[AdFrescaView shardAdView] cancelPromotionPurchase];
+  [[Nudge shardAdView] cancelPromotionPurchase];
 }
 ```
 
-For more details of AFPurchase object with soft currency items, check the table below. You don't need to set transactionReceiptData property in soft currency item tracking.
+For more details of NPurchase object with soft currency items, check the table below. You don't need to set transactionReceiptData property in soft currency item tracking.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -265,34 +265,34 @@ itemId(string) | Set the unique identifier of your item. This value may not be d
 currencyCode(string) | Set the item's soft currency code. (ex: 'gold', 'gas')
 price(double) | Set the item price. You may get this value from your server. (ex: 100 of gold)
 purchaseDate(date) | Set the date of purchase. If you set nil value, it will be automatically recorded by our SDK and server. Please don't use local time of the user's device.
-transactionReceiptData(nsdata) | Set nil for AFPurchaseTypeSoftItem
+transactionReceiptData(nsdata) | Set nil for NPurchaseTypeSoftItem
 
 #### IAP Troubleshooting
 
 After you call logPurchase() method, the purchase data is updated to our dashboard in real-time. You can see the list of updated item in 'Overview > Settings > In-App Items' menu.
 
-If you don't see any data in our dashboard, your AFPurchase object may be invalid. To check it, you can implement  AFPurchaseDelegate and call log logPurchase(purchase, delegate) method. 
+If you don't see any data in our dashboard, your NPurchase object may be invalid. To check it, you can implement  NPurchaseDelegate and call log logPurchase(purchase, delegate) method. 
 
 ```objective-c
 // AppDelegate.h
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, AFPurchaseDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NPurchaseDelegate> {
   ...
 }
 
 // AppDelegate.m
 - (void)didPurchaseSoftItem {
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeSoftItem
-                                               itemId:@"gun_001"
-                                              currencyCode:@"gold"
-                                                     price:100
-                                              purchaseDate:nil
-                                    transactionReceiptData:nil];
-  [[AdFrescaView shardAdView] logPurchase:purchase, self];
+  NPurchase *purchase = [NPurchase buildPurchaseWithType:NPurchaseTypeSoftItem
+                                             itemId:@"gun_001"
+                                            currencyCode:@"gold"
+                                                   price:100
+                                            purchaseDate:nil
+                                  transactionReceiptData:nil];
+  [[Nudge shardAdView] logPurchase:purchase, self];
 }
 
-- (void)purchase:(AFPurchase *)purchase didFailToLogWithException:(AdFrescaException *)exception {
-  NSLog(@"AFPurchase didFailToLogWithException :: purchase = %@, exception = %@", [purchase JSONRepresentation], [exception description]);
+- (void)purchase:(NPurchase *)purchase didFailToLogWithException:(NudgeException *)exception {
+  NSLog(@"NPurchase didFailToLogWithException :: purchase = %@, exception = %@", [purchase JSONRepresentation], [exception description]);
 }
 ```
 
@@ -305,12 +305,12 @@ When you set 'Reward Item' section of the reward campaign or 'Incentive item' se
 To implement codes, we use the two codes noted below:
 
 - checkRewardItems method: This method is to check if any item is available to receive. We recommend to put this code when the app becomes active. 
-- AFRewardItemDelegate implementation: When there is a reward available for the user, itemRewarded event is automatically called with AFRewardItem object from our SDK. You can give an item to the user with AFRewardItem object.
+- NRewardItemDelegate implementation: When there is a reward available for the user, itemRewarded event is automatically called with NRewardItem object from our SDK. You can give an item to the user with NRewardItem object.
 
 ```objective-c
 // AppDelegate.h
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, AFRewardItemDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NRewardItemDelegate> {
   ...
 }
 
@@ -319,12 +319,12 @@ To implement codes, we use the two codes noted below:
 
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  [fresca setRewardDelegate:self];
-  [fresca checkRewardItems];
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge setRewardDelegate:self];
+  [nudge checkRewardItems];
 }
 
-- (void)itemRewarded:(AFRewardItem *)item 
+- (void)itemRewarded:(NRewardItem *)item 
 {
   NSString *logMessage = [NSString stringWithFormat:@"You got the reward item! (%@)", item.name];
   NSLog(@"%@", logMessage);
@@ -360,7 +360,7 @@ If you want more security, you can use a security token, which is a unique value
 
 You can promote in-game items to specific user segements. When a user taps on an action button of an in-app message, a purchase UI will appear. Our SDK will automatically detect if the user made a purchase or not, and then will update the campaign performance in our dashboard in real time. Please note that [In-App Purchase Tracking](#in-app-purchase-tracking) feature is a prerequisite to this promotion feature.
 
-Start implementing AFPromotionDelegate. onPromotion event is automatically called when a user taps on an action button of an image message in a sales promotion campaign. You just need to show the purchase UI of the promotion item using 'promotionPurchase' object. 
+Start implementing NPromotionDelegate. onPromotion event is automatically called when a user taps on an action button of an image message in a sales promotion campaign. You just need to show the purchase UI of the promotion item using 'promotionPurchase' object. 
 
 For Hard Currency Items, you should use StoreKit library codes to show purchase UI. You can get the product identifier value of SKProduct from ItemId property of promotionPurchase object.
 
@@ -372,7 +372,7 @@ For Soft Currency Items, you should use your own purchase UI which might be alre
 
 ```objective-c
 // AppDelegate.h
-@interface AppDelegate : UIResponder <UIApplicationDelegate, AFPromotionDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NPromotionDelegate> {
 
 }
 ....
@@ -380,15 +380,15 @@ For Soft Currency Items, you should use your own purchase UI which might be alre
 // AppDelegate.m
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  [fresca setPromotionDelegate:self];
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge setPromotionDelegate:self];
 }
 
-- (void)onPromotion:(AFPurchase *)promotionPurchase {
+- (void)onPromotion:(NPurchase *)promotionPurchase {
   NSString *itemId = promotionPurchase.itemId;
   NSString *logMessage = @"onPromotion: no logMessage";
   
-  if (promotionPurchase.type == AFPurchaseTypeHardItem) {
+  if (promotionPurchase.type == NPurchaseTypeHardItem) {
     // Use SKPaymentQueue to show the purchase ui of this item.
     SKProduct *product = [self paymentWithProductIdentifier:itemId];
     SKPayment *payment = [SKPayment paymentWithProduct:product];
@@ -396,16 +396,16 @@ For Soft Currency Items, you should use your own purchase UI which might be alre
     
     logMessage = [NSString stringWithFormat:@"on HARD_ITEM Promotion (%@)", itemId];
     
-  } else if (promotionPurchase.type == AFPurchaseTypeSoftItem) {
+  } else if (promotionPurchase.type == NPurchaseTypeSoftItem) {
     NSString *currencyCode = promotionPurchase.currencyCode;
     
-    if (promotionPurchase.discountType == AFDiscountTypePrice) {
+    if (promotionPurchase.discountType == NDiscountTypePrice) {
       // Use a discounted price
       double discountedPrice = promotionPurchase.price;
       [self showPurchaseUIWithItemId:itemId withDiscountedPrice:discountedPrice];
       logMessage = [NSString stringWithFormat:@"on SOFT_ITEM Promotion (%@) with %.2f %@", itemId, discountedPrice, currencyCode];
 
-    } else if (promotionPurchase.discountType == AFDiscountTypeRate) {
+    } else if (promotionPurchase.discountType == NDiscountTypeRate) {
       // Use this rate to calculate a discounted price of item. discountedPrice = originalPrice - (originalPrice * discountRate)
       double discountRate = promotionPurchase.discountRate;
       [self showPurchaseUIWithItemId:itemId withDiscountRate:discountRate];
@@ -437,22 +437,22 @@ You will call the method after your app is launched and when the values have cha
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
   ...
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];                    
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];   
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];                    
+  [nudge setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];
+  [nudge setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];   
 }
 
 - (void)levelDidChange:(int)level 
 {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
 }   
 
 - (void)stageDidChange:(int)stage 
 {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:stage] forKey:"stage"];
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge setCustomParameterWithValue:[NSNumber numberWithInt:stage] forKey:"stage"];
 }
 ....
 ```
@@ -480,8 +480,8 @@ After you write the code, you will see new filters available in Segment UI of ou
 ```objective-c
 - (void)didFinishGame
 {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:"play_count"];
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:"play_count"];
 }
 ```
 
@@ -492,9 +492,9 @@ If your app is already live in app stores and have live data, you need to set th
 {
   ....
 
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];       
-  if (![fresca hasCustomParameterWithKey:"play_count"]) {
-    [fresca setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forKey:"play_count"];
+  Nudge *nudge = [Nudge sharedAdView];
+  if (![nudge hasCustomParameterWithKey:"play_count"]) {
+    [nudge setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forKey:"play_count"];
   }
 }
 ```
@@ -511,55 +511,55 @@ You will call the method after the moment has happened in the app.
 
 ```objective-c
 - (void)userDidEnterItemStore {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca load:EVENT_INDEX_STORE_PAGE];    
-  [fresca show];
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge load:EVENT_INDEX_STORE_PAGE];    
+  [nudge show];
 } 
 
 - (void)levelDidChange:(int)level {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL]; 
-  [fresca load:EVENT_INDEX_LEVEL_UP]; 
-  [fresca show];
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL]; 
+  [nudge load:EVENT_INDEX_LEVEL_UP]; 
+  [nudge show];
 }  
 ```
 
 ## Advanced
 
-### AdFrescaViewDelegate
+### NudgeDelegate
 
-With implementing AdFrescaViewDelegate in your code, you can check all the events in the SDK. 
+With implementing NudgeDelegate in your code, you can check all the events in the SDK. 
 
 ```objective-c
 // ViewController.h
-@interface MainViewController : UIViewController<AdFrescaViewDelegate> {
+@interface MainViewController : UIViewController<NudgeDelegate> {
   .......
 @end
 
 // ViewController.m
 - (void)viewDidLoad {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  fresca.delegate = self;
-  [fresca load];
-  [fresca show];
+  Nudge *nudge = [Nudge sharedAdView];
+  nudge.delegate = self;
+  [nudge load];
+  [nudge show];
 }
 
-#pragma mark – AdFrescaViewDelegate
+#pragma mark – NudgeDelegate
 
 //This event occurs when SDK will start to receive contents
-- (void)adViewWillReceiveAd:(AdFrescaView *)theAdView {}
+- (void)adViewWillReceiveAd:(Nudge *)adView {}
 
 //This event occurs when SDK receive contents successfully
-- (void)adViewDidReceiveAd:(AdFrescaView *)theAdView {}
+- (void)adViewDidReceiveAd:(Nudge *)adView {}
 
 // This event occurs when content was not received properly with error information.
-- (void)adView:(AdFrescaView *)view didFailToReceiveAdWithException:(AdException *)error {}
+- (void)adView:(Nudge *)view didFailToReceiveAdWithException:(NudgeException *)exception {}
 
 // This event occurs when the user closes view. it's also called when content is not loaded with an error after calling show(). So this is endpoint of our process
-- (void)adViewClosed:(AdFrescaView *)adView {}
+-(void)adViewClosed:(Nudge *)nudge {}
 ```
 
-There are many good practices when implementing AdFrescaViewDelegate.
+There are many good practices when implementing NudgeDelegate.
 
 1. Scenarios 1: Display overlay contents in the bootup screen
   - Display Boot-up screen (Logo, etc)
@@ -572,8 +572,8 @@ There are many good practices when implementing AdFrescaViewDelegate.
 
 ```objective-c
 // Example: FirstViewController.m
-#pragma mark – AdFrescaViewDelegate
-- (void)adViewClosed:(AdFrescaView *)adView {
+#pragma mark – NudgeDelegate
+- (void)adViewClosed:(Nudge *)adView {
   // Move to the next page
   NextViewController *vc = [[NextViewController alloc] init];
   [self.navigationController pushViewController:vc animated:YES];  
@@ -592,12 +592,12 @@ To fix this issue, follow the steps below:
   2. In app codes, Implement  applicationWillEnterForeground() event of AppDelegate like below:
 
 ```objective-c
-#pragma mark – AdFrescaViewDelegate
+#pragma mark – NudgeDelegate
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-  AdFrescaView *fresca = [AdFrescaView shardAdView];
-  if (!fresca.hidden && fresca.userClicked) {
-    [fresca close];
+  Nudge *nudge = [Nudge shardAdView];
+  if (!nudge.hidden && nudge.userClicked) {
+    [nudge close];
   }
 }
 ```
@@ -609,10 +609,10 @@ You can set a timeout interval for a marketing moment request. If the message is
 Default is 5 seconds and you can set from 1 seconds to 5 seconds.
 
 ```objective-c
-AdFrescaView *fresca = [AdFrescaView sharedAdView];  
-fresca.timeoutInterval = 3 // # secs  
-[fresca load];
-[fresca show];
+Nudge *nudge = [Nudge shardAdView];
+nudge.timeoutInterval = 3 // # secs  
+[nudge load];
+[nudge show];
 ```
 
 * * *
@@ -673,9 +673,9 @@ To integrate our SDK with this feature, you should have URL Schema value for the
     
   ```objective-c
   - (void)didTutorialComplete {
-    AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-    [fresca load:MOMENT_INDEX_TUTORIAL_COMPLETE];  
-    [fresca show];
+    Nudge *nudge = [Nudge shardAdView];
+    [nudge load:MOMENT_INDEX_TUTORIAL_COMPLETE];  
+    [nudge show];
   }  
   ```
 
@@ -699,8 +699,8 @@ If you are adding the framework or remove it while you're updating your app whic
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [AdFrescaView startSession:API_KEY];
-  [[AdFrescaView shardAdView] setUseIFVOnly:YES];
+  [Nudge startSession:API_KEY];
+  [[Nudge shardAdView] setUseIFVOnly:YES];
 }
 ```
 
@@ -718,11 +718,11 @@ In this case, compiling will fail with the errors above.
 
 You need to remove 'SBJson' folder in our SDK folder to solve this issue. The latest Nudge SDK uses [3.1 release](https://github.com/stig/json-framework/tree/v3.1) version of SBJson. You may have a problem when you use older versions in your project.
 
-In other case, if you cannot see any message or get other errors, you can debug by implementing didFailToReceiveAdWithException event method of  AdFrescaViewDelegate 
+In other case, if you cannot see any message or get other errors, you can debug by implementing didFailToReceiveAdWithException event method of  NudgeDelegate 
 
 ```objective-c
-- (void)fresca:(AdFrescaView *)fresca didFailToReceiveAdWithException:(AdException *)error {  
-  NSLog(@"AdException message : %@", [error message]);
+- (void)adView:(Nudge *)view didFailToReceiveAdWithException:(NudgeException *)exception {  
+  NSLog(@"NudgeException message : %@", [error message]);
 }
 ```
 

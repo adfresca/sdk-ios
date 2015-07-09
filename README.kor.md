@@ -14,7 +14,7 @@
   - [Stickiness Custom Parameter](#stickiness-custom-parameter)
   - [Marketing Moment](#marketing-moment)
 - [Advanced](#advanced)
-  - [AdFrescaViewDelegate](#adfrescaviewdelegate) 
+  - [NudgeDelegate](#nudgedelegate) 
   - [Timeout Interval](#timeout-interval) 
 - [Reference](#reference)
   - [Deep Link](#deep-link)
@@ -35,7 +35,7 @@
 
 SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
-1) 제공되는 AdFresca 폴더를 Xcode 프로젝트에 Drag & Drop 하여 추가합니다.
+1) 제공되는 Nudge 폴더를 Xcode 프로젝트에 Drag & Drop 하여 추가합니다.
 
   <img src="https://adfresca.zendesk.com/attachments/token/4uzya7c9rw4twus/?name=Screen+Shot+2013-03-27+at+8.22.04+PM.png" width="600" />
 
@@ -72,10 +72,10 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 
 ```objective-c
 // AppDelegate.m
-#import <AdFresca/AdFrescaView.h>
+#import <Nudge/Nudge.h>
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [AdFrescaView startSession:@"YOUR_API_KEY"];
+  [Nudge startSession:@"YOUR_API_KEY"];
   ....
 } 
 ```
@@ -86,9 +86,9 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 
 ```objective-c
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView]; 
-  [fresca load]; 
-  [fresca show]; 
+  Nudge *nudge = [Nudge sharedAdView]; 
+  [nudge load]; 
+  [nudge show]; 
 } 
 ```
 
@@ -121,12 +121,12 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 } 
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-  [AdFrescaView registerDeviceToken:deviceToken];
+  [Nudge registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-  if ([AdFrescaView isFrescaNotification:userInfo]) {
-    [AdFrescaView handlePushNotification:userInfo];
+  if ([Nudge isNudgeNotification:userInfo]) {
+    [Nudge handlePushNotification:userInfo];
   }  
 } 
 ```
@@ -143,20 +143,20 @@ Nudge는 테스트 모드 기능을 지원하여 테스트를 원하는 디바�
   - 테스트에 사용할 기기를 개발PC에 연결한 후 로그를 통해 해당 아이디 값을 출력하여 확인 합니다. 
 
   ```objective-c
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  NSLog(@"Nudge Test Device ID = %@", fresca.testDeviceId); 
+  Nudge *nudge = [Nudge sharedAdView];
+  NSLog(@"Nudge Test Device ID = %@", nudge.testDeviceId); 
 ```
 
 2. printTestDeviceId Property를 설정하여 뷰에 기기 아이디를 화면에 표시하는 방법
-  - 개발자가 기기를 직접 연결할 수 없는 경우, 설정을 활성화 한 상태로 앱 빌드를 전덜하여 설치합니다. 화면에 표시된 기기 아이디를 직접 기록하여 등록할 수 있습니다.
+  - 개발자가 기기를 직접 연결할 수 없는 경우, 설정을 활성화 한 상태로 앱 빌드를 전달하여 설치합니다. 화면에 표시된 기기 아이디를 직접 기록하여 등록할 수 있습니다.
   - 담당 마케터가 원격에서 근무하는 경우 해당 기능을 유용하게 사용할 수 있습니다.
   - 설정이 활성화된 상태로 앱이 배포되지 않도록 주의해야 합니다.
 
   ```objective-c
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  fresca.printTestDeviceId = YES;
-  [fresca load];
-  [fresca show];
+  Nudge *nudge = [Nudge sharedAdView];
+  nudge.printTestDeviceId = YES;
+  [nudge load];
+  [nudge show];
   ```
 
 테스트 디바이스 아이디를 확인한 이후에는, [Dashboard](https://dashboard.nudge.do)를 접속하여 'Test Device' 메뉴를 통해 디바이스 등록이 가능합니다.
@@ -182,7 +182,7 @@ Nudge의 In-App-Purchase Tracking은 2가지 유형이 있습니다.
 
 #### Hard Currency Item Tracking
 
-Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
+Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 NPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
 
 적용 예제: 
 ```objective-c
@@ -197,25 +197,25 @@ Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러�
   NSDate *transactionDate = transaction.transactionDate;
   NSData *transactionReceiptData = transaction.transactionReceipt;
 
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeHardItem
-                                                    itemId:itemId
-                                              currencyCode:currencyCode
-                                                     price:[price doubleValue]
-                                              purchaseDate:transactionDate
-                                    transactionReceiptData:transactionReceiptData];
+  NPurchase *purchase = [NPurchase buildPurchaseWithType:NPurchaseTypeHardItem
+                                                  itemId:itemId
+                                            currencyCode:currencyCode
+                                                   price:[price doubleValue]
+                                            purchaseDate:transactionDate
+                                  transactionReceiptData:transactionReceiptData];
 
-  [[AdFrescaView shardAdView] logPurchase:purchase];
+  [[Nudge shardAdView] logPurchase:purchase];
   ......
 }
 
 - (void)failedTransaction:(SKPaymentTransaction *)transaction 
 {
-  [[AdFrescaView shardAdView] cancelPromotionPurchase];
+  [[Nudge shardAdView] cancelPromotionPurchase];
   ....
 }
 ```
 
-Hard Currency Item을 위한 AFPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
+Hard Currency Item을 위한 NPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -227,28 +227,28 @@ transactionReceiptData(nsdata| SKPaymentTransaction 객체의 transactionReceipt
 
 #### Soft Currency Item Tracking
 
-Soft Currency Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
+Soft Currency Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 NPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
 
 
 적용 예제: 
 ```objective-c
 - (void)didPurchaseSoftItem {
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeSoftItem
-                                                    itemId:@"gun_001"
-                                              currencyCode:@"gold"
-                                                     price:100
-                                              purchaseDate:nil
-                                    transactionReceiptData:nil]; 
+  NPurchase *purchase = [NPurchase buildPurchaseWithType:NPurchaseTypeSoftItem
+                                                  itemId:@"gun_001"
+                                            currencyCode:@"gold"
+                                                   price:100
+                                            purchaseDate:nil
+                                  transactionReceiptData:nil]; 
 
-  [[AdFrescaView shardAdView] logPurchase:purchase];
+  [[Nudge shardAdView] logPurchase:purchase];
 }
 
 - (void)didFailToPurchaseSoftItem {
-  [[AdFrescaView shardAdView] cancelPromotionPurchase];
+  [[Nudge shardAdView] cancelPromotionPurchase];
 }
 ```
 
-Soft Currency Item을 위한 AFPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
+Soft Currency Item을 위한 NPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -260,32 +260,32 @@ transactionReceiptData(nsdata| Soft 아이템의 경우는 값을 지정하지 �
 
 #### IAP Trouble Shooting
 
-logPurchase() 메소드를 통해 기록된 AFPurchase 객체는 Nudge 서비스에 업데이트되어 실시간으로 대쉬보드에 반영됩니다. 현재까지 등록된 아이템 리스트는 'Overview' 메뉴의 Settings - In App Items 페이지를 통해 확인할 수 있습니다.
+logPurchase() 메소드를 통해 기록된 NPurchase 객체는 Nudge 서비스에 업데이트되어 실시간으로 대쉬보드에 반영됩니다. 현재까지 등록된 아이템 리스트는 'Overview' 메뉴의 Settings - In App Items 페이지를 통해 확인할 수 있습니다.
 
-만약 아이템 리스트가 새로 갱신되지 않는 경우, AFPurchaseDelegate를 구현하여 혹시 에러가 발생하고 있지 않은지 확인해야 합니다. 
+만약 아이템 리스트가 새로 갱신되지 않는 경우, NPurchaseDelegate를 구현하여 혹시 에러가 발생하고 있지 않은지 확인해야 합니다. 
 
-만약 AFPurchase 객체의 값이 제대로 설정되지 않은 경우, didFailToLogWithException 이벤트를 통하여 에러 메시지를 표시하고 있으니 아래와 같이 코드를 적용하여 로그를 확인합니다.
+만약 NPurchase 객체의 값이 제대로 설정되지 않은 경우, didFailToLogWithException 이벤트를 통하여 에러 메시지를 표시하고 있으니 아래와 같이 코드를 적용하여 로그를 확인합니다.
 
 ```objective-c
 // AppDelegate.h
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, AFPurchaseDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NPurchaseDelegate> {
   ...
 }
 
 // AppDelegate.m
 - (void)didPurchaseSoftItem {
-  AFPurchase *purchase = [AFPurchase buildPurhcaseWithType:AFPurchaseTypeSoftItem
-                                               itemId:@"gun_001"
-                                              currencyCode:@"gold"
-                                                     price:100
-                                              purchaseDate:nil
-                                    transactionReceiptData:nil];
-  [[AdFrescaView shardAdView] logPurchase:purchase, self];
+  NPurchase *purchase = [NPurchase buildPurchaseWithType:NPurchaseTypeSoftItem
+                                  	               itemId:@"gun_001"
+                                            currencyCode:@"gold"
+                                                   price:100
+                                            purchaseDate:nil
+                                  transactionReceiptData:nil];
+  [[Nudge shardAdView] logPurchase:purchase, self];
 }
 
-- (void)purchase:(AFPurchase *)purchase didFailToLogWithException:(AdFrescaException *)exception {
-  NSLog(@"AFPurchase didFailToLogWithException :: purchase = %@, exception = %@", [purchase JSONRepresentation], [exception description]);
+- (void)purchase:(NPurchase *)purchase didFailToLogWithException:(NudgeException *)exception {
+  NSLog(@"NPurchase didFailToLogWithException :: purchase = %@, exception = %@", [purchase JSONRepresentation], [exception description]);
 }
 ```
 
@@ -299,12 +299,12 @@ Reward 캠페인에서 'Reward Item' 항목을 설정하거나, Incentivized CPI
 
 SDK 적용을 위해서는 아래 2가지 코드를 이용합니다.
 - checkRewardItems 메소드 호출: 현재 지급 가능한 보상 아이템이 있는지 검사합니다. 사용자가 앱을 실행할 호출하는 것을 권장합니다.
-- AFRewardItemDelegate 구현: 아이템 지급 조건이 만족되면 itemRewarded 이벤트가 발생됩니다. 인자로 넘어온 아이템 정보를 이용하여 사용자에게 아이템을 지급합니다.
+- NRewardItemDelegate 구현: 아이템 지급 조건이 만족되면 itemRewarded 이벤트가 발생됩니다. 인자로 넘어온 아이템 정보를 이용하여 사용자에게 아이템을 지급합니다.
 
 ```objective-c
 // AppDelegate.h
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, AFRewardItemDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NRewardItemDelegate> {
   ...
 }
 
@@ -314,12 +314,12 @@ SDK 적용을 위해서는 아래 2가지 코드를 이용합니다.
 // AppDelegate.m
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  [fresca setRewardDelegate:self];
-  [fresca checkRewardItems];
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge setRewardDelegate:self];
+  [nudge checkRewardItems];
 }
 
-- (void)itemRewarded:(AFRewardItem *)item {
+- (void)itemRewarded:(NRewardItem *)item {
   NSString *logMessage = [NSString stringWithFormat:@"You got the reward item! (%@)", item.name];
   NSLog(@"%@", logMessage);
   
@@ -354,7 +354,7 @@ SDK에서 요청한 아이템을 사용자에게 지급해야 합니다. 클라�
 
 Sales Promotion 캠페인을 이용하여 특정 아이템의 구매를 유도할 수 있습니다. 사용자가 캠페인에 노출된 이미지 메시지를 클릭할 경우 해당 아이템의 결제 UI가 표시됩니다. SDK는 사용자의 실제 결제 여부까지 자동으로 트랙킹하여 대쉬보드에서 실시간으로 통계를 제공합니다. 
 
-프로모션 기능을 적용하기 위해서 AFPromotionDelegate를 구현합니다. 프로모션 캠페인이 노출된 후 사용자가 이미지 메시지의 액션 영역을 탭하면 onPromotion() 이벤트가 발생합니다. 이벤트에 넘어오는 promotionPurchase 객체 정보를 이용하여 사용자에게 아이템 결제 UI를 표시하도록 코드를 적용합니다.
+프로모션 기능을 적용하기 위해서 NPromotionDelegate를 구현합니다. 프로모션 캠페인이 노출된 후 사용자가 이미지 메시지의 액션 영역을 탭하면 onPromotion() 이벤트가 발생합니다. 이벤트에 넘어오는 promotionPurchase 객체 정보를 이용하여 사용자에게 아이템 결제 UI를 표시하도록 코드를 적용합니다.
 
 Hard Currency 아이템의 경우 인-앱 결제 라이브러리를 이용하여 결제 UI를 표시합니다. promotionPurchase 객체의 ItemId 값이 아이템의 SKU 값에 해당됩니다. 아래의 예제는 구글 플레이의 결제 라이브러리 코드를 이용하고 있습니다.
 
@@ -365,7 +365,7 @@ Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점
 
 ```objective-c
 // AppDelegate.h
-@interface AppDelegate : UIResponder <UIApplicationDelegate, AFPromotionDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NPromotionDelegate> {
 
 }
 ....
@@ -373,15 +373,15 @@ Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점
 // AppDelegate.m
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  [fresca setPromotionDelegate:self];
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge setPromotionDelegate:self];
 }
 
-- (void)onPromotion:(AFPurchase *)promotionPurchase {
+- (void)onPromotion:(NPurchase *)promotionPurchase {
   NSString *itemId = promotionPurchase.itemId;
   NSString *logMessage = @"onPromotion: no logMessage";
   
-  if (promotionPurchase.type == AFPurchaseTypeHardItem) {
+  if (promotionPurchase.type == NPurchaseTypeHardItem) {
     // Use SKPaymentQueue to show the purchase ui of this item.
     SKProduct *product = [self paymentWithProductIdentifier:itemId];
     SKPayment *payment = [SKPayment paymentWithProduct:product];
@@ -389,16 +389,16 @@ Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점
     
     logMessage = [NSString stringWithFormat:@"on HARD_ITEM Promotion (%@)", itemId];
     
-  } else if (promotionPurchase.type == AFPurchaseTypeSoftItem) {
+  } else if (promotionPurchase.type == NPurchaseTypeSoftItem) {
     NSString *currencyCode = promotionPurchase.currencyCode;
     
-    if (promotionPurchase.discountType == AFDiscountTypePrice) {
+    if (promotionPurchase.discountType == NDiscountTypePrice) {
       // Use a discounted price
       double discountedPrice = promotionPurchase.price;
       [self showPurchaseUIWithItemId:itemId withDiscountedPrice:discountedPrice];
       logMessage = [NSString stringWithFormat:@"on SOFT_ITEM Promotion (%@) with %.2f %@", itemId, discountedPrice, currencyCode];
 
-    } else if (promotionPurchase.discountType == AFDiscountTypeRate) {
+    } else if (promotionPurchase.discountType == NDiscountTypeRate) {
       // Use this rate to calculate a discounted price of item. discountedPrice = originalPrice - (originalPrice * discountRate)
       double discountRate = promotionPurchase.discountRate;
       [self showPurchaseUIWithItemId:itemId withDiscountRate:discountRate];
@@ -426,22 +426,22 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
   ...
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];                    
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];   
+  Nudge *nudge = [Nudge sharedAdView];
+  [nudge setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];                    
+  [nudge setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];
+  [nudge setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];   
 }
 
 - (void)levelDidChange:(int)level 
 {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
+  Nudge *nudge = [Nudge sharedAdView];   
+  [nudge setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
 }   
 
 - (void)stageDidChange:(int)stage 
 {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:stage] forKey:"stage"];
+  Nudge *nudge = [Nudge sharedAdView];   
+  [nudge setCustomParameterWithValue:[NSNumber numberWithInt:stage] forKey:"stage"];
 }
 ....
 ```
@@ -469,8 +469,8 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 ```objective-c
 - (void)didFinishGame
 {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:"play_count"];
+  Nudge *nudge = [Nudge sharedAdView];   
+  [nudge incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:"play_count"];
 }
 ```
 
@@ -481,9 +481,9 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 {
   ....
 
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];       
-  if (![fresca hasCustomParameterWithKey:"play_count"]) {
-    [fresca setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forKey:"play_count"];
+  Nudge *nudge = [Nudge sharedAdView];       
+  if (![nudge hasCustomParameterWithKey:"play_count"]) {
+    [nudge setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forKey:"play_count"];
   }
 }
 ```
@@ -506,52 +506,52 @@ SDK 적용을 위해서는 Dashboard에서 지정된 각 마케팅 모멘트의 
 
 ```objective-c
 - (void)userDidEnterItemStore {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca load:EVENT_INDEX_STORE_PAGE];    
-  [fresca show];
+  Nudge *nudge = [Nudge sharedAdView];   
+  [nudge load:EVENT_INDEX_STORE_PAGE];    
+  [nudge show];
 } 
 
 - (void)levelDidChange:(int)level {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"]; 
-  [fresca load:EVENT_INDEX_LEVEL_UP]; 
-  [fresca show];
+  Nudge *nudge = [Nudge sharedAdView];   
+  [nudge setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"]; 
+  [nudge load:EVENT_INDEX_LEVEL_UP]; 
+  [nudge show];
 }  
 ```
 
 ## Advanced
 
-### AdFrescaViewDelegate
-AdFrescaViewDelegate 를 직접 구현함으로써, 콘텐츠 뷰에서 발생하는 이벤트를 확인 할 수 있습니다. 
+### NudgeDelegate
+NudgeDelegate 를 직접 구현함으로써, 콘텐츠 뷰에서 발생하는 이벤트를 확인 할 수 있습니다. 
 
 ```objective-c
 // ViewController.h
-@interface MainViewController : UIViewController<AdFrescaViewDelegate> {
+@interface MainViewController : UIViewController<NudgeDelegate> {
   .......
 @end
 
 // ViewController.m
 
 - (void)viewDidLoad {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  fresca.delegate = self;
-  [fresca load];
-  [fresca show];
+  Nudge *nudge = [Nudge sharedAdView];
+  nudge.delegate = self;
+  [nudge load];
+  [nudge show];
 }
 
-#pragma mark – AdFrescaViewDelegate
+#pragma mark – NudgeDelegate
 
 // 콘텐츠를 요청하기 직전에 호출됩니다.
-- (void)frescaWillReceiveAd:(AdFrescaView *)theAdView {}
+- (void)adViewWillReceiveAd:(Nudge *)adView {}
 
 // 콘텐츠를 정상적으로 불러온 후 발생하는 이벤트입니다.
-- (void)frescaDidReceiveAd:(AdFrescaView *)theAdView {}
+- (void)adViewDidReceiveAd:(Nudge *)adView {}
 
 // 콘텐츠를 불러오지 못한 경우 발생됩니다. 에러 정보를 확인 할 수 있습니다.
-- (void)fresca:(AdFrescaView *)view didFailToReceiveAdWithException:(AdException *)error {}
+- (void)adView:(Nudge *)view didFailToReceiveAdWithException:(NudgeException *)exception {}
 
 // 사용자가 뷰를 종료한 이후 발생하는 이벤트입니다. 콘텐츠 불러오지 못해 에러가 발생한 경우에도 해당 이벤트가 발생됩니다.
-- (void)frescaClosed:(AdFrescaView *)fresca {}
+-(void)adViewClosed:(Nudge *)nudge {}
 ```
 
 위의 이벤트 메소드 내용을 직접 구현함으로써 다양한 응용이 가능해집니다. 
@@ -560,13 +560,13 @@ AdFrescaViewDelegate 를 직접 구현함으로써, 콘텐츠 뷰에서 발생�
 
 - 앱의 인트로 화면에서 콘텐츠를 표시한 후, 사용자가 콘텐츠 뷰를  닫으면 메인 페이지로 이동하고 싶은 경우
 - 게임 도중 ‘Next Stage” 버튼을 눌러 콘텐츠를 표시한 후, 사용자가 콘텐츠를  닫으면 스테이지가 넘어가는 경우  
-위 경우는 frescaClosed 함수 내용을 구현함으로써 적용이 가능합니다.
+위 경우는 adViewClosed 함수 내용을 구현함으로써 적용이 가능합니다.
 
 ```objective-c
 // Example: FirstViewController.m
-#pragma mark – AdFrescaViewDelegate
+#pragma mark – NudgeDelegate
 
-- (void)frescaClosed:(AdFrescaView *)fresca {
+- (void)adViewClosed:(Nudge *)nudge {
   // 다음 페이지로 이동
 
   NextViewController *vc = [[NextViewController alloc] init];
@@ -578,19 +578,19 @@ AdFrescaViewDelegate 를 직접 구현함으로써, 콘텐츠 뷰에서 발생�
 주의사항:
 
 사용자가 마켓이나 다른 애플리케이션의 URI가 설정된 콘텐츠를 클릭한 경우, 화면이 다른 애플리케이션으로 이동할 수 있습니다. 
-이 때 frescaClosed 에 다른 페이지로 이동하도록 구현하였다면, 사용자가 다른 화면에 있는 동안 앱의 페이지가 가 미리 이동해버리거나, 페이지 애니메이션이 비정상적으로 실행될 수 있습니다.
+이 때 adViewClosed 에 다른 페이지로 이동하도록 구현하였다면, 사용자가 다른 화면에 있는 동안 앱의 페이지가 가 미리 이동해버리거나, 페이지 애니메이션이 비정상적으로 실행될 수 있습니다.
 아래와 같은 방법으로 해당 문제를 해결할 수 있습니다.
 
 1. Dashboard 에서 해당 Event 의 Close Mode 를 Override 로 변경 합니다.(콘텐츠 이미지를 클릭해도 뷰가 닫히지 않습니다..)
 2. AppDelegate의 applicationWillEnterForeground() 이벤트를 아래와 같이 구현합니다.
 
 ```objective-c
-#pragma mark – AdFrescaViewDelegate
+#pragma mark – NudgeDelegate
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-  AdFrescaView *fresca = [AdFrescaView shardAdView];
-  if (!fresca.hidden && fresca.userClicked) {
-    [fresca closeAd];
+  Nudge *nudge = [Nudge shardAdView];
+  if (!nudge.hidden && nudge.userClicked) {
+    [nudge closeAd];
   }
 }
 ```
@@ -602,10 +602,10 @@ load() 메소드의 최대 로딩 시간을 직접 지정하실 수 있습니다
 최소 1초 이상 지정이 가능하며, 지정하지 않을 시 기본 값으로 5초가 지정 됩니다.
 
 ```objective-c
-AdFrescaView *fresca = [AdFrescaView sharedAdView];  
-fresca.timeoutInterval = 3 // # secs  
-[fresca load];
-[fresca show];
+Nudge *nudge = [Nudge sharedAdView];  
+nudge.timeoutInterval = 3 // # secs  
+[nudge load];
+[nudge show];
 ```
 
 * * *
@@ -669,9 +669,9 @@ SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media 
   
   ```objective-c
   // 튜토리얼 완료 모멘트를 보상 조건으로 지정한 경우
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca load:MOMENT_INDEX_TUTORIAL];     
-  [fresca show];
+  Nudge *nudge = [Nudge sharedAdView];   
+  [nudge load:MOMENT_INDEX_TUTORIAL];     
+  [nudge show];
   ```
 
 #### Media App SDK 적용하기:
@@ -694,8 +694,8 @@ SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [AdFrescaView startSession:API_KEY];
-  [[AdFrescaView shardAdView] setUseIFVOnly:YES];
+  [Nudge startSession:API_KEY];
+  [[Nudge shardAdView] setUseIFVOnly:YES];
 }
 ```
 
@@ -711,13 +711,13 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 위와 같은 에러가 발생하며 빌드가 실패하게 됩니다.
 
-현재 개발 중인 프로젝트내에 이미 SBJson을 사용중인 경우에 발생할 수 있으며, AdFresca SDK에 포함된 SBJson을 제거함으로써 해결이 가능합니다. 현재 SDK에 포함된 SBJson은 [3.1 release](https://github.com/stig/json-framework/tree/v3.1) 버전이며, 프로젝트에서 이보다 하위 버전을 사용할 시에 문제가 발생할 수 있습니다.
+현재 개발 중인 프로젝트내에 이미 SBJson을 사용중인 경우에 발생할 수 있으며, Nudge SDK에 포함된 SBJson을 제거함으로써 해결이 가능합니다. 현재 SDK에 포함된 SBJson은 [3.1 release](https://github.com/stig/json-framework/tree/v3.1) 버전이며, 프로젝트에서 이보다 하위 버전을 사용할 시에 문제가 발생할 수 있습니다.
 
-그 외에 콘텐츠가 제대로 출력되지 않거나, 에러가 발생한다면 AdFrescaViewDelegate의 didFailToReceiveAdWithException 이벤트 함수를 구현하여, 에러 정보를 확인 할 수 있습니다. 
+그 외에 콘텐츠가 제대로 출력되지 않거나, 에러가 발생한다면 NudgeDelegate의 didFailToReceiveAdWithException 이벤트 함수를 구현하여, 에러 정보를 확인 할 수 있습니다. 
 
 ```objective-c
-- (void)fresca:(AdFrescaView *)fresca didFailToReceiveAdWithException:(AdException *)error {  
-  NSLog(@"AdException message : %@", [error message]);
+- (void)adView:(Nudge *)view didFailToReceiveAdWithException:(NudgeException *)exception; {  
+  NSLog(@"NudgeException message : %@", [error message]);
 }
 ```
 
