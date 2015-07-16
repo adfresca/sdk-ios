@@ -87,7 +87,7 @@ With the in-app messaging feature, you can deliver a message to your in-app user
 
 ```objective-c
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge load]; 
   [nudge show]; 
 } 
@@ -143,7 +143,7 @@ To register your test device to our dashboard, you need to get your test device 
   - After connecting your device with Xcode, you can simply print out test device ID with a logger.
 
   ```objective-c
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   NSLog(@"Nudge Test Device ID = %@", nudge.testDeviceId); 
   [nudge load];
   [nudge show];
@@ -155,7 +155,7 @@ To register your test device to our dashboard, you need to get your test device 
   - printTestDeviceId property must be set to false when you distribute your app on the store. 
 
   ```objective-c
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   nudge.printTestDeviceId = YES;
   [nudge load];
   [nudge show];
@@ -195,7 +195,7 @@ Let's get started and implement SDK codes with the examples below.
 
 #### Hard Currency Item Tracking
 
-In iOS, the purchase of 'Hard Currency Item' is made with Apple's Storekit framework. When a user purchased the item successfully, simply create NPurchase object and use logPurchase method. Also, call cancelPromotionPurchase method when a user cancelled or failed to purchase.
+In iOS, the purchase of 'Hard Currency Item' is made with Apple's Storekit framework. When a user purchased the item successfully, simply create NKPurchase object and use logPurchase method. Also, call cancelPromotionPurchase method when a user cancelled or failed to purchase.
 
 ```objective-c
 - (void)completeTransaction:(SKPaymentTransaction *)transaction
@@ -209,7 +209,7 @@ In iOS, the purchase of 'Hard Currency Item' is made with Apple's Storekit frame
   NSDate *transactionDate = transaction.transactionDate;
   NSData *transactionReceiptData = transaction.transactionReceipt;
 
-  NPurchase *purchase = [NPurchase buildPurchaseWithType:NPurchaseTypeHardItem
+  NKPurchase *purchase = [NKPurchase buildPurchaseWithType:NKPurchaseTypeHardItem
                                                   itemId:itemId
                                             currencyCode:currencyCode
                                                    price:[price doubleValue]
@@ -226,7 +226,7 @@ In iOS, the purchase of 'Hard Currency Item' is made with Apple's Storekit frame
 }
 ```
 
-For more details of NPurchase object with the hard currency item, check the table below.
+For more details of NKPurchase object with the hard currency item, check the table below.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -238,11 +238,11 @@ transactionReceiptData(nsdata) | Set the receipt property of SKPaymentTransactio
 
 #### Soft Currency Item Tracking
 
-When a user purchased a soft currency item in the app, you can also create NPurchase object and call logPurchase() method. Also, call cancelPromotionPurchase method when a user cancelled or failed to purchase.
+When a user purchased a soft currency item in the app, you can also create NKPurchase object and call logPurchase() method. Also, call cancelPromotionPurchase method when a user cancelled or failed to purchase.
 
 ```objective-c
 - (void)didPurchaseSoftItem {
-  NPurchase *purchase = [NPurchase buildPurhcaseWithType:NPurchaseTypeSoftItem
+  NKPurchase *purchase = [NKPurchase buildPurhcaseWithType:NKPurchaseTypeSoftItem
                                                   itemId:@"gun_001"
                                             currencyCode:@"gold"
                                                    price:100
@@ -257,7 +257,7 @@ When a user purchased a soft currency item in the app, you can also create NPurc
 }
 ```
 
-For more details of NPurchase object with soft currency items, check the table below. You don't need to set transactionReceiptData property in soft currency item tracking.
+For more details of NKPurchase object with soft currency items, check the table below. You don't need to set transactionReceiptData property in soft currency item tracking.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -265,24 +265,24 @@ itemId(string) | Set the unique identifier of your item. This value may not be d
 currencyCode(string) | Set the item's soft currency code. (ex: 'gold', 'gas')
 price(double) | Set the item price. You may get this value from your server. (ex: 100 of gold)
 purchaseDate(date) | Set the date of purchase. If you set nil value, it will be automatically recorded by our SDK and server. Please don't use local time of the user's device.
-transactionReceiptData(nsdata) | Set nil for NPurchaseTypeSoftItem
+transactionReceiptData(nsdata) | Set nil for NKPurchaseTypeSoftItem
 
 #### IAP Troubleshooting
 
 After you call logPurchase() method, the purchase data is updated to our dashboard in real-time. You can see the list of updated item in 'Overview > Settings > In-App Items' menu.
 
-If you don't see any data in our dashboard, your NPurchase object may be invalid. To check it, you can implement  NPurchaseDelegate and call log logPurchase(purchase, delegate) method. 
+If you don't see any data in our dashboard, your NKPurchase object may be invalid. To check it, you can implement  NKPurchaseDelegate and call log logPurchase(purchase, delegate) method. 
 
 ```objective-c
 // AppDelegate.h
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, NPurchaseDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NKPurchaseDelegate> {
   ...
 }
 
 // AppDelegate.m
 - (void)didPurchaseSoftItem {
-  NPurchase *purchase = [NPurchase buildPurchaseWithType:NPurchaseTypeSoftItem
+  NKPurchase *purchase = [NKPurchase buildPurchaseWithType:NKPurchaseTypeSoftItem
                                              itemId:@"gun_001"
                                             currencyCode:@"gold"
                                                    price:100
@@ -291,8 +291,8 @@ If you don't see any data in our dashboard, your NPurchase object may be invalid
   [[Nudge shardAdView] logPurchase:purchase, self];
 }
 
-- (void)purchase:(NPurchase *)purchase didFailToLogWithException:(NudgeException *)exception {
-  NSLog(@"NPurchase didFailToLogWithException :: purchase = %@, exception = %@", [purchase JSONRepresentation], [exception description]);
+- (void)purchase:(NKPurchase *)purchase didFailToLogWithException:(NudgeException *)exception {
+  NSLog(@"NKPurchase didFailToLogWithException :: purchase = %@, exception = %@", [purchase JSONRepresentation], [exception description]);
 }
 ```
 
@@ -305,12 +305,12 @@ When you set 'Reward Item' section of the reward campaign or 'Incentive item' se
 To implement codes, we use the two codes noted below:
 
 - checkRewardItems method: This method is to check if any item is available to receive. We recommend to put this code when the app becomes active. 
-- NRewardItemDelegate implementation: When there is a reward available for the user, itemRewarded event is automatically called with NRewardItem object from our SDK. You can give an item to the user with NRewardItem object.
+- NKRewardItemDelegate implementation: When there is a reward available for the user, itemRewarded event is automatically called with NKRewardItem object from our SDK. You can give an item to the user with NKRewardItem object.
 
 ```objective-c
 // AppDelegate.h
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, NRewardItemDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NKRewardItemDelegate> {
   ...
 }
 
@@ -319,12 +319,12 @@ To implement codes, we use the two codes noted below:
 
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge setRewardDelegate:self];
   [nudge checkRewardItems];
 }
 
-- (void)itemRewarded:(NRewardItem *)item 
+- (void)itemRewarded:(NKRewardItem *)item 
 {
   NSString *logMessage = [NSString stringWithFormat:@"You got the reward item! (%@)", item.name];
   NSLog(@"%@", logMessage);
@@ -360,7 +360,7 @@ If you want more security, you can use a security token, which is a unique value
 
 You can promote in-game items to specific user segements. When a user taps on an action button of an in-app message, a purchase UI will appear. Our SDK will automatically detect if the user made a purchase or not, and then will update the campaign performance in our dashboard in real time. Please note that [In-App Purchase Tracking](#in-app-purchase-tracking) feature is a prerequisite to this promotion feature.
 
-Start implementing NPromotionDelegate. onPromotion event is automatically called when a user taps on an action button of an image message in a sales promotion campaign. You just need to show the purchase UI of the promotion item using 'promotionPurchase' object. 
+Start implementing NKPromotionDelegate. onPromotion event is automatically called when a user taps on an action button of an image message in a sales promotion campaign. You just need to show the purchase UI of the promotion item using 'promotionPurchase' object. 
 
 For Hard Currency Items, you should use StoreKit library codes to show purchase UI. You can get the product identifier value of SKProduct from ItemId property of promotionPurchase object.
 
@@ -372,7 +372,7 @@ For Soft Currency Items, you should use your own purchase UI which might be alre
 
 ```objective-c
 // AppDelegate.h
-@interface AppDelegate : UIResponder <UIApplicationDelegate, NPromotionDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NKPromotionDelegate> {
 
 }
 ....
@@ -380,15 +380,15 @@ For Soft Currency Items, you should use your own purchase UI which might be alre
 // AppDelegate.m
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge setPromotionDelegate:self];
 }
 
-- (void)onPromotion:(NPurchase *)promotionPurchase {
+- (void)onPromotion:(NKPurchase *)promotionPurchase {
   NSString *itemId = promotionPurchase.itemId;
   NSString *logMessage = @"onPromotion: no logMessage";
   
-  if (promotionPurchase.type == NPurchaseTypeHardItem) {
+  if (promotionPurchase.type == NKPurchaseTypeHardItem) {
     // Use SKPaymentQueue to show the purchase ui of this item.
     SKProduct *product = [self paymentWithProductIdentifier:itemId];
     SKPayment *payment = [SKPayment paymentWithProduct:product];
@@ -396,7 +396,7 @@ For Soft Currency Items, you should use your own purchase UI which might be alre
     
     logMessage = [NSString stringWithFormat:@"on HARD_ITEM Promotion (%@)", itemId];
     
-  } else if (promotionPurchase.type == NPurchaseTypeSoftItem) {
+  } else if (promotionPurchase.type == NKPurchaseTypeSoftItem) {
     NSString *currencyCode = promotionPurchase.currencyCode;
     
     if (promotionPurchase.discountType == NDiscountTypePrice) {
@@ -437,7 +437,7 @@ You will call the method after your app is launched and when the values have cha
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
   ...
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];                    
   [nudge setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];
   [nudge setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];   
@@ -445,13 +445,13 @@ You will call the method after your app is launched and when the values have cha
 
 - (void)levelDidChange:(int)level 
 {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
 }   
 
 - (void)stageDidChange:(int)stage 
 {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge setCustomParameterWithValue:[NSNumber numberWithInt:stage] forKey:"stage"];
 }
 ....
@@ -480,7 +480,7 @@ After you write the code, you will see new filters available in Segment UI of ou
 ```objective-c
 - (void)didFinishGame
 {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:"play_count"];
 }
 ```
@@ -492,7 +492,7 @@ If your app is already live in app stores and have live data, you need to set th
 {
   ....
 
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   if (![nudge hasCustomParameterWithKey:"play_count"]) {
     [nudge setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forKey:"play_count"];
   }
@@ -511,13 +511,13 @@ You will call the method after the moment has happened in the app.
 
 ```objective-c
 - (void)userDidEnterItemStore {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge load:EVENT_INDEX_STORE_PAGE];    
   [nudge show];
 } 
 
 - (void)levelDidChange:(int)level {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL]; 
   [nudge load:EVENT_INDEX_LEVEL_UP]; 
   [nudge show];
@@ -538,7 +538,7 @@ With implementing NudgeDelegate in your code, you can check all the events in th
 
 // ViewController.m
 - (void)viewDidLoad {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   nudge.delegate = self;
   [nudge load];
   [nudge show];

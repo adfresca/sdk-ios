@@ -195,7 +195,7 @@ Nudge의 In-App-Purchase Tracking은 2가지 유형이 있습니다.
 
 #### Hard Currency Item Tracking
 
-Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 NPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
+Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 NKPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
 
 적용 예제: 
 ```objective-c
@@ -210,7 +210,7 @@ Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러�
   NSDate *transactionDate = transaction.transactionDate;
   NSData *transactionReceiptData = transaction.transactionReceipt;
 
-  NPurchase *purchase = [NPurchase buildPurchaseWithType:NPurchaseTypeHardItem
+  NKPurchase *purchase = [NKPurchase buildPurchaseWithType:NKPurchaseTypeHardItem
                                                   itemId:itemId
                                             currencyCode:currencyCode
                                                    price:[price doubleValue]
@@ -228,7 +228,7 @@ Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러�
 }
 ```
 
-Hard Currency Item을 위한 NPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
+Hard Currency Item을 위한 NKPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -240,13 +240,13 @@ transactionReceiptData(nsdata| SKPaymentTransaction 객체의 transactionReceipt
 
 #### Soft Currency Item Tracking
 
-Soft Currency Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 NPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
+Soft Currency Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 NKPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
 
 
 적용 예제: 
 ```objective-c
 - (void)didPurchaseSoftItem {
-  NPurchase *purchase = [NPurchase buildPurchaseWithType:NPurchaseTypeSoftItem
+  NKPurchase *purchase = [NKPurchase buildPurchaseWithType:NKPurchaseTypeSoftItem
                                                   itemId:@"gun_001"
                                             currencyCode:@"gold"
                                                    price:100
@@ -261,7 +261,7 @@ Soft Currency Item의 결제는 앱 내의 가상 화폐로 아이템을 결제�
 }
 ```
 
-Soft Currency Item을 위한 NPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
+Soft Currency Item을 위한 NKPurchase 객체 생성의 보다 자세한 설명은 아래와 같습니다.
 
 Method | Description
 ------------ | ------------- | ------------
@@ -273,22 +273,22 @@ transactionReceiptData(nsdata| Soft 아이템의 경우는 값을 지정하지 �
 
 #### IAP Trouble Shooting
 
-logPurchase() 메소드를 통해 기록된 NPurchase 객체는 Nudge 서비스에 업데이트되어 실시간으로 대쉬보드에 반영됩니다. 현재까지 등록된 아이템 리스트는 'Overview' 메뉴의 Settings - In App Items 페이지를 통해 확인할 수 있습니다.
+logPurchase() 메소드를 통해 기록된 NKPurchase 객체는 Nudge 서비스에 업데이트되어 실시간으로 대쉬보드에 반영됩니다. 현재까지 등록된 아이템 리스트는 'Overview' 메뉴의 Settings - In App Items 페이지를 통해 확인할 수 있습니다.
 
-만약 아이템 리스트가 새로 갱신되지 않는 경우, NPurchaseDelegate를 구현하여 혹시 에러가 발생하고 있지 않은지 확인해야 합니다. 
+만약 아이템 리스트가 새로 갱신되지 않는 경우, NKPurchaseDelegate를 구현하여 혹시 에러가 발생하고 있지 않은지 확인해야 합니다. 
 
-만약 NPurchase 객체의 값이 제대로 설정되지 않은 경우, didFailToLogWithException 이벤트를 통하여 에러 메시지를 표시하고 있으니 아래와 같이 코드를 적용하여 로그를 확인합니다.
+만약 NKPurchase 객체의 값이 제대로 설정되지 않은 경우, didFailToLogWithException 이벤트를 통하여 에러 메시지를 표시하고 있으니 아래와 같이 코드를 적용하여 로그를 확인합니다.
 
 ```objective-c
 // AppDelegate.h
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, NPurchaseDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NKPurchaseDelegate> {
   ...
 }
 
 // AppDelegate.m
 - (void)didPurchaseSoftItem {
-  NPurchase *purchase = [NPurchase buildPurchaseWithType:NPurchaseTypeSoftItem
+  NKPurchase *purchase = [NKPurchase buildPurchaseWithType:NKPurchaseTypeSoftItem
                                   	               itemId:@"gun_001"
                                             currencyCode:@"gold"
                                                    price:100
@@ -297,8 +297,8 @@ logPurchase() 메소드를 통해 기록된 NPurchase 객체는 Nudge 서비스�
   [[Nudge shardAdView] logPurchase:purchase, self];
 }
 
-- (void)purchase:(NPurchase *)purchase didFailToLogWithException:(NudgeException *)exception {
-  NSLog(@"NPurchase didFailToLogWithException :: purchase = %@, exception = %@", [purchase JSONRepresentation], [exception description]);
+- (void)purchase:(NKPurchase *)purchase didFailToLogWithException:(NudgeException *)exception {
+  NSLog(@"NKPurchase didFailToLogWithException :: purchase = %@, exception = %@", [purchase JSONRepresentation], [exception description]);
 }
 ```
 
@@ -312,12 +312,12 @@ Reward 캠페인에서 'Reward Item' 항목을 설정하거나, Incentivized CPI
 
 SDK 적용을 위해서는 아래 2가지 코드를 이용합니다.
 - checkRewardItems 메소드 호출: 현재 지급 가능한 보상 아이템이 있는지 검사합니다. 사용자가 앱을 실행할 호출하는 것을 권장합니다.
-- NRewardItemDelegate 구현: 아이템 지급 조건이 만족되면 itemRewarded 이벤트가 발생됩니다. 인자로 넘어온 아이템 정보를 이용하여 사용자에게 아이템을 지급합니다.
+- NKRewardItemDelegate 구현: 아이템 지급 조건이 만족되면 itemRewarded 이벤트가 발생됩니다. 인자로 넘어온 아이템 정보를 이용하여 사용자에게 아이템을 지급합니다.
 
 ```objective-c
 // AppDelegate.h
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, NRewardItemDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NKRewardItemDelegate> {
   ...
 }
 
@@ -332,7 +332,7 @@ SDK 적용을 위해서는 아래 2가지 코드를 이용합니다.
   [nudge checkRewardItems];
 }
 
-- (void)itemRewarded:(NRewardItem *)item {
+- (void)itemRewarded:(NKRewardItem *)item {
   NSString *logMessage = [NSString stringWithFormat:@"You got the reward item! (%@)", item.name];
   NSLog(@"%@", logMessage);
   
@@ -367,7 +367,7 @@ SDK에서 요청한 아이템을 사용자에게 지급해야 합니다. 클라�
 
 Sales Promotion 캠페인을 이용하여 특정 아이템의 구매를 유도할 수 있습니다. 사용자가 캠페인에 노출된 이미지 메시지를 클릭할 경우 해당 아이템의 결제 UI가 표시됩니다. SDK는 사용자의 실제 결제 여부까지 자동으로 트랙킹하여 대쉬보드에서 실시간으로 통계를 제공합니다. 
 
-프로모션 기능을 적용하기 위해서 NPromotionDelegate를 구현합니다. 프로모션 캠페인이 노출된 후 사용자가 이미지 메시지의 액션 영역을 탭하면 onPromotion() 이벤트가 발생합니다. 이벤트에 넘어오는 promotionPurchase 객체 정보를 이용하여 사용자에게 아이템 결제 UI를 표시하도록 코드를 적용합니다.
+프로모션 기능을 적용하기 위해서 NKPromotionDelegate를 구현합니다. 프로모션 캠페인이 노출된 후 사용자가 이미지 메시지의 액션 영역을 탭하면 objectmotion() 이벤트가 발생합니다. 이벤트에 넘어오는 promotionPurchase 객체 정보를 이용하여 사용자에게 아이템 결제 UI를 표시하도록 코드를 적용합니다.
 
 Hard Currency 아이템의 경우 인-앱 결제 라이브러리를 이용하여 결제 UI를 표시합니다. promotionPurchase 객체의 ItemId 값이 아이템의 SKU 값에 해당됩니다. 아래의 예제는 구글 플레이의 결제 라이브러리 코드를 이용하고 있습니다.
 
@@ -378,7 +378,7 @@ Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점
 
 ```objective-c
 // AppDelegate.h
-@interface AppDelegate : UIResponder <UIApplicationDelegate, NPromotionDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, NKPromotionDelegate> {
 
 }
 ....
@@ -390,11 +390,11 @@ Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점
   [nudge setPromotionDelegate:self];
 }
 
-- (void)onPromotion:(NPurchase *)promotionPurchase {
+- (void)onPromotion:(NKPurchase *)promotionPurchase {
   NSString *itemId = promotionPurchase.itemId;
   NSString *logMessage = @"onPromotion: no logMessage";
   
-  if (promotionPurchase.type == NPurchaseTypeHardItem) {
+  if (promotionPurchase.type == NKPurchaseTypeHardItem) {
     // Use SKPaymentQueue to show the purchase ui of this item.
     SKProduct *product = [self paymentWithProductIdentifier:itemId];
     SKPayment *payment = [SKPayment paymentWithProduct:product];
@@ -402,7 +402,7 @@ Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점
     
     logMessage = [NSString stringWithFormat:@"on HARD_ITEM Promotion (%@)", itemId];
     
-  } else if (promotionPurchase.type == NPurchaseTypeSoftItem) {
+  } else if (promotionPurchase.type == NKPurchaseTypeSoftItem) {
     NSString *currencyCode = promotionPurchase.currencyCode;
     
     if (promotionPurchase.discountType == NDiscountTypePrice) {
