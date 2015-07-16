@@ -38,11 +38,11 @@ To add our SDK into your Xcode project, please follow the instructions below:
 
 1) Drag & Drop Nudge folder into the framework folder on your Xcode project.
 
-  <img src="https://adfresca.zendesk.com/attachments/token/4uzya7c9rw4twus/?name=Screen+Shot+2013-03-27+at+8.22.04+PM.png" width="600" />
+  <img src="https://adfresca.zendesk.com/attachments/token/M1EFdCg5OitYLDdyvKtqm8Vrc/?name=add_files.png" width="600" />
 
 2) Add System Configuration.framework, StoreKit.framework, and AdSupport.framework (optional) into your target if these frameworks are not added yet.
   
-  <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
+  <img src="https://adfresca.zendesk.com/attachments/token/M1EFdCg5OitYLDdyvKtqm8Vrc/?name=add_files.png" width="600" />
   
   - If you add AdSupport.framework, our SDK collects [IFA(Identifier For Advertisers)](https://developer.apple.com/library/ios/documentation/AdSupport/Reference/ASIdentifierManager_Ref/ASIdentifierManager.html#jumpTo_3) value to distinguish the user's device. We use this value to provide the cross-promotion campaign with install and action tracking.
   - If you do not add AdSupport.framework, our SDK uses [IFV(Identifier For Vendor)](https://developer.apple.com/library/ios/documentation/uikit/reference/UIDevice_Class/Reference/UIDevice.html#jumpTo_7) value to distinguish user's device. In this case, you can't use any cross promotion feature. Also, as IFV's policy, your user may be recognized as a new user after re-installing app.
@@ -51,17 +51,17 @@ To add our SDK into your Xcode project, please follow the instructions below:
 
 3) Add -ObjC to Other Linker Flag on your target's build setting.
 
-  <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
+  <img src="https://adfresca.zendesk.com/attachments/token/4XflnvSqEPNG9zfVUbSpgRasB/?name=linker_flag.png" width="600" />
 
 4) In Info.plist, set 'aps-environment' value as 'production'. It is necessary to use a push notification feature.
 
-  <img src="https://adfresca.zendesk.com/attachments/token/bd7oz41zoh5zjs4/?name=Screen+Shot+2013-02-07+at+5.22.50+PM.png" width="600" />
+  <img src="https://adfresca.zendesk.com/attachments/token/Js8pZcirqYa8B8W8KKppNR3pT/?name=aps-environment.png" width="600" />
 
   Also, if your orientation of the app is landscape only, set 'Initial interface orientation' to 'Landscape (right home button)'
 
   Finally, set your own URL Scheme value. the example below shows how to set URL Scheme with "myapp" value. It will be used in the cross promotion feature.
 
-  <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
+  <img src="https://adfresca.zendesk.com/attachments/token/u2ibHJRuERRpXLyTv2ToZC57P/?name=url.png" width="600"/>
 
 Nudge SDK has been successfully installed without any build error. If you have a 'Duplicate Symbol' error, please refer to the [Troubleshooting](#troubleshooting) section.
 
@@ -171,7 +171,7 @@ Nudge SDK supports a test mode feature. With the test mode feature, you can veri
   [Nudge setTestMode:YES];
   ```
 
-<img src="http://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/ios_sdk_test_mode.png" width="900" />
+<img src="https://adfresca.zendesk.com/attachments/token/SF8xxKjx9wPZVXQ7mxJzlxglU/?name=test.png" width="900" />
 
 The test mode currently provides 'Start Session', 'Push Messaging', 'In-App Purchase Tracking', 'Custom Parameter', and 'Stickiness Custom Parameter' logs. Other feature support will be available soon.
 
@@ -625,7 +625,7 @@ You can set your own URL Schema as 'Deep Link' of the campaigns. So, you can nav
 
 1. Set your custom url schemes in Info.plist as follows
 
-  <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png" />
+  <img src="https://adfresca.zendesk.com/attachments/token/u2ibHJRuERRpXLyTv2ToZC57P/?name=url.png" width="600"/>
 
 2. In AppDelegate.m, implement handleOpenURL method. You may call a new app view controller depending on the url.
   ```objective-c
@@ -661,8 +661,7 @@ To integrate our SDK with this feature, you should have URL Schema value for the
 
   Check your url schemes to check app install in Info.plist as follows
 
-  <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
-
+<img src="https://adfresca.zendesk.com/attachments/token/u2ibHJRuERRpXLyTv2ToZC57P/?name=url.png" width="600"/>
   In this case, you should set CPI Identifier value of advertising app to "myapp://" in our dashboard (Overview > App Store Edit).
 
   For iOS, url schema value may be duplicated with other apps, so be careful to choose an unique value.
@@ -729,8 +728,12 @@ In other case, if you cannot see any message or get other errors, you can debug 
 * * *
 
 ## Release Notes
+- **_Release Note Draft_**
+  - Change SDK naming AdFresca to Nudge
+  	- Sample code modified
+  	- Support AdFresca functions. Don't need to change your codes.
 
-- **v1.5.6 _(2015/06/02 Updated)_**
+- v1.5.6 (2015/06/02 Updated)
   - Support 'Push Reward Campaign'. Please refer to [Push Messaging](#push-messaging) section to revise your 'if statement' code in 'didReceiveRemoteNotification' event
 - v1.5.5
   - For [In-App Purchase Tracking](#in-app-purchase-tracking), fixed an item name issue with '%' character. 

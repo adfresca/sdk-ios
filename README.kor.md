@@ -29,6 +29,8 @@
 
 ### Installation
 
+
+
 아래 링크를 통해 SDK 파일을 다운로드 합니다.
 
 [iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) 
@@ -37,11 +39,11 @@ SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
 1) 제공되는 Nudge 폴더를 Xcode 프로젝트에 Drag & Drop 하여 추가합니다.
 
-  <img src="https://adfresca.zendesk.com/attachments/token/4uzya7c9rw4twus/?name=Screen+Shot+2013-03-27+at+8.22.04+PM.png" width="600" />
+  <img src="https://adfresca.zendesk.com/attachments/token/M1EFdCg5OitYLDdyvKtqm8Vrc/?name=add_files.png" width="600" />
 
 2) System Configuration.framework, StoreKit.framework, AdSupport.framework(선택)를 Xcode 프로젝트에 추가합니다.
   
-  <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
+  <img src="https://adfresca.zendesk.com/attachments/token/M1EFdCg5OitYLDdyvKtqm8Vrc/?name=add_files.png" width="600" />
   
   - AdSupport.framework를 추가할 경우, SDK는 [IFA(Identifier For Advertisers)](https://developer.apple.com/library/ios/documentation/AdSupport/Reference/ASIdentifierManager_Ref/ASIdentifierManager.html#jumpTo_3) 값을 수집하여 디바이스(=앱 사용자) 구분에 사용합니다. Nudge SDK는 IFA 값을 사용하여 크로스 프로모션 캠페인 기능을 제공하고 캠페인 노출 이후 사용자의 앱 설치 및 액션 트랙킹을 위해 사용하고 있습니다. 
   - AdSupport.framework를 제외할 경우, [IFV(Identifier For Vendor)](https://developer.apple.com/library/ios/documentation/uikit/reference/UIDevice_Class/Reference/UIDevice.html#jumpTo_7) 값을 사용합니다. 이 경우 크로스 프로모션 캠페인 기능을 이용할 수 없으며 IFV의 특성상 사용자가 앱을 삭제하고 재설치할 때 새로운 디바이스(=앱 사용자)로 인식될 수 있습니다. 
@@ -50,17 +52,17 @@ SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
 3) Build Setting의 Other Linker Flags 값을 –ObjC로 설정 혹은 추가합니다. 
 
-  <img src="https://adfresca.zendesk.com/attachments/token/rny0s0zm3modful/?name=2Untitled.png" width="600" />
+  <img src="https://adfresca.zendesk.com/attachments/token/4XflnvSqEPNG9zfVUbSpgRasB/?name=linker_flag.png" width="600" />
 
 4) Info.plist 파일의 'aps-environment' 값을 'production' 으로 설정합니다. (Push Notification 적용 시 반드시 확인해주시기 바랍니다.)
 
-  <img src="https://adfresca.zendesk.com/attachments/token/bd7oz41zoh5zjs4/?name=Screen+Shot+2013-02-07+at+5.22.50+PM.png" width="600" />
+  <img src="https://adfresca.zendesk.com/attachments/token/Js8pZcirqYa8B8W8KKppNR3pT/?name=aps-environment.png" width="600" />
 
   만약 앱이 가로 방향만을 지원한다면 'Initial interface orientation' 값을 'Landscape (right home button)' 으로 설정합니다.
 
   마지막으로, URL Scheme 값을 지정합니다. 아래의 예제는 'myapp' 이라는 스키마 값을 지정한 예제입니다. 해당 값은 크로스 프로모션 기능을 이용하기 위하여 사용됩니다.
 
-  <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
+  <img src="https://adfresca.zendesk.com/attachments/token/u2ibHJRuERRpXLyTv2ToZC57P/?name=url.png" width="600"/>
 
 아무런 에러 없이 빌드가 성공헀다면 모든 설치가 정상적으로 완료된 것입니다. 만약 Duplicate Symbol 등의 Linking Error 가 발생하였다면 아래의 '[Troubleshooting](#troubleshooting)' 항목을 확인해주시기 바랍니다
 
@@ -86,7 +88,7 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 
 ```objective-c
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  Nudge *nudge = [Nudge sharedAdView]; 
+  Nudge *nudge = [Nudge shared]; 
   [nudge load]; 
   [nudge show]; 
 } 
@@ -143,7 +145,7 @@ Nudge는 테스트 모드 기능을 지원하여 테스트를 원하는 디바�
   - 테스트에 사용할 기기를 개발PC에 연결한 후 로그를 통해 해당 아이디 값을 출력하여 확인 합니다. 
 
   ```objective-c
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   NSLog(@"Nudge Test Device ID = %@", nudge.testDeviceId); 
 ```
 
@@ -153,7 +155,7 @@ Nudge는 테스트 모드 기능을 지원하여 테스트를 원하는 디바�
   - 설정이 활성화된 상태로 앱이 배포되지 않도록 주의해야 합니다.
 
   ```objective-c
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   nudge.printTestDeviceId = YES;
   [nudge load];
   [nudge show];
@@ -161,6 +163,17 @@ Nudge는 테스트 모드 기능을 지원하여 테스트를 원하는 디바�
 
 테스트 디바이스 아이디를 확인한 이후에는, [Dashboard](https://dashboard.nudge.do)를 접속하여 'Test Device' 메뉴를 통해 디바이스 등록이 가능합니다.
 
+### Test Mode
+
+Nudge SDK는 테스트모드를 제공합니다. 테스트 모드를 사용하여 코드를 검증할 수 있습니다. SDK 로그를 출력하기 위해서는 아래의 예제코드와 같이 **setTestMode(YES)** 를 호출해주세요.
+
+  ```objective-c
+  [Nudge setTestMode:YES];
+  ```
+
+<img src="https://adfresca.zendesk.com/attachments/token/SF8xxKjx9wPZVXQ7mxJzlxglU/?name=test.png" width="900" />
+
+테스트모드는 현재 'Start Session', 'Push Messaging', 'In-App Purchase Tracking', 'Custom Parameter', 'Stickiness Custom Parameter'를 로그로 제공합니다. 다른 기능들은 차후 업데이트를 통해 제공합니다.
 * * *
 
 ## IAP, Reward and Sales Promotion
@@ -314,7 +327,7 @@ SDK 적용을 위해서는 아래 2가지 코드를 이용합니다.
 // AppDelegate.m
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge setRewardDelegate:self];
   [nudge checkRewardItems];
 }
@@ -373,7 +386,7 @@ Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점
 // AppDelegate.m
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge setPromotionDelegate:self];
 }
 
@@ -426,7 +439,7 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
   ...
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   [nudge setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];                    
   [nudge setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];
   [nudge setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];   
@@ -434,13 +447,13 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 
 - (void)levelDidChange:(int)level 
 {
-  Nudge *nudge = [Nudge sharedAdView];   
+  Nudge *nudge = [Nudge shared];   
   [nudge setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
 }   
 
 - (void)stageDidChange:(int)stage 
 {
-  Nudge *nudge = [Nudge sharedAdView];   
+  Nudge *nudge = [Nudge shared];   
   [nudge setCustomParameterWithValue:[NSNumber numberWithInt:stage] forKey:"stage"];
 }
 ....
@@ -469,7 +482,7 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 ```objective-c
 - (void)didFinishGame
 {
-  Nudge *nudge = [Nudge sharedAdView];   
+  Nudge *nudge = [Nudge shared];   
   [nudge incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:"play_count"];
 }
 ```
@@ -481,7 +494,7 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 {
   ....
 
-  Nudge *nudge = [Nudge sharedAdView];       
+  Nudge *nudge = [Nudge shared];       
   if (![nudge hasCustomParameterWithKey:"play_count"]) {
     [nudge setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forKey:"play_count"];
   }
@@ -506,13 +519,13 @@ SDK 적용을 위해서는 Dashboard에서 지정된 각 마케팅 모멘트의 
 
 ```objective-c
 - (void)userDidEnterItemStore {
-  Nudge *nudge = [Nudge sharedAdView];   
+  Nudge *nudge = [Nudge shared];   
   [nudge load:EVENT_INDEX_STORE_PAGE];    
   [nudge show];
 } 
 
 - (void)levelDidChange:(int)level {
-  Nudge *nudge = [Nudge sharedAdView];   
+  Nudge *nudge = [Nudge shared];   
   [nudge setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"]; 
   [nudge load:EVENT_INDEX_LEVEL_UP]; 
   [nudge show];
@@ -533,7 +546,7 @@ NudgeDelegate 를 직접 구현함으로써, 콘텐츠 뷰에서 발생하는 �
 // ViewController.m
 
 - (void)viewDidLoad {
-  Nudge *nudge = [Nudge sharedAdView];
+  Nudge *nudge = [Nudge shared];
   nudge.delegate = self;
   [nudge load];
   [nudge show];
@@ -602,7 +615,7 @@ load() 메소드의 최대 로딩 시간을 직접 지정하실 수 있습니다
 최소 1초 이상 지정이 가능하며, 지정하지 않을 시 기본 값으로 5초가 지정 됩니다.
 
 ```objective-c
-Nudge *nudge = [Nudge sharedAdView];  
+Nudge *nudge = [Nudge shared];  
 nudge.timeoutInterval = 3 // # secs  
 [nudge load];
 [nudge show];
@@ -620,7 +633,7 @@ nudge.timeoutInterval = 3 // # secs
 
 1. Info.plist 파일을 열어 사용할 URL Schema 정보를 설정 합니다.
 
-  <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png" />
+  <img src="https://adfresca.zendesk.com/attachments/token/u2ibHJRuERRpXLyTv2ToZC57P/?name=url.png" width="600"/>
 
 2. AppDelegate.m 파일을 열어 handleOpenURL 메소드를 구현합니다. 호출되는 URL 값에 따라 다른 페이지를 호출하도록 설정할 수 있습니다. 
   ```objective-c
@@ -659,7 +672,7 @@ SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media 
 
   먼저 Xcode 프로젝트의 Info.plist 파일을 열어 사용할 URL Schema 정보를 확인합니다.
 
-  <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
+  <img src="https://adfresca.zendesk.com/attachments/token/u2ibHJRuERRpXLyTv2ToZC57P/?name=url.png" width="600"/>
 
   위 경우 [Dashboard](https://dashboard.nudge.do) 사이트에서 Advertising App의 CPI Identifier 값을 'myapp://' 으로 설정하게 됩니다.
   
@@ -669,7 +682,7 @@ SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media 
   
   ```objective-c
   // 튜토리얼 완료 모멘트를 보상 조건으로 지정한 경우
-  Nudge *nudge = [Nudge sharedAdView];   
+  Nudge *nudge = [Nudge shared];   
   [nudge load:MOMENT_INDEX_TUTORIAL];     
   [nudge show];
   ```
@@ -724,8 +737,12 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 * * *
 
 ## Release Notes
+- **_Release Note Draft_**
+  - 라이브러리 이름 및 호출 코드 AdFresca에서 Nudge로 변경
+	- 업데이트 이후에도 기존 코드(AdFresca) 변경없이 사용가능합니다.
+  - TestMode 가이드 추가
 
-- **v1.5.6 _(2015/06/02 Updated)_**
+- v1.5.6 (2015/06/02 Updated)
   - Push Reward Campaign 기능을 지원합니다. [Push Messaging](#push-messaging) 항목을 참고하여 didReceiveRemoteNotification 이벤트의 분기문을 예제 코드와 같이 수정해야 합니다.
 - v1.5.5
   - [In-App Purchase Tracking](#in-app-purchase-tracking) 기능에서 '%' 문자가 포함된 아이템 이름을 입력받을 수 있도록 개선되었습니다.
