@@ -432,6 +432,7 @@ Integer, Boolean 형태의 데이터를 지원하며 아래 2가지 메소드를
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];                    
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];  
+  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];
 }
 
 - (void)levelDidChange:(int)level 
