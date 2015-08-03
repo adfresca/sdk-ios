@@ -418,9 +418,12 @@ Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점
 
 Nudge SDK는 기본적으로 '국가, 언어, 앱 버전, 실행 횟수 등'의 디바이스 고유 데이터를 수집하며, 동시에 각 앱 내에서 고유하게 사용되는 특수한 상태 값들(예: 캐릭터 레벨, 현재 스테이지, 페이스북 연동 여부 등)을 커스텀 파라미터로 정의하고 수집하여 분석 및 타겟팅 기능을 제공합니다.
 
-Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며, **setCustomParameterWithValue** 메소드를 사용하여 각 고유 키 값에 맞게 상태 값을 설정합니다.
+Integer, Boolean 형태의 데이터를 지원하며 아래 2가지 메소드를 이용하여 각 고유 키에 맞게 값을 설정합니다.
 
-앱이 실행되는 시점에 한 번 값을 설정하고, 이후에는 값이 새로 변경되는 이벤트마다 새로운 값을 설정합니다. (사용자의 로그인 이후 최초 설정이 가능한 값은 로그인 직후에 설정합니다.)
+- **setCustomParameterWithValue:** 현재 사용자의 상태 값이나 이미 누적된 값을 설정할 때 사용합니다. (예: 레벨, 현재 위치한 스테이지, 친구 수, 누적 플레이 횟수)
+- **incrCustomParameterWithAmount:** 누적 값을 사용하고 싶으나 현재 앱 DB에서 값을 보유하지 않은 경우, Nudge SDK를 사용해서 자동으로 누적된 값을 계산하기 위해 사용합니다. 값이 증가할 때 마다 증가된 값을 인자로 지정합니다. (예: 누적 플레이 횟수)   
+
+앱이 최초로 실행되는 시점에 한 번 값을 설정하고, 이후에는 값이 새로 변경되는 이벤트마다 새로운 값을 설정합니다. (사용자의 로그인 이후 최초 설정이 가능한 값은 로그인 직후에 설정합니다.)
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
@@ -428,8 +431,7 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
   ...
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];                    
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];  
 }
 
 - (void)levelDidChange:(int)level 
@@ -442,6 +444,12 @@ Integer, Boolean 형태의 데이터를 상태 값으로 설정할 수 있으며
 {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:stage] forKey:"stage"];
+}
+
+- (void)didFinishGame
+{
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
+  [fresca incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:"play_count"];
 }
 ....
 ```
