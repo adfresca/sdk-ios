@@ -63,6 +63,8 @@ To add our SDK into your Xcode project, please follow the instructions below:
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
+5) In iOS 9 and Xcode 7+, [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) is enabled by default. Thus, you need to configure domain exceptions to enable our SDK send data to Nudge servers. Check [Info.plist] example (https://gist.github.com/sunku/2dba02239f168dfec5d9#file-nsapptransportsecurity-plist) and update your file in Xcode accordingly.
+
 Nudge SDK has been successfully installed without any build error. If you have a 'Duplicate Symbol' error, please refer to the [Troubleshooting](#troubleshooting) section.
 
 ### Start Session
