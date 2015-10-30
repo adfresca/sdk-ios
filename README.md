@@ -124,7 +124,7 @@ You can send push messages using Nudge. Follow the steps below to configure the 
   } 
 
   - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    // Register user's push device token to our SDK
+    // if your app has push on/off configuration, you should set nil value when 'off' is set by your user.
     [AdFrescaView registerDeviceToken:deviceToken];
   }
 
@@ -134,6 +134,19 @@ You can send push messages using Nudge. Follow the steps below to configure the 
     }  
   } 
   ```
+
+4. if your app has push on/off configuration, you should update push device token to our SDK when your user changes on/off configuration.
+
+```objective-c
+-(void)didPushConfigChange:(BOOL)pushEnabled {
+  if (pushEnabled) {
+    [AdFrescaView registerDeviceTokenString:@"YOUR_APNS_DEVICE_TOKEN"];
+  } else {
+    [AdFrescaView registerDeviceTokenString:nil];
+  }
+} 
+```
+
 
 ### Test Device Registration
 

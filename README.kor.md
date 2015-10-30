@@ -120,6 +120,7 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 } 
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  // 앱 내에 Push On/Off 기능이 있는 경우, off 시 deviceToken 값을 nil로 지정합니다.
   [AdFrescaView registerDeviceToken:deviceToken];
 }
 
@@ -127,6 +128,18 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
   if ([AdFrescaView isFrescaNotification:userInfo]) {
     [AdFrescaView handlePushNotification:userInfo];
   }  
+} 
+```
+
+4) 앱 내에 별도의 Push On/Off 기능이 있는 경우, 설정 값이 변경 시에도 SDK에 값을 업데이트합니다. 
+
+```objective-c
+-(void)didPushConfigChange:(BOOL)pushEnabled {
+  if (pushEnabled) {
+    [AdFrescaView registerDeviceTokenString:@"YOUR_APNS_DEVICE_TOKEN"];
+  } else {
+    [AdFrescaView registerDeviceTokenString:nil];
+  }
 } 
 ```
 
