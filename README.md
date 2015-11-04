@@ -63,7 +63,7 @@ To add our SDK into your Xcode project, please follow the instructions below:
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
-5) In iOS 9 and Xcode 7+, [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) is enabled by default. Thus, you need to configure domain exceptions to enable our SDK send data to Nudge servers. Check [Info.plist] example (https://gist.github.com/sunku/2dba02239f168dfec5d9#file-nsapptransportsecurity-plist) and update your file in Xcode accordingly.
+5) In iOS 9 and Xcode 7+, [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) is enabled by default. Thus, you need to configure domain exceptions to enable our SDK send data to Nudge servers. Check [Info.plist example](https://gist.github.com/sunku/2dba02239f168dfec5d9#file-nsapptransportsecurity-plist) and update your file in Xcode accordingly.
 
 Nudge SDK has been successfully installed without any build error. If you have a 'Duplicate Symbol' error, please refer to the [Troubleshooting](#troubleshooting) section.
 
@@ -442,57 +442,41 @@ Please make sure that you implement 'cancelPromotionPurchase' method when a user
 
 ### Custom Parameter
 
-Our SDK can collect user specific data such as level, stage, maximum score, etc. We use them to deliver a personalized and targeted message in real time to specific user segments that you can define.
+Custom Parameter is a user attribute used to classify users for marketing purpose. You can use any custom values (e.g. user level, stage, and play count) to define a user segment and monitor it in real time. You can achieve better campaign performance when targeting users with higher accuracy. (Nudge SDK automatically collects default values such as device id, language, country, app version, and others so you don’t need to define those values as custom parameters.)
 
-To implement codes, simply call setCustomParameterWithValue method with passing parameter's unique key and its value.
+Nudge SDK provides two tracking methods by types of custom parameters. 
 
-You will call the method after your app is launched and when the values have changed. (If you can't set the values without user sign in, you may set them right after a user signs in.)
+- To track the current status of a user
+  - It is used to track the current value of specific user attributes
+  - ex: level, current stage, facebook sign-in flag
+  - SDK Code: Use **setCustomParameterWithValue** method to pass the current status (Integer, Boolean type) to SDK.
+
+- To track specific event count
+  - It is used to track count for a specific event.
+  - ex: play count, a number of gacha count
+  - SDK Code: Use **incrCustomParameterWithAmount** method to pass increased value (Integer) to SDK after an event occurred.
+
+First, you need to define ‘Unique Key’ string value to define a custom parameter. (e.g. "level", "facebook_flag", "play_count") Then write the tracking codes when an user launches your app or signs in to your server.
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
   ...
   AdFrescaView *fresca = [AdFrescaView sharedAdView];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];                    
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.stage] forKey:@"stage"];
-  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];
 }
+```
 
+Then you need to put tracking codes whenever its value changes.
+
+```objective-c
 - (void)levelDidChange:(int)level 
 {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
 }   
 
-- (void)stageDidChange:(int)stage 
-{
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:stage] forKey:"stage"];
-}
-....
-```
-
-After you write the codes and set values, you will be able to see a list of custom parameters you added on [Dashboard](https://admin.adfresca.com). 1) Select an App 2) In 'Overview' menu, click 'Settings - Custom Parameters' button.
-
-<img src="https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/custom_parameter_index.png">
-
-You need to set 'Name' value of each custom parameter to activate. You can activate custom parameters up to 20. Nudge only collects data of activated custom parameters and use them for targeting.
-
-* * *
-
-### Stickiness Custom Parameter
-
-(Stickiness Custom Parameter is currently in beta. To use this feature, contact our [support team](mailto:support@nudge.do))
-
-If your app has a value to measure a user's stickiness (e.g. ‘play count’ in a stage-based game), you can use it to create a  'Stickiness Custom Parameter' with Nudge. You can define user segments such as 'users who played 30 stages in a week' and 'Users who played 5 stages today'.
-
-To begin, you first need to set a new custom parameter (e.g. play count), and then set it as stickiness custom parameter (stickiness mode can only be set by Nudge team currently).
-
-To implement codes, simply pass the value to **incrCustomParameterWithAmount** method whenever the stickiness value is increased. Our SDK will automatically calculate the accumulated value and daily increased value and update user profiles.
-
-After you write the code, you will see new filters available in Segment UI of our dashboard. (e.g. 'Today's play count', 'Average play count in a week', and 'Total play count in a week').
-
-```objective-c
 - (void)didFinishGame
 {
   AdFrescaView *fresca = [AdFrescaView sharedAdView];   
@@ -500,19 +484,17 @@ After you write the code, you will see new filters available in Segment UI of ou
 }
 ```
 
-If your app is already live in app stores and have live data, you need to set the most up-to-date value before you call incrCustomParameterWithAmount method. You can check if the custom parameter value is already set by using **hasCustomParameterWithKey(key)** method. If the value is not set yet, set the accumulated value from your app server.
+If you successfully writes codes and set custom parameters, you will see a list of custom parameters you added on [Dashboard](https://admin.adfresca.com). 1) Select an App 2) In 'Overview' menu, click 'Settings - Custom Parameters' button.
 
-```objective-c
-- (void)didUserSignIn 
-{
-  ....
+<img src="https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/custom_parameter_index.png">
 
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];       
-  if (![fresca hasCustomParameterWithKey:"play_count"]) {
-    [fresca setCustomParameterWithValue:[NSNumber numberWithInt:user.totalPlaycount] forKey:"play_count"];
-  }
-}
-```
+In order to activate a custom parameter, you need to set ‘Name’.. (You can activate custom parameters up to 20.) Nudge only stores data of activated custom parameters and use them for targeting.
+
+#### Stickiness Custom Parameter
+
+Stickiness custom parameter is a special custom parameter to measure a user’s stickiness. For example, if you set ‘play count’ as stickiness custom parameter in a stage-based game, You can define user segments with filters like ‘Today’s play count, ‘Play count in a week’, and ‘Average play count in a week’. Stickiness custom parameter will help you to classify user groups by their loyalty and to monitor their activities in real time. 
+
+You must use **incrCustomParameterWithAmount* method for stickiness custom parameters. If you want to use stickiness custom parameters, please send an email to support@nudge.do after you activate your custom parameter in your dashboard.
 
 * * *
 

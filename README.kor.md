@@ -2,9 +2,11 @@
 - [Basic Integration](#basic-integration)
   - [Installation](#installation)
   - [Start Session](#start-session)
+  - [Sign In & Sign Out](#sign-in--sign-out)
   - [In-App Messaging](#in-app-messaging)
   - [Push Messaging](#push-messaging)
   - [Test Device Registration](#test-device-registration)
+  - [Test Mode](#test-mode)
 - [IAP, Reward and Sales Promotion](#iap-reward-and-sales-promotion)
   - [In-App Purchase Tracking](#in-app-purchase-tracking)
   - [Give Reward](#give-reward)
@@ -61,6 +63,8 @@ SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
+5) iOS 9과 Xcode 7 이상 버전에서는 [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) 기능이 기본적으로 활성화되어 있습니다. 때문에 SDK가 넛지 서버와 통신할 수 있도록 도메인 예외 설정을 해주어야 합니다. [Info.plist 예제](https://gist.github.com/sunku/2dba02239f168dfec5d9#file-nsapptransportsecurity-p여 Xcode 설정을 수정합니다.
+
 아무런 에러 없이 빌드가 성공헀다면 모든 설치가 정상적으로 완료된 것입니다. 만약 Duplicate Symbol 등의 Linking Error 가 발생하였다면 아래의 '[Troubleshooting](#troubleshooting)' 항목을 확인해주시기 바랍니다
 
 ### Start Session
@@ -78,6 +82,32 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
   ....
 } 
 ```
+
+### Sign In & Sign Out
+
+Sign In, Sign Out 기능은 사용자의 로그인, 로그아웃 액션을 트랙킹합니다. 이를 통해 넛지는 회원 ID를 이용하여 사용자를 구분합니다. 회원ID를 통해 사용자를 구분하면 1명의 회원이 복수 개의 디바이스를 이용하는경우 중복으로 캠페인을 노출하거나 리워드를 지급하는 경우를 방지할 수 있습니다. 또한, 현재 사용자의 로그인 / 비로그인 여부를 트랙킹하여 현재 로그인하거나 로그인하지 않은 사용자를 대상으로 캠페인을 진행할 수 있습니다. 
+
+로그인 이벤트 (자동 로그인 포함) 발생 시 signIn(string) 메소드에 회원 ID (문자열) 값을 인자로 넘겨 호출합니다. 로그아웃 이벤트 발생 시에는 signOut() 메소드를 호출합니다.
+
+```objective-c
+- (void)onSignIn {
+  [[AdFrescaView shared] signIn:@"user_id"];
+}
+
+- (void)onSignOut {
+  [[AdFrescaView shared] signOut];
+}
+```
+
+넛지는 게스트 로그인 기능도 지원합니다. 게스트 ID 로그인 시에는 signInAsGuest(string) 메소드를 호출합니다
+
+```objective-c
+- (void)onGuestSignIn {
+  [[AdFrescaView shared] signInAsGuest:@"guest_user_id"];
+}
+```
+
+signedUserId() 메소드를 사용하면 가장 최근 로그인한 유저의 ID를 리턴합니다. 로그아웃이 된 경우에는 디바이스 ID 값이 리턴됩니다. 이 메소드를 사용하여 정상적으로 로그인이 기록되어 있는지 테스트할 수 있습니다.
 
 ### In-App Messaging
 
@@ -120,7 +150,8 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 } 
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-  // 앱 내에 Push On/Off 기능이 있는 경우, off 시 deviceToken 값을 nil로 지정합니다.
+  // 만약 iOS Notification 설정에서 푸시를 거부한 경우 문자열 "(null)" 값이 전달되고 Nudge에서는 푸시를 발송하지 않습니다. 
+  // 앱 내에 Push On/Off 기능이 있는 경우, off 시 deviceToken 값을 nil로 지정합니다. 
   [AdFrescaView registerDeviceToken:deviceToken];
 }
 
@@ -131,7 +162,7 @@ startSession() 메소드를 적용하면 앱이 최초로 실행되거나, 백�
 } 
 ```
 
-4) 앱 내에 별도의 Push On/Off 기능이 있는 경우, 설정 값이 변경 시에도 SDK에 값을 업데이트합니다. 
+4) 사용자가 앱 내에 Push On/Off 기능을 사용하여 설정을 변경한 경우 APNS 토큰 값을 업데이트합니다. 
 
 ```objective-c
 -(void)didPushConfigChange:(BOOL)pushEnabled {
@@ -172,6 +203,18 @@ Nudge는 테스트 모드 기능을 지원하여 테스트를 원하는 디바�
   ```
 
 테스트 디바이스 아이디를 확인한 이후에는, [Dashboard](https://dashboard.nudge.do)를 접속하여 'Test Device' 메뉴를 통해 디바이스 등록이 가능합니다.
+
+### Test Mode
+
+Nudge SDK는 테스트 모드 기능을 지원합니다. 테스트 모드를 활성화하면 현재 실행되는 SDK 메소드와 그 실행 결과가 로그 메시지로 출력됩니다. 이를 통하여 본인이 올바른 코드와 인자 값을 설정하고 있는지 검증할 수 있습니다.
+
+  ```objective-c
+  [AdFrescaView setTestMode:YES];
+  ```
+
+<img src="http://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/ios_sdk_test_mode.png" width="900" />
+
+현재 테스트 모드는 'Start Session', 'Push Messaging', 'In-App Purchase Tracking', 'Custom Parameter', 'Stickiness Custom Parameter' 항목에 대한 로그를 지원합니다. 다른 항목의 경우는 추후 제공할 예정에 있습니다.
 
 * * *
 
