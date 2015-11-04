@@ -57,9 +57,9 @@ To add our SDK into your Xcode project, please follow the instructions below:
 
   <img src="https://adfresca.zendesk.com/attachments/token/bd7oz41zoh5zjs4/?name=Screen+Shot+2013-02-07+at+5.22.50+PM.png" width="600" />
 
-  Also, if your orientation of the app is landscape only, set 'Initial interface orientation' to 'Landscape (right home button)'
+  If your orientation of the app is landscape only, set 'Initial interface orientation' to 'Landscape (right home button)'
 
-  Finally, set your own URL Scheme value. the example below shows how to set URL Scheme with "myapp" value. It will be used in the cross promotion feature.
+  Also, set your own URL Scheme value. the example below shows how to set URL Scheme with "myapp" value. It will be used in the cross promotion feature.
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
