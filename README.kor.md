@@ -63,7 +63,7 @@ SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
-5) iOS 9과 Xcode 7 이상 버전에서는 [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) 기능이 기본적으로 활성화되어 있습니다. 때문에 SDK가 넛지 서버와 통신할 수 있도록 도메인 예외 설정을 해주어야 합니다. [Info.plist 예제](https://gist.github.com/sunku/2dba02239f168dfec5d9#file-nsapptransportsecurity-p여 Xcode 설정을 수정합니다.
+5) iOS 9 및 Xcode 7 이상 버전에서는 [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) 기능이 기본적으로 활성화되어 있습니다. 때문에 SDK가 넛지 서버와 통신할 수 있도록 도메인 예외 설정을 해주어야 합니다. [Info.plist 예제](https://gist.github.com/sunku/2dba02239f168dfec5d9#file-nsapptransportsecurity-plist)를 확인하여 Xcode 설정을 수정합니다.
 
 아무런 에러 없이 빌드가 성공헀다면 모든 설치가 정상적으로 완료된 것입니다. 만약 Duplicate Symbol 등의 Linking Error 가 발생하였다면 아래의 '[Troubleshooting](#troubleshooting)' 항목을 확인해주시기 바랍니다
 
