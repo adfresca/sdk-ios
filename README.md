@@ -2,6 +2,7 @@
 - [Basic Integration](#basic-integration)
   - [Installation](#installation)
   - [Start Session](#start-session)
+  - [Sign In & Sign Out](#sign-in--sign-out)
   - [In-App Messaging](#in-app-messaging)
   - [Push Messaging](#push-messaging)
   - [Test Device Registration](#test-device-registration)
@@ -82,6 +83,32 @@ startSession() will start to detect when user starts app and resumes from the ba
   ....
 } 
 ```
+
+### Sign In & Sign Out
+
+You can track a user’s sign in or sign out actions using these Sign In and Sign Out functions. Nudge will use a string passed using signIn or signOut method as a user identifier and track users with multiple devices, which makes statistics more accurate and campaigns will recognize users, not devices so they will run more effectively. (Users will no longer claim the same rewards multiple times by using different devices.)
+
+You need to pass a user identifier (string) to **signIn()** method when a user signs in to your server (including auto sign-in). You also need to put **signOut()** method when a user signs out.
+
+```objective-c
+- (void)onSignIn {
+  [[AdFrescaView shared] signIn:@"user_id"];
+}
+
+- (void)onSignOut {
+  [[AdFrescaView shared] signOut];
+}
+```
+
+Nudge also supports 'guest sign in' with signInAsGuest() method.
+
+```objective-c
+- (void)onGuestSignIn {
+  [[AdFrescaView shared] signInAsGuest:@"guest_user_id"];
+}
+```
+
+You can check a user’s current sign-in status by calling **signedUserId()** method. This method which returns an user identifier used in last sign in, and device identifier after the user signed out. Please use this method to test your codes.
 
 ### In-App Messaging
 
