@@ -100,6 +100,7 @@ Sign In 기능은 사용자의 로그인 액션을 트랙킹합니다. 넛지는
     [[AdFrescaView shared] signInAsGuest:@"guest_user_id"];
   }
 }
+```
 
 signedUserId() 메소드를 사용하면 현재 로그인되어 있는 사용자의 ID를 리턴합니다 (게스트 ID를 지정하지 않은 비로그인 사용자의 경우는 디바이스 ID 값이 리턴). 이 메소드를 사용하여 정상적으로 로그인이 기록되어 있는지 테스트할 수 있습니다.
 
