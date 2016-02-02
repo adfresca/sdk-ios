@@ -99,16 +99,8 @@ A user should be signed in at all times, either as a member or as a guest. If an
   } else {
 	 // If you use a separate guest_id to track a guest user, you can pass it as an argument 
   	 // If you don’t use a separate identifier to track a guest user, you don’t need to set guest_id
-    [[AdFrescaView shared] signInAsGuest:@"guest_user_id"];
+    [[AdFrescaView shared] signInAsGuest:@"guest_id"];
   }
-}
-```
-
-Nudge also supports 'guest sign in' with signInAsGuest() method.
-
-```objective-c
-- (void)onGuestSignIn {
-  [[AdFrescaView shared] signInAsGuest:@"guest_user_id"];
 }
 ```
 
@@ -377,8 +369,6 @@ If there is a reward item for a user, onRewardClaim event is triggered and the i
   [self sendItemToUser:currentUserId itemId:item.uniqueValue quantity:item.quantity securityToken:item.securityToken rewardClaimToken:item.rewardClaimToken];
 }
 ```
-
-사용자에게 아이템을 지급한 후 finishRewardClaim() 메소드를 호출하여 넛지에 리워드 지급 완료를 통보해야 합니다. 넛지는 리워드 지급 완료 기록을 전달 받아야만 리워드가 정상적으로 지급된 것으로 처리합니다. 즉 게임서버나 클라이언트에서 에러가 발생하여 리워드 지급이 실패한 경우 넛지 SDK에서는 다시 리워드 지급 요청을 합니다. 넛지 SDK에서는 3분 이상 지급 확인 기록이 전달되지 않은 경우 다음 번 마케팅 모멘트가 실행될 때 다시 리워드 지급 요청을 합니다. 이는 지급 처리 중에 다시 지급요청을 해서 중복 지급되는 것을 막기 위함입니다.
 
 You need to inform Nudge SDK that you have given a reward to a user successfully by calling finishRewardClaim() method. Unless Nudge SDK receives the confirmation of the reward claim, Nudge SDK will assume the claim has failed due to some error on the client-side or the server-side then re-trigger onRewardClaim event. It won't happen until the next marketing moment is called and 3 minutes have passed after the previous event was triggered, which prevents giving a reward multiple times by triggering onRewardClaim event again while the previous event is being handled.
 
