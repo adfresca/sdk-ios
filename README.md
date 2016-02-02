@@ -365,7 +365,7 @@ If there is a reward item for a user, onRewardClaim event is triggered and the i
   NSString *logMessage = [NSString stringWithFormat:@"You got the reward item! (%@)", item.name];
   NSLog(@"%@", logMessage);
   
-  // Give an item to users.  
+  // Give an item to a user  
   [self sendItemToUser:currentUserId itemId:item.uniqueValue quantity:item.quantity securityToken:item.securityToken rewardClaimToken:item.rewardClaimToken];
 }
 ```
