@@ -106,7 +106,7 @@ signedUserId() 메소드를 사용하면 현재 로그인되어 있는 사용자
 
 ### In-App Messaging
 
-인-앱 메시징 기능을 이용하여 타겟 사용자에게 원하는 메시지를 노출할 수 있습니다. 메시지를 노출하고자 하는 시점에 유니티 스크립트로 제공되는 Load, Show 메소드를 호출하세요. 메시지는 전면 interstitial 이미지, 텍스트, 혹은 iframe 웹페이지 형태를 지원합니다. 또한 인-앱 메시징을 이용해서 사용자에게 리워드를 지급할 수도 있습니다. ([Give Reward](#give-reward) 섹션 참조.) 메시지는 현재 앱을 실행 중인 사용자의 프로화일이 인-앱 메시징 캠페인의 조건을 만족하는 경우에만 화면에 표시됩니다. 조건을 만족하는 캠페인이 없다면 사용자는 아무런 화면을 보지 않고 자연스럽게 게임 플레이를 이어갑니다. 매칭과 관련한 인-앱 메시징의 다이나믹 타겟팅 기능은 아래의 [Dynamic Targeting](#dynamic-targeting) 항목에서 보다 자세히 설명하고 있습니다.
+인-앱 메시징 기능을 이용하여 타겟 사용자에게 원하는 메시지를 노출할 수 있습니다. 메시지를 노출하고자 하는 시점에 Load, Show 메소드를 호출하세요. 메시지는 전면 interstitial 이미지, 텍스트, 혹은 iframe 웹페이지 형태를 지원합니다. 또한 인-앱 메시징을 이용해서 사용자에게 리워드를 지급할 수도 있습니다. ([Give Reward](#give-reward) 섹션 참조.) 메시지는 현재 앱을 실행 중인 사용자의 프로화일이 인-앱 메시징 캠페인의 조건을 만족하는 경우에만 화면에 표시됩니다. 조건을 만족하는 캠페인이 없다면 사용자는 아무런 화면을 보지 않고 자연스럽게 게임 플레이를 이어갑니다. 매칭과 관련한 인-앱 메시징의 다이나믹 타겟팅 기능은 아래의 [Dynamic Targeting](#dynamic-targeting) 항목에서 보다 자세히 설명하고 있습니다.
 
 ```objective-c
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -116,7 +116,7 @@ signedUserId() 메소드를 사용하면 현재 로그인되어 있는 사용자
 } 
 ```
 
-첫 번째로 인-앱 메시징 코드를 적용한 경우, 아래와 같이 테스트 이미지 메시지가 표시됩니다. 해당 이미지를 터치하면 앱스토어 페이지로 이동합니다. 현재 보고 있는 테스트 메시지는 이후 테스트 모드 설정을 변경하여 더이상 보이지 않도록 설정하게 됩니다.
+처음 인-앱 메시징 코드를 적용한 경우, 아래와 같이 테스트 이미지 메시지가 표시됩니다. 해당 이미지를 터치하면 앱스토어 페이지로 이동합니다. 현재 보고 있는 테스트 메시지는 이후 테스트 모드 설정을 변경하여 더이상 보이지 않도록 설정할 수 있습니다.
 
 <img src="https://adfresca.zendesk.com/attachments/token/ans53bfy6mwq2e9/?name=4444.png" width="240" />
 &nbsp;
@@ -473,24 +473,33 @@ Nudge SDK는 커스텀 사용자 프로화일을 추적하기 위해 2가지 방
 **setCustomParameterWithValue** 메소드를 이용해서 특정 속성의 현재 값을 설정할 수 있습니다. 파라미터로는 키 스트링 (Unique Key, 예. "level", "facebook_flag" 등), 현재 값 (정수 또는 boolean) 등이 있습니다. 만약 여러분의 앱이 여러 기기에서의 sign-in을 지원한다면 사용자가 sign-in할 때 반드시 서버에 저장된 최신 값을 이용하여 커스텀 파라미터를 설정해야만 합니다. 이는 사용자가 하나의 단말에서 앱을 사용하다 앱을 포즈시켰거나 앱을 강제 종료한 경우에 Nudge SDK와 Nudge 서버 간의 데이터가 싱크되지 않는 문제를 해결하기 위함입니다.
 
 ```objective-c
-
-
+- (void)onSignIn {
+  AdFrescaView *fresca = [AdFrescaView shared];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];
+  [fresca signIn:@"user_id"];
+}
 ```
 
 또한 커스텀 파라미터의 값이 변경되면 동일한 방법으로 변경된 값을 설정해 주세요.
 
 ```objective-c
-
-
+- (void)onUserLevelChanged:(int)level {
+  AdFrescaView *fresca = [AdFrescaView shared];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
+}   
 ```
 
 #### Event Counters
 
-**IncrEventCounterWithAmount** 메소드를 이용해서 특정 이벤트의 횟수를 셀 수 있습니다. 파라미터로는 키 스트링 (Unique Key, 예. "play_count", "winning_streak" 등), 증가된 횟수(옵션. 정수값) 등이 있습니다.
+**incrEventCounterWithAmount** 메소드를 이용해서 특정 이벤트의 횟수를 셀 수 있습니다. 파라미터로는 키 스트링 (Unique Key, 예. "play_count", "winning_streak" 등), 증가된 횟수(옵션. 정수값) 등이 있습니다.
 
 ```objective-c
-
-
+- (void)onFinishStage {
+  AdFrescaView *fresca = [AdFrescaView shared];   
+  [fresca incrEventCounterWithAmount:[NSNumber numberWithLong:1] forKey:@"play_count"];  
+  [fresca incrEventCounterWithAmount:[NSNumber numberWithLong:2] forKey:@"winning_streak"];
+}   
 ```
 
 #### Manage Custom User Profile
@@ -744,7 +753,7 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 - **v1.6.3 _(2016/02/27 Updated)_**
-  - IncrEventCounterWithAmount 메소드가 추가되었고 incrCustomParameterWithAmount를 더 이상 지원하지 않습니다. [Custom User Profile](#custom-user-profile) 섹션을 참고하세요.
+  - incrEventCounterWithAmount 메소드가 추가되었고 incrCustomParameterWithAmount를 더 이상 지원하지 않습니다. [Custom User Profile](#custom-user-profile) 섹션을 참고하세요.
 - v1.6.2 (2016/01/23 Updated)
   - [Give Reward](#give-reward)이 개선되어 지급 완료 확인이 가능해졌습니다. 기존의 checkRewardItems 메소드가 deprecated 되었기 때문에 반드시 새로운 가이드를 참고하여 코드를 변경해야 합니다.
 - v1.5.6

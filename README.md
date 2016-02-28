@@ -475,24 +475,33 @@ Set a custom parameter with a ‘Unique Key’ string value (e.g. "level", "face
 
 
 ```objective-c
-
-
+- (void)onSignIn {
+  AdFrescaView *fresca = [AdFrescaView shared];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];
+  [fresca signIn:@"user_id"];
+}
 ```
 
 Please use the same method to update the value whenever its value changes.
 
 ```objective-c
-
-
+- (void)onUserLevelChanged:(int)level {
+  AdFrescaView *fresca = [AdFrescaView shared];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
+}   
 ```
 
 #### Event Counters
 
-Use **IncrEventCounterWithAmount** method with a ‘Unique Key’ string value (and an increment if necessary.) to count a specific event.
+Use **incrEventCounterWithAmount** method with a ‘Unique Key’ string value and an increment to count a specific event.
 
 ```objective-c
-
-
+- (void)onFinishStage {
+  AdFrescaView *fresca = [AdFrescaView shared];   
+  [fresca incrEventCounterWithAmount:[NSNumber numberWithLong:1] forKey:@"play_count"];  
+  [fresca incrEventCounterWithAmount:[NSNumber numberWithLong:2] forKey:@"winning_streak"];
+}
 ```
 
 #### Manage Custom User Profile
@@ -739,8 +748,8 @@ In other case, if you cannot see any message or get other errors, you can debug 
 * * *
 
 ## Release Notes
-- **v2.4.0 _(2016/02/27 Updated)_**
-  - Added incrEventCounter method and deprecated IncrCustomParameter. Please refer to [Custom User Profile](#custom-user-profile) section.
+- **v1.6.3 _(2016/02/27 Updated)_**
+  - Added incrEventCounterWithAmount method and deprecated incrCustomParameterWithAmount. Please refer to [Custom User Profile](#custom-user-profile) section.
 - v1.6.2 (2016/01/23 Updated)
   - Added OnRewardClaim and finishRewardClaim methods and checkRewardItems has been deprecated. Please refer to [Give Reward](#give-reward) section.
 - v1.5.6 (2015/06/02 Updated)
