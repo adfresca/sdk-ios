@@ -476,7 +476,7 @@ Nudge SDK는 커스텀 사용자 프로화일을 추적하기 위해 2가지 방
 - (void)onSignIn {
   AdFrescaView *fresca = [AdFrescaView shared];
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:@"facebook_flag"];
   [fresca signIn:@"user_id"];
 }
 ```
@@ -486,7 +486,7 @@ Nudge SDK는 커스텀 사용자 프로화일을 추적하기 위해 2가지 방
 ```objective-c
 - (void)onUserLevelChanged:(int)level {
   AdFrescaView *fresca = [AdFrescaView shared];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:@"level"];
 }   
 ```
 

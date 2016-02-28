@@ -478,7 +478,7 @@ Set a custom parameter with a ‘Unique Key’ string value (e.g. "level", "face
 - (void)onSignIn {
   AdFrescaView *fresca = [AdFrescaView shared];
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:"facebook_flag"];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:@"facebook_flag"];
   [fresca signIn:@"user_id"];
 }
 ```
@@ -488,7 +488,7 @@ Please use the same method to update the value whenever its value changes.
 ```objective-c
 - (void)onUserLevelChanged:(int)level {
   AdFrescaView *fresca = [AdFrescaView shared];   
-  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:"level"];
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:@"level"];
 }   
 ```
 
