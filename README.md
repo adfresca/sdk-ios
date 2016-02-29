@@ -12,7 +12,7 @@
   - [Give Reward](#give-reward)
   - [Sales Promotion](#sales-promotion)
 - [Dynamic Targeting](#dynamic-targeting)
-  - [Custom User Profile](#custom-user-profile)
+  - [Custom Profile Attributes](#custom-profile-attributes)
   - [Marketing Moment](#marketing-moment)
 - [Advanced](#advanced)
   - [AdFrescaViewDelegate](#adfrescaviewdelegate) 
@@ -463,9 +463,9 @@ Please make sure that you implement 'cancelPromotionPurchase' method when a user
 
 ## Dynamic Targeting
 
-### Custom User Profile
+### Custom Profile Attributes
 
-Nudge SDK provides two tracking methods for custom user profile attributes: Custom Parameter and Event Counter. Custom Parameter is used to track the current value of specific user attributes. (ex: level, current stage, facebook sign-in flag) while Event Counter is used to count a user's specific event in the app. (ex: play count, a number of gacha count)
+Nudge SDK provides two tracking methods for custom profile attributes: Custom Parameter and Event Counter. Custom Parameter is used to track the current value of specific user attributes. (ex: level, current stage, facebook sign-in flag) while Event Counter is used to count a user's specific event in the app. (ex: play count, a number of gacha count)
 
 You can create segements using custom paramters and/or event counters then target them for campaigns and/or monitor their activities in real time. You can achieve better campaign performance when targeting specific users with more filters. (Nudge SDK collect values of default filters such as device id, language, country, app version, run_count, purchase_count, etc so you don’t need to define those values as custom parameters or event counters.)
 
@@ -504,13 +504,13 @@ Use **incrEventCounterWithAmount** method with a ‘Unique Key’ string value a
 }
 ```
 
-#### Manage Custom User Profile
+#### Manage Custom Profile Attributes
 
-Nudge SDK transfers custom parameters and event counters to Nudge servers whenever necessary. But Nudge server will only store activated custom parameters and event counters so you need to activate them using [Dashboard](https://admin.adfresca.com). (You can activate up-to 20 custom parameters and event counters in total.)
+Nudge SDK transfers custom profile attributes to Nudge servers whenever necessary. But Nudge server will only store activated custom profile attributes so you need to activate them using [Dashboard](https://admin.adfresca.com). (You can activate up to 20 custom parameters and event counters in total.)
 
 <img src="https://s3-ap-northeast-1.amazonaws.com/file.adfresca.com/guide/sdk/custom_parameter_index.png">
 
-Under 'Overview' tab, click 'Settings - Custom Parameters' menu. Locate the unique key of a custom parameter or an event counter and set its 'Name' then you can activate it by clicking "Activate" button.
+Under 'Overview' tab, click 'Settings - Custom Profile Attrs' menu. Locate the unique key of a custom parameter or an event counter and set its 'Name' then you can activate it by clicking "Activate" button.
 
 #### Stickiness Event Counters
 
@@ -752,7 +752,7 @@ In other case, if you cannot see any message or get other errors, you can debug 
 
 ## Release Notes
 - **v1.6.3 _(2016/02/27 Updated)_**
-  - Added incrEventCounterWithAmount method and deprecated incrCustomParameterWithAmount. Please refer to [Custom User Profile](#custom-user-profile) section.
+  - Added incrEventCounterWithAmount method and deprecated incrCustomParameterWithAmount. Please refer to [Custom Profile Attributes](#custom-profile-attributes) section.
 - v1.6.2 (2016/01/23 Updated)
   - Added OnRewardClaim and finishRewardClaim methods and checkRewardItems has been deprecated. Please refer to [Give Reward](#give-reward) section.
 - v1.5.6 (2015/06/02 Updated)
