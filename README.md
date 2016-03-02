@@ -469,17 +469,19 @@ Nudge SDK provides two tracking methods for custom profile attributes: Custom Pa
 
 You can create segements using custom paramters and/or event counters then target them for campaigns and/or monitor their activities in real time. You can achieve better campaign performance when targeting specific users with more filters. (Nudge SDK collect values of default filters such as device id, language, country, app version, run_count, purchase_count, etc so you don’t need to define those values as custom parameters or event counters.)
 
+**NOTICE**: Please make sure that you set custom parmeters or increase event counters after a user signs in.
+
 #### Custom Parameters
 
-Set a custom parameter with a ‘Unique Key’ string value (e.g. "level", "facebook_flag") and a current value (integer or boolean) using **setCustomParameterWithValue** method. When your app supports signing in to multiple devices, Please make sure to set Custom Parameters with the values stored in your server when a user signs in, which can prevent data discrepancy in the situation that a game client was killed or paused on one device before finishing the sync between Nudge SDK and Nudge servers then she runs the app on other device.
+Set a custom parameter with a ‘Unique Key’ string value (e.g. "level", "facebook_flag") and a current value (integer or boolean) using **setCustomParameterWithValue** method. When your app supports signing in to multiple devices, Please make sure to set Custom Parameters with the values stored in your server after a user signs in, which can prevent data discrepancy in the situation that a game client was killed or paused on one device before finishing the sync between Nudge SDK and Nudge servers then she runs the app on other device.
 
 
 ```objective-c
 - (void)onSignIn {
   AdFrescaView *fresca = [AdFrescaView shared];
+  [fresca signIn:@"user_id"]; // or signInAsGuest:@"guest_id"
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:User.level] forKey:@"level"];   
   [fresca setCustomParameterWithValue:[NSNumber numberWithBool:User.hasFacebookAccount] forKey:@"facebook_flag"];
-  [fresca signIn:@"user_id"];
 }
 ```
 
@@ -517,9 +519,6 @@ Under 'Overview' tab, click 'Settings - Custom Profile Attrs' menu. Locate the u
 A stickiness event counter is a special event counter to measure a user’s stickiness to your app. For example, if you set ‘play count’ as a stickiness custom parameter in a stage-based game, You can define user segments with 3 additional filters: ‘Today’s play count, ‘Total Play count in a week’, and ‘Average play count in a week’. Stickiness event counters will help you to classify user groups by their loyalty and to monitor their activities in real time. 
 
 If you want to use stickiness event counters, please send an email to support@nudge.do after you activate your event counter in your dashboard.
-
-
-
 
 * * *
 
