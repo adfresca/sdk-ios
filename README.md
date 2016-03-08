@@ -750,7 +750,9 @@ In other case, if you cannot see any message or get other errors, you can debug 
 * * *
 
 ## Release Notes
-- **v1.6.3 _(2016/02/27 Updated)_**
+- **v1.6.4 _(2016/03/09 Updated)_**
+  - Fixed a bug in In-App Purchase Tracking
+- v1.6.3 (2016/02/27 Updated)
   - Added incrEventCounterWithAmount method and deprecated incrCustomParameterWithAmount. Please refer to [Custom Profile Attributes](#custom-profile-attributes) section.
 - v1.6.2 (2016/01/23 Updated)
   - Added OnRewardClaim and finishRewardClaim methods and checkRewardItems has been deprecated. Please refer to [Give Reward](#give-reward) section.
