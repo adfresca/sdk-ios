@@ -754,7 +754,9 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 * * *
 
 ## Release Notes
-- **v1.6.3 _(2016/02/27 Updated)_**
+- **v1.6.4 _(2016/03/09 Updated)_**
+  - In-App Purchase Tracking 관련 버그가 수정되었습니다.
+- v1.6.3 (2016/02/27 Updated)
   - incrEventCounterWithAmount 메소드가 추가되었고 incrCustomParameterWithAmount를 더 이상 지원하지 않습니다. [Custom Profile Attributes](#custom-profile-attributes) 섹션을 참고하세요.
 - v1.6.2 (2016/01/23 Updated)
   - [Give Reward](#give-reward)이 개선되어 지급 완료 확인이 가능해졌습니다. 기존의 checkRewardItems 메소드가 deprecated 되었기 때문에 반드시 새로운 가이드를 참고하여 코드를 변경해야 합니다.
