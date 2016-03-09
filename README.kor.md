@@ -483,24 +483,33 @@ Nudge SDK는 커스텀 프로화일 속성을 추적하기 위해 2가지 방법
 }
 ```
 
-또한 커스텀 파라미터의 값이 변경되면 동일한 방법으로 변경된 값을 설정해 주세요.
+커스텀 파라미터의 값이 변경되면 동일한 방법으로 변경된 값을 설정해 주세요.
 
 ```objective-c
-- (void)onUserLevelChanged:(int)level {
+- (void)onLevelChanged:(int)level {
   AdFrescaView *fresca = [AdFrescaView shared];   
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:@"level"];
 }   
 ```
 
+또는 **incrCustomParameterWithAmount** 메소드를 이용하여 값을 증가시킬 수 있습니다.
+
+```objective-c
+- (void)onWinningStreak
+{
+  AdFrescaView *fresca = [AdFrescaView shared];   
+  [fresca incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:@"winning_streak"];
+}
+```
+
 #### Event Counters
 
-**incrEventCounterWithAmount** 메소드를 이용해서 특정 이벤트의 횟수를 셀 수 있습니다. 파라미터로는 키 스트링 (Unique Key, 예. "play_count", "winning_streak" 등), 증가된 횟수(옵션. 정수값) 등이 있습니다.
+**incrEventCounterWithAmount** 메소드를 이용해서 특정 이벤트의 횟수를 셀 수 있습니다. 파라미터로는 키 스트링 (Unique Key, 예. "play_count"), 증가된 횟수(옵션. 정수값) 등이 있습니다. 이벤트 카운터는 이벤트의 총 누적값을 저장합니다.
 
 ```objective-c
 - (void)onFinishStage {
   AdFrescaView *fresca = [AdFrescaView shared];   
   [fresca incrEventCounterWithAmount:[NSNumber numberWithLong:1] forKey:@"play_count"];  
-  [fresca incrEventCounterWithAmount:[NSNumber numberWithLong:2] forKey:@"winning_streak"];
 }   
 ```
 

@@ -488,22 +488,31 @@ Set a custom parameter with a ‘Unique Key’ string value (e.g. "level", "face
 Please use the same method to update the value whenever its value changes.
 
 ```objective-c
-- (void)onUserLevelChanged:(int)level {
+- (void)onLevelChanged:(int)level {
   AdFrescaView *fresca = [AdFrescaView shared];   
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:@"level"];
 }   
 ```
 
+Or you can increase the value of a custom parameter using **incrCustomParameterWithAmount** method with a ‘Unique Key’ string value and an increment.
+
+```objective-c
+- (void)onWinningStreak
+{
+  AdFrescaView *fresca = [AdFrescaView shared];   
+  [fresca incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:@"winning_streak"];
+}
+```
+
 #### Event Counters
 
-Use **incrEventCounterWithAmount** method with a ‘Unique Key’ string value and an increment to count a specific event.
+Use **incrEventCounterWithAmount** method with a ‘Unique Key’ string value and an increment to count a specific event. Event Counters stores a total count of events.
 
 ```objective-c
 - (void)onFinishStage {
   AdFrescaView *fresca = [AdFrescaView shared];   
   [fresca incrEventCounterWithAmount:[NSNumber numberWithLong:1] forKey:@"play_count"];  
-  [fresca incrEventCounterWithAmount:[NSNumber numberWithLong:2] forKey:@"winning_streak"];
-}
+}   
 ```
 
 #### Manage Custom Profile Attributes
