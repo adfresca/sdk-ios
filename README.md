@@ -494,7 +494,7 @@ Please use the same method to update the value whenever its value changes.
 }   
 ```
 
-Or you can increase the value of a custom parameter using **incrCustomParameterWithAmount** method with a ‘Unique Key’ string value and an increment.
+Or you can increase the value of a custom parameter using **incrCustomParameterWithAmount** method with a ‘Unique Key’ string value and an increment if necessary.
 
 ```objective-c
 - (void)onWinningStreak

@@ -492,7 +492,8 @@ Nudge SDK는 커스텀 프로화일 속성을 추적하기 위해 2가지 방법
 }   
 ```
 
-또는 **incrCustomParameterWithAmount** 메소드를 이용하여 값을 증가시킬 수 있습니다.
+또는 **incrCustomParameterWithAmount** 메소드를 이용하여 값을 증가시킬 수 있습니다. 파라미터로는 키 스트링 (Unique Key, 예. "winning_streak"), 증가된 횟수(옵션. 정수값) 등이 있습니다.
+
 
 ```objective-c
 - (void)onWinningStreak
