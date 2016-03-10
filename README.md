@@ -32,7 +32,7 @@
 
  Download our SDK with the following link:
 
-[iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) 
+[iOS SDK Download](http://file.nudge.do/distribution/sdk/nudge-sdk-for-iOS.zip) 
 
 To add our SDK into your Xcode project, please follow the instructions below:
 
@@ -469,7 +469,7 @@ Nudge SDK provides two tracking methods for custom profile attributes: Custom Pa
 
 You can create segements using custom paramters and/or event counters then target them for campaigns and/or monitor their activities in real time. You can achieve better campaign performance when targeting specific users with more filters. (Nudge SDK collect values of default filters such as device id, language, country, app version, run_count, purchase_count, etc so you don’t need to define those values as custom parameters or event counters.)
 
-**NOTICE**: Please make sure that you set/increase custom parmeters or increase event counters after a user signs in.
+**NOTICE**: Please make sure that you set/increase custom parameters or increase event counters after a user signs in.
 
 #### Custom Parameters
 
@@ -767,7 +767,7 @@ In other case, if you cannot see any message or get other errors, you can debug 
 ## Release Notes
 
 - **v1.6.5 _(2016/03/10 Updated)_**
-  - Revived the deprecated incrCustomParameterWithAmount method.
+  - Revived the deprecated **incrCustomParameterWithAmount** method.
 - v1.6.4 (2016/03/09 Updated)
   - Fixed a bug in In-App Purchase Tracking
 - v1.6.3 (2016/02/27 Updated)

@@ -32,7 +32,7 @@
 
 아래 링크를 통해 SDK 파일을 다운로드 합니다.
 
-[iOS SDK Download](http://file.adfresca.com/distribution/sdk-for-iOS.zip) 
+[iOS SDK Download](http://file.nudge.do/distribution/sdk/nudge-sdk-for-iOS.zip) 
 
 SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
@@ -492,7 +492,7 @@ Nudge SDK는 커스텀 프로화일 속성을 추적하기 위해 2가지 방법
 }   
 ```
 
-또는 **incrCustomParameterWithAmount** 메소드를 이용하여 값을 증가시킬 수 있습니다. 파라미터로는 키 스트링 (Unique Key, 예. "winning_streak"), 증가된 횟수(옵션. 정수값) 등이 있습니다.
+또는 **incrCustomParameterWithAmount** 메소드를 이용하여 값을 증가시킬 수 있습니다. 파라미터로는 키 스트링 (Unique Key), 증가된 횟수 (옵션, 정수값) 등이 있습니다.
 
 
 ```objective-c
@@ -511,7 +511,7 @@ Nudge SDK는 커스텀 프로화일 속성을 추적하기 위해 2가지 방법
 
 #### Event Counters
 
-이벤트 카운터는 특정 이벤트의 횟수를 세어 총 누적값을 저장합니다. **incrEventCounterWithAmount** 메소드를 이용하며 파라미터로는 키 스트링 (Unique Key, 예. "play_count"), 증가된 횟수(옵션. 정수값) 등이 있습니다.
+이벤트 카운터는 특정 이벤트의 횟수를 세어 총 누적값을 저장합니다. **incrEventCounterWithAmount** 메소드를 이용하며 파라미터로는 키 스트링 (Unique Key), 증가된 횟수 (옵션, 정수값) 등이 있습니다.
 
 ```objective-c
 - (void)onFinishStage {
@@ -771,7 +771,7 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 
 ## Release Notes
 - **v1.6.5 _(2016/03/10 Updated)_**
-  - 지원하지 않기로 했던 incrCustomParameterWithAmount 메소드가 다시 제공됩니다.
+  - 지원하지 않기로 했던 **incrCustomParameterWithAmount** 메소드가 다시 제공됩니다.
 - v1.6.4 (2016/03/09 Updated)
   - In-App Purchase Tracking 관련 버그가 수정되었습니다.
 - v1.6.3 (2016/02/27 Updated)
