@@ -469,7 +469,7 @@ Nudge SDK provides two tracking methods for custom profile attributes: Custom Pa
 
 You can create segements using custom paramters and/or event counters then target them for campaigns and/or monitor their activities in real time. You can achieve better campaign performance when targeting specific users with more filters. (Nudge SDK collect values of default filters such as device id, language, country, app version, run_count, purchase_count, etc so you don’t need to define those values as custom parameters or event counters.)
 
-**NOTICE**: Please make sure that you set custom parmeters or increase event counters after a user signs in.
+**NOTICE**: Please make sure that you set/increase custom parmeters or increase event counters after a user signs in.
 
 #### Custom Parameters
 
@@ -494,16 +494,31 @@ Please use the same method to update the value whenever its value changes.
 }   
 ```
 
+Or you can increase the value of a custom parameter using **incrCustomParameterWithAmount** method with a ‘Unique Key’ string value and an increment if necessary.
+
+```objective-c
+- (void)onWinningStreak
+{
+  AdFrescaView *fresca = [AdFrescaView shared];   
+  [fresca incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:@"winning_streak"];
+}
+
+- (void)onResetWinningStreak
+{
+  AdFrescaView *fresca = [AdFrescaView shared];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:0] forKey:@"winning_streak"];
+}
+```
+
 #### Event Counters
 
-Use **incrEventCounterWithAmount** method with a ‘Unique Key’ string value and an increment to count a specific event.
+Event Counters stores a total count of specific events. Use **incrEventCounterWithAmount** method with a ‘Unique Key’ string value and an increment if neccessary. 
 
 ```objective-c
 - (void)onFinishStage {
   AdFrescaView *fresca = [AdFrescaView shared];   
   [fresca incrEventCounterWithAmount:[NSNumber numberWithLong:1] forKey:@"play_count"];  
-  [fresca incrEventCounterWithAmount:[NSNumber numberWithLong:2] forKey:@"winning_streak"];
-}
+}   
 ```
 
 #### Manage Custom Profile Attributes
@@ -750,7 +765,10 @@ In other case, if you cannot see any message or get other errors, you can debug 
 * * *
 
 ## Release Notes
-- **v1.6.4 _(2016/03/09 Updated)_**
+
+- **v1.6.5 _(2016/03/10 Updated)_**
+  - Revived the deprecated incrCustomParameterWithAmount method.
+- v1.6.4 (2016/03/09 Updated)
   - Fixed a bug in In-App Purchase Tracking
 - v1.6.3 (2016/02/27 Updated)
   - Added incrEventCounterWithAmount method and deprecated incrCustomParameterWithAmount. Please refer to [Custom Profile Attributes](#custom-profile-attributes) section.
