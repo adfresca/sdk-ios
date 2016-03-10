@@ -486,7 +486,7 @@ Nudge SDK는 커스텀 프로화일 속성을 추적하기 위해 2가지 방법
 커스텀 파라미터의 값이 변경되면 동일한 방법으로 변경된 값을 설정해 주세요.
 
 ```objective-c
-- (void)onLevelChanged:(int)level {
+- (void)onUserLevelChanged:(int)level {
   AdFrescaView *fresca = [AdFrescaView shared];   
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forKey:@"level"];
 }   
@@ -500,11 +500,17 @@ Nudge SDK는 커스텀 프로화일 속성을 추적하기 위해 2가지 방법
   AdFrescaView *fresca = [AdFrescaView shared];   
   [fresca incrCustomParameterWithAmount:[NSNumber numberWithInt:1] forKey:@"winning_streak"];
 }
+
+- (void)onResetWinningStreak
+{
+  AdFrescaView *fresca = [AdFrescaView shared];   
+  [fresca setCustomParameterWithValue:[NSNumber numberWithInt:0] forKey:@"winning_streak"];
+}
 ```
 
 #### Event Counters
 
-**incrEventCounterWithAmount** 메소드를 이용해서 특정 이벤트의 횟수를 셀 수 있습니다. 파라미터로는 키 스트링 (Unique Key, 예. "play_count"), 증가된 횟수(옵션. 정수값) 등이 있습니다. 이벤트 카운터는 이벤트의 총 누적값을 저장합니다.
+이벤트 카운터는 특정 이벤트의 횟수를 세어 총 누적값을 저장합니다. **incrEventCounterWithAmount** 메소드를 이용하며 파라미터로는 키 스트링 (Unique Key, 예. "play_count"), 증가된 횟수(옵션. 정수값) 등이 있습니다.
 
 ```objective-c
 - (void)onFinishStage {
@@ -763,7 +769,9 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 * * *
 
 ## Release Notes
-- **v1.6.4 _(2016/03/09 Updated)_**
+- **v1.6.5 _(2016/03/10 Updated)_**
+  - 지원하지 않기로 했던 incrCustomParameterWithAmount 메소드가 다시 제공됩니다.
+- v1.6.4 (2016/03/09 Updated)
   - In-App Purchase Tracking 관련 버그가 수정되었습니다.
 - v1.6.3 (2016/02/27 Updated)
   - incrEventCounterWithAmount 메소드가 추가되었고 incrCustomParameterWithAmount를 더 이상 지원하지 않습니다. [Custom Profile Attributes](#custom-profile-attributes) 섹션을 참고하세요.
