@@ -462,7 +462,7 @@ For Soft Currency Items, you should use your own purchase UI which might be alre
 
 ```
 
-For better measurement, please make sure that you implement **cancelPromotionPurchase** method when a user cancelled the purchase or the transaction has failed.
+Nudge SDK detects if a user makes a purchase using our [In-App Purchase Tracking](#in-app-purchase-tracking) feature. For better measurement, you need to implement **cancelPromotionPurchase** method when the user cancelled during the purchase process or the transaction has faield. 
 
 * * *
 
@@ -473,6 +473,7 @@ You can draw more attention from customers and create a sense of urgency with a 
 
 << insert a sample interstitial >>
 
+**Notice:** Please don't forget to add a nudge-icon font definition to Info.plist. (Please refer to [Installation](#installation) for more detail.)
 
 Once a limited time offer is displayed in a marketing moment, it will be no longer available in any marketing moment. You need to use the folllowing code to retreive information on acitve limited time offers and display their interstitials again.
 
@@ -499,9 +500,6 @@ You can display one or more interstitials of active limited time offers using **
 [[AdFrescaView shared] displayActiveLimitedTimeOffers:count];
 
 ```
-
-**Notice:** Please don't forget to add a font definition to Info.plist (Please refer to [Installation](#installation) for more detail.)
-
 
 * * *
 
