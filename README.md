@@ -462,16 +462,15 @@ For Soft Currency Items, you should use your own purchase UI which might be alre
 
 ```
 
-Nudge SDK detects if a user makes a purchase using our [In-App Purchase Tracking](#in-app-purchase-tracking) feature. For better measurement, you need to implement **cancelPromotionPurchase** method when the user cancelled during the purchase process or the transaction has faield. 
+Nudge SDK detects if a user makes a purchase using our [In-App Purchase Tracking](#in-app-purchase-tracking) feature. For better measurement, you need to implement **cancelPromotionPurchase** method when the user cancelled during the purchase process or the transaction has failed. 
 
 * * *
 
 ### Limited Time Offer
 
-You can draw more attention from customers and create a sense of urgency with a limited time offer, which is a special sales promotion of **hard currency items for a limited time period only**. Nudge SDK will display an interstitial with the remaining time on the top bar and will hide the intersitial when the time is over.
+You can draw more attention from customers and create a sense of urgency with a limited time offer, which is a special sales promotion of **a hard currency item for a limited time period only**. Nudge SDK will display an interstitial with the remaining time on the top bar and will hide the intersitial when the time is over.
 
-
-<< insert a sample interstitial >>
+<img src="http://file.nudge.do/guide/sdk/LTO_interstitial_landscape_sample.jpg">
 
 **Notice:** Please don't forget to add a nudge-icon font definition to Info.plist. (Please refer to [Installation](#installation) for more detail.)
 
