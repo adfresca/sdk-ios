@@ -64,14 +64,14 @@ To add our SDK into your Xcode project, please follow the instructions below:
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
   
-  If you use [Limited Time Offers](#limited-time-offer), add a row and name the new key 'Fonts provided by application'. After this, you can fill the key with your font definitions. In our case, this would be the value 'nudge-icon.ttf' for 'Item 0'.
+  If you use [Limited Time Offers](#limited-time-offer), add a row and name the new key 'Fonts provided by application'. After this, you can fill the key (ex. 'Item 0') with the value 'nudge-icon.ttf'.
 
 <img src="http://file.nudge.do/guide/sdk/nudge-icon-font.png">
 
 
 5) In iOS 9 and Xcode 7+, [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) is enabled by default. Thus, you need to configure domain exceptions to enable our SDK send data to Nudge servers. Check [Info.plist example](https://gist.github.com/sunku/2dba02239f168dfec5d9#file-nsapptransportsecurity-plist) and update your file in Xcode accordingly.
 
-Nudge SDK has been successfully installed without any build error. If you have a 'Duplicate Symbol' error, please refer to the [Troubleshooting](#troubleshooting) section.
+If you have a 'Duplicate Symbol' error, please refer to the [Troubleshooting](#troubleshooting) section.
 
 ### Start Session
 
@@ -499,6 +499,9 @@ You can display one or more interstitials of active limited time offers using **
 [[AdFrescaView shared] displayActiveLimitedTimeOffers:count];
 
 ```
+
+**Notice:** Please don't forget to add a font definition to Info.plist (Please refer to [Installation](#installation) for more detail.)
+
 
 * * *
 
