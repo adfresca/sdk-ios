@@ -63,6 +63,11 @@ To add our SDK into your Xcode project, please follow the instructions below:
   Also, set your own URL Scheme value. the example below shows how to set URL Scheme with "myapp" value. It will be used in the cross promotion feature.
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
+  
+  If you use [Limited Time Offers](#limited-time-offer), add a row and name the new key 'Fonts provided by application'. After this, you can fill the key with your font definitions. In our case, this would be the value 'nudge-icon.ttf' for 'Item 0'.
+
+<img src="http://file.nudge.do/guide/sdk/nudge-icon-font.png">
+
 
 5) In iOS 9 and Xcode 7+, [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) is enabled by default. Thus, you need to configure domain exceptions to enable our SDK send data to Nudge servers. Check [Info.plist example](https://gist.github.com/sunku/2dba02239f168dfec5d9#file-nsapptransportsecurity-plist) and update your file in Xcode accordingly.
 
@@ -561,7 +566,7 @@ Event Counters stores a total count of specific events. Use **incrEventCounterWi
 
 Nudge SDK transfers custom profile attributes to Nudge servers whenever necessary. But Nudge server will only store activated custom profile attributes so you need to activate them using [Dashboard](https://admin.adfresca.com). (You can activate up to 20 custom parameters and event counters in total.)
 
-<img src="https://s3.amazonaws.com/file.nudge.do/guide/sdk/manage_custom_profile_attributes.jpg">
+<img src="http://file.nudge.do/guide/sdk/manage_custom_profile_attributes.jpg">
 
 Under 'Overview' tab, click 'Settings - Custom Profile Attrs' menu. Locate the unique key of a custom parameter or an event counter and set its 'Name' then you can activate it by clicking "Activate" button.
 
