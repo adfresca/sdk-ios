@@ -463,7 +463,7 @@ For better measurement, please make sure that you implement **cancelPromotionPur
 
 ### Limited Time Offer
 
-You can draw more attention from customers and create a sense of urgency with a limited time offer, which is a sales promotion for a limited time period only. Nudge SDK will display an interstitial with the remaining time on the top bar and will hide the intersitial when the time is over.
+You can draw more attention from customers and create a sense of urgency with a limited time offer, which is a special sales promotion of **hard currency items for a limited time period only**. Nudge SDK will display an interstitial with the remaining time on the top bar and will hide the intersitial when the time is over.
 
 
 << insert a sample interstitial >>
@@ -471,28 +471,27 @@ You can draw more attention from customers and create a sense of urgency with a 
 
 Once a limited time offer is displayed in a marketing moment, it will be no longer available in any marketing moment. You need to use the folllowing code to retreive information on acitve limited time offers and display their interstitials again.
 
-You can retreieve information on active limited time offers with **checkActiveLimitedTimeOffersWithCompletionHandler**, which will return an array of JSON strings with a remaining time and a unique value of the promotion item, sorted by remaining time in ascending order. With these information, you can display the shortest remaining time of an offer (and the number of active limited time offers if neccessary) in the game UI.
+You can retreieve information of active limited time offers with **checkActiveLimitedTimeOffersWithCompletionHandler**, which will return an array of JSON strings with a remaining time and a unique value of the promotion item, sorted by remaining time in ascending order. With these information, you can display the shortest remaining time of an offer (and the number of active limited time offers if neccessary) in the game UI.
  
 ```objective-c
 
 [[AdFrescaView shared] checkActiveLimitedTimeOffersWithCompletionHandler:^(NSString *jsonStr) {
  if (jsonStr) {
-   // parse JSON strings in the array and display the remaining time and the number of active limited time offers.
+   // Parse JSON strings in the returned array and use them to display the remaining time and the number of active limited time offers if neccessary.
    // JSON example: [{\"remaining_time_in_seconds\":1184,\"item_unique_value\":\"item_03\"},{\"remaining_time_in_seconds\":1784,\"item_unique_value\":\"item_03\"},{\"remaining_time_in_seconds\":2384,\"item_unique_value\":\"item_03\"}]
  {
- 	// Nudge SDK will return nil when it failed to retrieve information of active limited time offers. You can re-try or display an error message.
+ 	// Nudge SDK will return nil when it fails to retrieve information of active limited time offers. You can re-try or display an error message to a user.
  }
 }];
 
 
 ```
 
-You can display one or more interstitials of active limited time offers using **displayActiveLimitedTimeOffers** method and control how many interstitials to display with a count parameter. The interstitials of the offers will be displayed until the remaining time is not over.
+You can display one or more interstitials of active limited time offers using **displayActiveLimitedTimeOffers** method and control how many interstitials to display with a count parameter. Nudge SDK will display interstitials of the offers unless their remaining time is over.
 
 ```objective-c
 
 [[AdFrescaView shared] displayActiveLimitedTimeOffers:count];
-
 
 ```
 
@@ -803,7 +802,7 @@ In other case, if you cannot see any message or get other errors, you can debug 
 
 ## Release Notes
 - **v1.6.6 _(2016/03/11 Updated)_**
-  - Add [Limited Time Offer](#limited-time-offer) feature.
+  - Added [Limited Time Offer](#limited-time-offer) feature.
 - v1.6.5 (2016/03/10 Updated)
   - Revived the deprecated **incrCustomParameterWithAmount** method.
 - v1.6.4 (2016/03/09 Updated)
