@@ -11,6 +11,7 @@
   - [In-App Purchase Tracking](#in-app-purchase-tracking)
   - [Give Reward](#give-reward)
   - [Sales Promotion](#sales-promotion)
+  - [Limited Time Offer](#limited-time-offer)
 - [Dynamic Targeting](#dynamic-targeting)
   - [Custom Profile Attributes](#custom-profile-attributes)
   - [Marketing Moment](#marketing-moment)
@@ -62,10 +63,15 @@ To add our SDK into your Xcode project, please follow the instructions below:
   Also, set your own URL Scheme value. the example below shows how to set URL Scheme with "myapp" value. It will be used in the cross promotion feature.
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
+  
+  If you use [Limited Time Offers](#limited-time-offer), add a row and name the new key 'Fonts provided by application'. After this, you can fill the key (ex. 'Item 0') with the value 'nudge-icon.ttf'.
+
+<img src="http://file.nudge.do/guide/sdk/nudge-icon-font.png">
+
 
 5) In iOS 9 and Xcode 7+, [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) is enabled by default. Thus, you need to configure domain exceptions to enable our SDK send data to Nudge servers. Check [Info.plist example](https://gist.github.com/sunku/2dba02239f168dfec5d9#file-nsapptransportsecurity-plist) and update your file in Xcode accordingly.
 
-Nudge SDK has been successfully installed without any build error. If you have a 'Duplicate Symbol' error, please refer to the [Troubleshooting](#troubleshooting) section.
+If you have a 'Duplicate Symbol' error, please refer to the [Troubleshooting](#troubleshooting) section.
 
 ### Start Session
 
@@ -111,7 +117,7 @@ With in-app messaging, you can deliver a message to targeted users. Simply put '
 
 ```objective-c
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView]; 
+  AdFrescaView *fresca = [AdFrescaView shared]; 
   [fresca load]; 
   [fresca show]; 
 } 
@@ -180,7 +186,7 @@ To register your test device to our dashboard, you need to get your test device 
   - After connecting your device with Xcode, you can simply print out test device ID with a logger.
 
   ```objective-c
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
+  AdFrescaView *fresca = [AdFrescaView shared];
   NSLog(@"Nudge Test Device ID = %@", fresca.testDeviceId); 
   [fresca load];
   [fresca show];
@@ -192,7 +198,7 @@ To register your test device to our dashboard, you need to get your test device 
   - printTestDeviceId property must be set to false when you distribute your app on the store. 
 
   ```objective-c
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
+  AdFrescaView *fresca = [AdFrescaView shared];
   fresca.printTestDeviceId = YES;
   [fresca load];
   [fresca show];
@@ -396,7 +402,7 @@ If you want Nudge to send a security token and a reward claim limit count for a 
 
 ### Sales Promotion
 
-You can promote in-game items to specific user segements. When a user taps on an action button of an in-app message, a purchase UI will appear. Our SDK will automatically detect if the user made a purchase or not, and then will update the campaign performance in our dashboard in real time. Please note that [In-App Purchase Tracking](#in-app-purchase-tracking) feature is a prerequisite to this promotion feature.
+You can promote in-game items to specific user segements. When a user taps on an action button of an in-app message, a purchase UI will appear. Our SDK will automatically detect if the user makes a purchase or not, then will update campaign performance KPIs in our dashboard in real time. Please note that [In-App Purchase Tracking](#in-app-purchase-tracking) feature is a prerequisite to this promotion feature.
 
 Start implementing AFPromotionDelegate. onPromotion event is automatically called when a user taps on an action button of an image message in a sales promotion campaign. You just need to show the purchase UI of the promotion item using 'promotionPurchase' object. 
 
@@ -418,7 +424,7 @@ For Soft Currency Items, you should use your own purchase UI which might be alre
 // AppDelegate.m
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
+  AdFrescaView *fresca = [AdFrescaView shared];
   [fresca setPromotionDelegate:self];
 }
 
@@ -456,8 +462,43 @@ For Soft Currency Items, you should use your own purchase UI which might be alre
 
 ```
 
-Please make sure that you implement 'cancelPromotionPurchase' method when a user cancelled or failed to purchase items.
+Nudge SDK detects if a user makes a purchase using our [In-App Purchase Tracking](#in-app-purchase-tracking) feature. For better measurement, you need to implement **cancelPromotionPurchase** method when the user cancelled during the purchase process or the transaction has failed. 
 
+* * *
+
+### Limited Time Offer
+
+You can draw more attention from customers and create a sense of urgency with a limited time offer, which is a special sales promotion of **a hard currency item for a limited time period only**. Nudge SDK will display an interstitial with the remaining time on the top bar and will hide the intersitial when the time is over.
+
+<img src="http://file.nudge.do/guide/sdk/LTO_interstitial_landscape_sample.jpg">
+
+**Notice:** Please don't forget to add a nudge-icon font definition to Info.plist. (Please refer to [Installation](#installation) for more detail.)
+
+Once a limited time offer is displayed in a marketing moment, it will be no longer available in any marketing moment. You need to use the folllowing code to retreive information on acitve limited time offers and display their interstitials again.
+
+You can retreieve information of active limited time offers with **checkActiveLimitedTimeOffersWithCompletionHandler**, which will return an array of JSON strings with a remaining time and a unique value of the promotion item, sorted by remaining time in ascending order. With these information, you can display the shortest remaining time of an offer (and the number of active limited time offers if neccessary) in the game UI.
+ 
+```objective-c
+
+[[AdFrescaView shared] checkActiveLimitedTimeOffersWithCompletionHandler:^(NSString *jsonStr) {
+  if (jsonStr) {
+    // Parse JSON strings in the returned array and use them to display the remaining time and the number of active limited time offers if neccessary.
+    // JSON example: [{"remaining_time_in_seconds":1184, "item_unique_value":"item_03"}, ...]      
+ {
+ 	// Nudge SDK will return nil when it fails to retrieve information of active limited time offers. You can re-try or display an error message to a user.
+ }
+}];
+
+
+```
+
+You can display one or more interstitials of active limited time offers using **displayActiveLimitedTimeOffers** method and control how many interstitials to display with a count parameter. Nudge SDK will display interstitials of the offers unless their remaining time is over.
+
+```objective-c
+
+[[AdFrescaView shared] displayActiveLimitedTimeOffers:count];
+
+```
 
 * * *
 
@@ -525,7 +566,7 @@ Event Counters stores a total count of specific events. Use **incrEventCounterWi
 
 Nudge SDK transfers custom profile attributes to Nudge servers whenever necessary. But Nudge server will only store activated custom profile attributes so you need to activate them using [Dashboard](https://admin.adfresca.com). (You can activate up to 20 custom parameters and event counters in total.)
 
-<img src="https://s3.amazonaws.com/file.nudge.do/guide/sdk/manage_custom_profile_attributes.jpg">
+<img src="http://file.nudge.do/guide/sdk/manage_custom_profile_attributes.jpg">
 
 Under 'Overview' tab, click 'Settings - Custom Profile Attrs' menu. Locate the unique key of a custom parameter or an event counter and set its 'Name' then you can activate it by clicking "Activate" button.
 
@@ -547,13 +588,13 @@ You will call the method after the moment has happened in the app.
 
 ```objective-c
 - (void)userDidEnterItemStore {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
+  AdFrescaView *fresca = [AdFrescaView shared];   
   [fresca load:EVENT_INDEX_STORE_PAGE];    
   [fresca show];
 } 
 
 - (void)levelDidChange:(int)level {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];   
+  AdFrescaView *fresca = [AdFrescaView shared];   
   [fresca setCustomParameterWithValue:[NSNumber numberWithInt:level] forIndex:CUSTOM_PARAM_INDEX_LEVEL]; 
   [fresca load:EVENT_INDEX_LEVEL_UP]; 
   [fresca show];
@@ -574,7 +615,7 @@ With implementing AdFrescaViewDelegate in your code, you can check all the event
 
 // ViewController.m
 - (void)viewDidLoad {
-  AdFrescaView *fresca = [AdFrescaView sharedAdView];
+  AdFrescaView *fresca = [AdFrescaView shared];
   fresca.delegate = self;
   [fresca load];
   [fresca show];
@@ -645,7 +686,7 @@ You can set a timeout interval for a marketing moment request. If the message is
 Default is 5 seconds and you can set from 1 seconds to 5 seconds.
 
 ```objective-c
-AdFrescaView *fresca = [AdFrescaView sharedAdView];  
+AdFrescaView *fresca = [AdFrescaView shared];  
 fresca.timeoutInterval = 3 // # secs  
 [fresca load];
 [fresca show];
@@ -709,7 +750,7 @@ To integrate our SDK with this feature, you should have URL Schema value for the
     
   ```objective-c
   - (void)didTutorialComplete {
-    AdFrescaView *fresca = [AdFrescaView sharedAdView];   
+    AdFrescaView *fresca = [AdFrescaView shared];   
     [fresca load:MOMENT_INDEX_TUTORIAL_COMPLETE];  
     [fresca show];
   }  
@@ -765,8 +806,9 @@ In other case, if you cannot see any message or get other errors, you can debug 
 * * *
 
 ## Release Notes
-
-- **v1.6.5 _(2016/03/10 Updated)_**
+- **v1.6.6 _(2016/03/11 Updated)_**
+  - Added [Limited Time Offer](#limited-time-offer) feature.
+- v1.6.5 (2016/03/10 Updated)
   - Revived the deprecated **incrCustomParameterWithAmount** method.
 - v1.6.4 (2016/03/09 Updated)
   - Fixed a bug in In-App Purchase Tracking
