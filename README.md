@@ -491,7 +491,7 @@ You can retreieve information of active limited time offers with **checkActiveLi
 
 ```
 
-You can display interstitials of active limited time offers using **displayActiveLimitedTimeOffers** method with count parameter. Nudge SDK will display interstitials of the offers unless their remaining time is over.
+You can display interstitials of active limited time offers using **displayActiveLimitedTimeOffers** method with a count parameter. Nudge SDK will display interstitials of the offers unless their remaining time is over.
 
 ```objective-c
 
@@ -846,7 +846,7 @@ In other case, if you cannot see any message or get other errors, you can debug 
 - v1.4.3
     - Support sales promotion campaign. Please refer to [Sales Promotion](#sales-promotion) section.
     - Support security token of reward campaign's hack proof. Please refer to [Give Reward](#give-reward) section.
-    - Add cancelPromotionPurchase() method to [In-App Purchase Tracking](#in-app-purchase-tracking)
+    - Add cancelPromotionPurchase method to [In-App Purchase Tracking](#in-app-purchase-tracking)
     - Support tap area feature.
 - v1.4.2
     - SDK will match multiple campaigns and show multiple messages in one marketing moment request.

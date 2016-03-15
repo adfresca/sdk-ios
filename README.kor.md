@@ -237,7 +237,7 @@ Nudge의 In-App-Purchase Tracking은 2가지 유형이 있습니다.
 
 #### Hard Currency Item Tracking
 
-Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
+Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase 메소드를 호출합니다.
 
 적용 예제: 
 ```objective-c
@@ -282,7 +282,7 @@ transactionReceiptData(nsdata| SKPaymentTransaction 객체의 transactionReceipt
 
 #### Soft Currency Item Tracking
 
-Soft Currency Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
+Soft Currency Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase 메소드를 호출합니다.
 
 
 적용 예제: 
@@ -465,7 +465,7 @@ Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점
 }
 ```
 
-보다 정확한 캠페인 결과 측정을 위해, 사용자가 구매를 취소하거나 구매에 실패한 경우를 처리하는 **cancelPromotionPurchase** 메소드를 구현해야 합니다.
+Nudge SDK는 [In-App Purchase Tracking](#in-app-purchase-tracking) 기능을 이용하여 사용자가 특정 캠페인을 통해서 아이템을 구매했는지를 추적합니다. 보다 정확한 측정을 위해, 사용자가 구매를 취소하거나 구매에 실패한 경우를 처리하는 **cancelPromotionPurchase** 메소드를 구현해 주세요.
 
 * * *
 
@@ -855,7 +855,7 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 - v1.4.3
   - 세일즈 프로모션 캠페인 기능을 지원합니다. 자세한 내용은 [Sales Promotion](#sales-promotion) 항목을 참고하여 주세요.
   - 리워드 지급 시에 시큐리티 토큰값을 이용하여 보안 이슈를 해결할 수 있습니다. 자세한 내용은 [Give Reward](#give-reward)   항목을 참고하여 주세요.
-  - [In-App Purchase Tracking](#in-app-purchase-tracking) 기능에서 cancelPromotionPurchase() 메소드가 추가되었습니다. 
+  - [In-App Purchase Tracking](#in-app-purchase-tracking) 기능에서 cancelPromotionPurchase 메소드가 추가되었습니다. 
   - 이미지 메시지의 Tap Area 기능을 지원합니다.
 - v1.4.2
 	- 1개의 마케팅 모멘트에서 복 수 개의 캠페인이 매칭되어 표시가 가능하도록 변경되었습니다.
