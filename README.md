@@ -472,7 +472,7 @@ You can draw more attention from customers and create a sense of urgency with a 
 
 <img src="http://file.nudge.do/guide/sdk/LTO_interstitial_landscape_sample.jpg">
 
-**Notice:** Please don't forget to add a nudge-icon font definition to Info.plist. (Please refer to [Installation](#installation) for more detail.)
+**Notice:** Please don't forget to add a 'nudge-icon' font definition to Info.plist. (Please refer to [Installation](#installation) for more detail.)
 
 Once a limited time offer is displayed in a marketing moment, it will be no longer available in any marketing moment. You need to use the folllowing code to retreive information on acitve limited time offers and display their interstitials again.
 
