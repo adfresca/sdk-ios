@@ -259,12 +259,12 @@ In iOS, the purchase of 'Hard Currency Item' is made with Apple's Storekit frame
                                               purchaseDate:transactionDate
                                     transactionReceiptData:transactionReceiptData];
 
-  [[AdFrescaView shardAdView] logPurchase:purchase];
+  [[AdFrescaView sharedAdView] logPurchase:purchase];
 }
 
 - (void)failedTransaction:(SKPaymentTransaction *)transaction 
 {
-  [[AdFrescaView shardAdView] cancelPromotionPurchase];
+  [[AdFrescaView sharedAdView] cancelPromotionPurchase];
   ....
 }
 ```
@@ -292,11 +292,11 @@ When a user purchased a soft currency item in the app, you can also create AFPur
                                               purchaseDate:nil
                                     transactionReceiptData:nil]; 
 
-  [[AdFrescaView shardAdView] logPurchase:purchase];
+  [[AdFrescaView sharedAdView] logPurchase:purchase];
 }
 
 - (void)didFailToPurchaseSoftItem {
-  [[AdFrescaView shardAdView] cancelPromotionPurchase];
+  [[AdFrescaView sharedAdView] cancelPromotionPurchase];
 }
 ```
 
@@ -331,7 +331,7 @@ If you don't see any data in our dashboard, your AFPurchase object may be invali
                                                      price:100
                                               purchaseDate:nil
                                     transactionReceiptData:nil];
-  [[AdFrescaView shardAdView] logPurchase:purchase, self];
+  [[AdFrescaView sharedAdView] logPurchase:purchase, self];
 }
 
 - (void)purchase:(AFPurchase *)purchase didFailToLogWithException:(AdFrescaException *)exception {
@@ -363,7 +363,7 @@ If there is a reward item for a user, onRewardClaim event is triggered and the i
 // AppDelegate.m
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [[AdFrescaView shardAdView] setRewardClaimDelegate:self];
+  [[AdFrescaView sharedAdView] setRewardClaimDelegate:self];
 }
 
 - (void)onRewardClaim:(AFRewardItem *)item {
@@ -476,7 +476,7 @@ You can draw more attention from customers and create a sense of urgency with a 
 
 Once a limited time offer is displayed in a marketing moment, it will be no longer available in any marketing moment. You need to use the folllowing code to retreive information on acitve limited time offers and display their interstitials again.
 
-You can retreieve information of active limited time offers with **checkActiveLimitedTimeOffersWithCompletionHandler**, which will return an array of JSON strings with a remaining time and a unique value of the promotion item, sorted by remaining time in ascending order. With these information, you can display the shortest remaining time of an offer (and the number of active limited time offers if neccessary) in the game UI.
+You can retreieve information of active limited time offers with **checkActiveLimitedTimeOffersWithCompletionHandler**, which will return an array of JSON strings with a remaining time and a unique value of the promotion item, sorted by remaining time in ascending order. With these information, you can display the shortest remaining time of an offer (and a number of active limited time offers if neccessary) in the game UI.
  
 ```objective-c
 
@@ -489,14 +489,13 @@ You can retreieve information of active limited time offers with **checkActiveLi
   }
 }];
 
-
 ```
 
-You can display one or more interstitials of active limited time offers using **displayActiveLimitedTimeOffers** method and control how many interstitials to display with a count parameter. Nudge SDK will display interstitials of the offers unless their remaining time is over.
+You can display interstitials of active limited time offers using **displayActiveLimitedTimeOffers** method with count parameter. Nudge SDK will display interstitials of the offers unless their remaining time is over.
 
 ```objective-c
 
-[[AdFrescaView shared] displayActiveLimitedTimeOffers:count];
+[[AdFrescaView shared] displayActiveLimitedTimeOffers:1];
 
 ```
 
@@ -672,7 +671,7 @@ To fix this issue, follow the steps below:
 #pragma mark – AdFrescaViewDelegate
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-  AdFrescaView *fresca = [AdFrescaView shardAdView];
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];
   if (!fresca.hidden && fresca.userClicked) {
     [fresca close];
   }
@@ -777,7 +776,7 @@ If you are adding the framework or remove it while you're updating your app whic
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [AdFrescaView startSession:API_KEY];
-  [[AdFrescaView shardAdView] setUseIFVOnly:YES];
+  [[AdFrescaView sharedAdView] setUseIFVOnly:YES];
 }
 ```
 
@@ -789,7 +788,7 @@ Please contact us if you have any concerns or issues on this section.
 
 Duplicated Symbol Error of SBJson may occur if you already have SBJson in your project.
 
-<img src="https://adfresca.zendesk.com/attachments/token/ikafbcqjnj9jbak/?name=6666.png">
+<img src="https://adfresca.zendesk.com/attachments/token/ikafbcqjnj9jbak/?name=6666.epng">
 
 In this case, compiling will fail with the errors above.
 
