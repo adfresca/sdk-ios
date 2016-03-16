@@ -11,6 +11,7 @@
   - [In-App Purchase Tracking](#in-app-purchase-tracking)
   - [Give Reward](#give-reward)
   - [Sales Promotion](#sales-promotion)
+  - [Limited Time Offer](#limited-time-offer)
 - [Dynamic Targeting](#dynamic-targeting)
   - [Custom Profile Attributes](#custom-profile-attributes)
   - [Marketing Moment](#marketing-moment)
@@ -63,9 +64,13 @@ SDK를 프로젝트에 추가하기 위해 아래의 절차가 필요합니다.
 
   <img src="https://adfresca.zendesk.com/attachments/token/n3nvdacyizyzvu0/?name=Screen+Shot+2013-02-07+at+6.51.09+PM.png"/>
 
+[Limited Time Offers](#limited-time-offer)를 사용하는 경우 행을 추가해서'Fonts provided by application'라는 이름의 키를 만들어 주세요. 그런 다음 키 이름 (예. 'Item 0')을 정하고 'nudge-icon.ttf'를 값으로 입력해 주세요.
+
+<img src="http://file.nudge.do/guide/sdk/nudge-icon-font.png">
+
 5) iOS 9 및 Xcode 7 이상 버전에서는 [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) 기능이 기본적으로 활성화되어 있습니다. 때문에 SDK가 넛지 서버와 통신할 수 있도록 도메인 예외 설정을 해주어야 합니다. [Info.plist 예제](https://gist.github.com/sunku/2dba02239f168dfec5d9#file-nsapptransportsecurity-plist)를 확인하여 Xcode 설정을 수정합니다.
 
-아무런 에러 없이 빌드가 성공헀다면 모든 설치가 정상적으로 완료된 것입니다. 만약 Duplicate Symbol 등의 Linking Error 가 발생하였다면 아래의 '[Troubleshooting](#troubleshooting)' 항목을 확인해주시기 바랍니다
+만약 Duplicate Symbol 등의 Linking Error 가 발생하였다면 아래의 '[Troubleshooting](#troubleshooting)' 항목을 확인해주시기 바랍니다
 
 ### Start Session
 
@@ -232,7 +237,7 @@ Nudge의 In-App-Purchase Tracking은 2가지 유형이 있습니다.
 
 #### Hard Currency Item Tracking
 
-Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
+Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러리를 통해 이루어집니다. iOS의 경우 Storekit 결제 라이브러리에서 _'결제 성공'_ 이벤트가 발생 할 시에 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase 메소드를 호출합니다.
 
 적용 예제: 
 ```objective-c
@@ -254,13 +259,13 @@ Hard Currency Item의 결제는 각 앱스토어별 인-앱 결제 라이브러�
                                               purchaseDate:transactionDate
                                     transactionReceiptData:transactionReceiptData];
 
-  [[AdFrescaView shardAdView] logPurchase:purchase];
+  [[AdFrescaView sharedAdView] logPurchase:purchase];
   ......
 }
 
 - (void)failedTransaction:(SKPaymentTransaction *)transaction 
 {
-  [[AdFrescaView shardAdView] cancelPromotionPurchase];
+  [[AdFrescaView sharedAdView] cancelPromotionPurchase];
   ....
 }
 ```
@@ -277,7 +282,7 @@ transactionReceiptData(nsdata| SKPaymentTransaction 객체의 transactionReceipt
 
 #### Soft Currency Item Tracking
 
-Soft Currency Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase() 메소드를 호출합니다.
+Soft Currency Item의 결제는 앱 내의 가상 화폐로 아이템을 결제한 경우를 의미합니다. 앱 내에서 가상 화폐를 이용한 결제 이벤트가 성공한 경우 아래 예제와 같이 AFPurchase 객체를 생성하고 logPurchase(purchase) 메소드를 호출합니다. 그리고 _'결제 실패'_ 이벤트가 발생 할 시에는 cancelPromotionPurchase 메소드를 호출합니다.
 
 
 적용 예제: 
@@ -290,11 +295,11 @@ Soft Currency Item의 결제는 앱 내의 가상 화폐로 아이템을 결제�
                                               purchaseDate:nil
                                     transactionReceiptData:nil]; 
 
-  [[AdFrescaView shardAdView] logPurchase:purchase];
+  [[AdFrescaView sharedAdView] logPurchase:purchase];
 }
 
 - (void)didFailToPurchaseSoftItem {
-  [[AdFrescaView shardAdView] cancelPromotionPurchase];
+  [[AdFrescaView sharedAdView] cancelPromotionPurchase];
 }
 ```
 
@@ -331,7 +336,7 @@ logPurchase() 메소드를 통해 기록된 AFPurchase 객체는 Nudge 서비스
                                                      price:100
                                               purchaseDate:nil
                                     transactionReceiptData:nil];
-  [[AdFrescaView shardAdView] logPurchase:purchase, self];
+  [[AdFrescaView sharedAdView] logPurchase:purchase, self];
 }
 
 - (void)purchase:(AFPurchase *)purchase didFailToLogWithException:(AdFrescaException *)exception {
@@ -364,7 +369,7 @@ logPurchase() 메소드를 통해 기록된 AFPurchase 객체는 Nudge 서비스
 // AppDelegate.m
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [[AdFrescaView shardAdView] setRewardClaimDelegate:self];
+  [[AdFrescaView sharedAdView] setRewardClaimDelegate:self];
 }
 
 - (void)onRewardClaim:(AFRewardItem *)item {
@@ -459,6 +464,45 @@ Soft Currency 아이템의 경우는 앱이 기존에 사용하고 있는 상점
   }
 }
 ```
+
+Nudge SDK는 [In-App Purchase Tracking](#in-app-purchase-tracking) 기능을 이용하여 사용자가 특정 캠페인을 통해서 아이템을 구매했는지를 추적합니다. 보다 정확한 측정을 위해, 사용자가 구매를 취소하거나 구매에 실패한 경우를 처리하는 **cancelPromotionPurchase** 메소드를 구현해 주세요.
+
+* * *
+
+### Limited Time Offer
+
+제한 시간 동안만 구매할 수 있는 '시간 한정 판매' (Limited Time Offer)를 이용해서 사용자들의 관심을 끌거나 긴박감을 조성할 수 있습니다. Nudge SDK는 이미지 상단 바에 잔여 구매 가능 시간을 표시해 주고 시간이 종료하면 자동으로 이미지를 사라지게 합니다.
+
+<img src="http://file.nudge.do/guide/sdk/LTO_interstitial_landscape_sample.jpg">
+
+**Notice:** Info.plist에 'nudge-icon' 폰트의 정의를 추가해야 합니다. (보다 자세한 사항은 [Installation](#installation)을 참고하세요.)
+
+마케팅 모먼트에서 시간 한정 판매가 한번 노출되면 다른 마케팅 모먼트에서 더 이상 노출되지 않습니다. 따라서 아래 코드를 이용하여 현재 유효한 시간 한정 판매의 정보를 조회하거나 이미지를 노출해야 합니다.
+
+**checkActiveLimitedTimeOffersWithCompletionHandler**를 이용하여 활성화된 시간 한정 판매에 대한 정보를 조회할 수 있습니다. 결과값은 잔여 시간, 프로모션 아이템의 유니크 값으로 구성된 JSON 스트링이며 잔여 시간 오름차순으로 소팅되어 있습니다. 이 정보를 이용하여 게임 UI 상에 가장 짧은 잔여 시간, 활성화된 시간 한정 판매의 수 등을 표시할 수 있습니다.
+ 
+```objective-c
+
+[[AdFrescaView shared] checkActiveLimitedTimeOffersWithCompletionHandler:^(NSString *jsonStr) {
+  if (jsonStr) {
+    // Parse JSON strings in the returned array and use them to display the remaining time and the number of active limited time offers if neccessary.
+    // JSON example: [{"remaining_time_in_seconds":1184, "item_unique_value":"item_03"}, ...] 
+  } else {
+    // Nudge SDK will return nil when it fails to retrieve information of active limited time offers. You can re-try or display an error message to a user.
+  }
+}];
+
+```
+
+**displayActiveLimitedTimeOffers** 메소드를 이용해서 활성화된 시간 한정 판매 이미지를 표시할 수 있으며 카운트 파라미터를 이용해서 몇 개를 표시할지 설정할 수 있습니다. 잔여 구매 가능 시간이 남아 있는 시간 한정 판매의 이미지가 노출됩니다.
+
+```objective-c
+
+[[AdFrescaView shared] displayActiveLimitedTimeOffers:1];
+
+```
+
+* * *
 
 ## Dynamic Targeting
 
@@ -634,7 +678,7 @@ AdFrescaViewDelegate 를 직접 구현함으로써, 콘텐츠 뷰에서 발생�
 #pragma mark – AdFrescaViewDelegate
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-  AdFrescaView *fresca = [AdFrescaView shardAdView];
+  AdFrescaView *fresca = [AdFrescaView sharedAdView];
   if (!fresca.hidden && fresca.userClicked) {
     [fresca closeAd];
   }
@@ -741,7 +785,7 @@ SDK 적용을 위해서는 Advertising App에서의 URL Schema 설정 및 Media 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [AdFrescaView startSession:API_KEY];
-  [[AdFrescaView shardAdView] setUseIFVOnly:YES];
+  [[AdFrescaView sharedAdView] setUseIFVOnly:YES];
 }
 ```
 
@@ -770,7 +814,9 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 * * *
 
 ## Release Notes
-- **v1.6.5 _(2016/03/10 Updated)_**
+- **v1.6.6 _(2016/03/11 Updated)_**
+  - [Limited Time Offer](#limited-time-offer) 기능이 추가되었습니다.
+- v1.6.5 (2016/03/10 Updated)
   - 지원하지 않기로 했던 **incrCustomParameterWithAmount** 메소드가 다시 제공됩니다.
 - v1.6.4 (2016/03/09 Updated)
   - In-App Purchase Tracking 관련 버그가 수정되었습니다.
@@ -809,7 +855,7 @@ SDK 설치시에 SBJson의 Duplicate Symbol 에러가 발생하여 빌드가 되
 - v1.4.3
   - 세일즈 프로모션 캠페인 기능을 지원합니다. 자세한 내용은 [Sales Promotion](#sales-promotion) 항목을 참고하여 주세요.
   - 리워드 지급 시에 시큐리티 토큰값을 이용하여 보안 이슈를 해결할 수 있습니다. 자세한 내용은 [Give Reward](#give-reward)   항목을 참고하여 주세요.
-  - [In-App Purchase Tracking](#in-app-purchase-tracking) 기능에서 cancelPromotionPurchase() 메소드가 추가되었습니다. 
+  - [In-App Purchase Tracking](#in-app-purchase-tracking) 기능에서 cancelPromotionPurchase 메소드가 추가되었습니다. 
   - 이미지 메시지의 Tap Area 기능을 지원합니다.
 - v1.4.2
 	- 1개의 마케팅 모멘트에서 복 수 개의 캠페인이 매칭되어 표시가 가능하도록 변경되었습니다.
